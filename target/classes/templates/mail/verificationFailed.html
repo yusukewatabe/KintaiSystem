@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<script src="https://cdn.tailwindcss.com"></script>
+		<body class="bg-gray-100 font-sans leading-normal tracking-normal">
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>勤怠システム</title>
+	</head>
+	<body>
+		<!-- ヘッダー -->
+		<div class="w-full" th:insert="./common/header :: header"></div><br/>
+		<div class="flex flex-col items-center mt-6 space-y-4">
+			<p class="mt-6 text-2xl sm:text-3xl text-center">認証に失敗しました。</p>
+			<p class="mt-6 text-2xl sm:text-3xl text-center">再度メール認証からやり直してください。</p><br/>
+			<div th:if="${transitionLink == 'newUid'}">
+				<a th:href="@{/sendMailForm}" class="text-black-600 hover:text-cyan-500 text-xl">再度のメール認証はこちら</a>
+			</div>
+			<div th:if="${transitionLink == 'forget'}">
+				<a th:href="@{/forgetPass}" class="text-black-600 hover:text-cyan-500 text-xl">再度のメール認証はこちら</a>
+			</div>
+		</div>
+		<!-- フッター -->
+		<div class="w-full max-w-full mt-8" th:insert="./common/footer :: footer"></div>
+	</body>
+</html>

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<script src="https://cdn.tailwindcss.com"></script>
+		<body class="bg-gray-100 font-sans leading-normal tracking-normal">
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+		<title>勤怠システム</title>
+	</head>
+	<body>
+		<!-- ヘッダー -->
+		<div class="w-full max-w-full" th:insert="./common/header :: header"></div><br />
+		<p class="mt-6 text-2xl sm:text-3xl text-center">入力情報確認</p><br/><br/>
+		<form id="formChange" th:action="@{/default}" method="get" class="w-full max-w-md mx-auto px-4">
+			<input type="hidden" name="nrtfevah" th:value="${id}">
+			<p class="mt-2 text-sm text-red-600 font-medium">id：[[${id}]]</p>
+			<input type="hidden" name="okbjrein" th:value="${pass}">
+			<p class="mt-2 text-sm text-red-600 font-medium">パスワード：パスワードは表示されません。</p>
+			<input type="hidden" name="reabtseg" th:value="${firstName}">
+			<p class="mt-2 text-sm text-red-600 font-medium">名字：[[${firstName}]]</p>
+			<input type="hidden" name="vsvbrebb" th:value="${lastName}">
+			<p class="mt-2 text-sm text-red-600 font-medium">名前：[[${lastName}]]</p>
+			<div class="mt-6">
+			<div class="flex flex-col items-center mt-6 space-y-4">
+				<button type="submit" onclick="changeAction('/api/auth/submitUser')" 
+					class="w-full sm:w-auto text-white bg-cyan-700 hover:bg-cyan-800 focus:outline-none focus:ring-4 focus:ring-cyan-300 font-medium rounded-full text-sm px-8 py-3">
+					入力情報を登録
+				</button><br/>
+				<button type="submit" onclick="changeAction('/api/auth/registerUserFixes')" 
+					class="w-full sm:w-auto text-white bg-cyan-700 hover:bg-cyan-800 focus:outline-none focus:ring-4 focus:ring-cyan-300 font-medium rounded-full text-sm px-8 py-3">
+					入力情報を修正
+				</button>
+			</div>
+		</div>
+		</form>
+		<script>
+			function changeAction(action) {
+				document.getElementById("formChange").action = action;
+			}
+		</script>
+		<!-- フッター -->
+		<div class="w-full max-w-full mt-8" th:insert="./common/footer :: footer"></div>
+	</body>
+</html>

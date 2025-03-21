@@ -1,12 +1,63 @@
 <!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>勤怠システム</title>
-</head>
-<body>
-	<h1>勤怠管理へようこそ</h1>
-	<iframe src="header.html" width="500" height="500"></iframe>
-	<a href="" class="btn btn--orange btn--radius">PUSH</a>
-</body>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<script src="https://cdn.tailwindcss.com"></script>
+		<body class="bg-gray-100 font-sans leading-normal tracking-normal">
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+		<title>勤怠システム</title>
+	</head>
+	<body>
+		<!-- ヘッダー -->
+		<div class="w-full max-w-full" th:insert="./common/header :: header"></div>
+		<br />
+		<!-- 紋様ロゴ -->
+		<div class="flex flex-col items-center px-4">
+			<img th:src="@{/images/kamon.png}" class="w-auto max-w-[200px]" />
+			<p class="mt-6 text-2xl sm:text-3xl text-center">ログイン</p>
+		</div>
+		<form th:action="@{/login}" method="get" class="w-full max-w-md mx-auto px-4">
+			<div class="mt-6">
+				<!-- 入力チェックがエラーの場合 -->
+				<div th:if="${error}" class="space-y-4">
+					<div>
+						<label for="error" class="text-lg sm:text-xl mb-2 m-2 block">ID</label>
+						<input type="text" id="id" name="id" minlength="0" maxlength="128"
+						class="w-full bg-cyan-50 border border-red-500 text-cyan-900 placeholder-red-700 text-sm rounded-lg focus:ring-red-500 focus:border-red-500 p-2.5" placeholder="idを入力">
+					</div>
+					<div>
+						<label for="error" class="text-lg sm:text-xl mb-2 m-2 block">パスワード</label>
+						<input type="password" id="pass" name="pass" minlength="6" maxlength="32"
+						class="w-full bg-cyan-50 border border-red-500 text-cyan-900 placeholder-red-700 text-sm rounded-lg focus:ring-red-500 focus:border-red-500 p-2.5" placeholder="パスワードを入力">
+					</div>
+					<p class="mt-2 text-sm text-red-600 font-medium">[[${errorMessage}]]</p>
+				</div>
+				<!-- 入力チェックがエラーでないの場合 -->
+				<div th:unless="${error}" class="space-y-4">
+					<div>
+						<p class="text-lg sm:text-xl mb-2 m-2">ID</p>
+						<input type="text" id="id" name="id" minlength="0" maxlength="128"
+						class="w-full bg-cyan-50 border border-cyan-500 text-cyan-900 placeholder-cyan-700 text-sm rounded-lg focus:ring-cyan-500 focus:border-cyan-500 p-2.5" placeholder="idを入力">
+					</div>
+					<div>
+						<p class="text-lg sm:text-xl mb-2 m-2">パスワード</p>
+						<input type="password" id="pass" name="pass" minlength="6" maxlength="32"
+						class="w-full bg-cyan-50 border border-cyan-500 text-cyan-900 placeholder-cyan-700 text-sm rounded-lg focus:ring-cyan-500 focus:border-cyan-500 p-2.5" placeholder="パスワードを入力">
+					</div>
+				</div>
+				<div class="flex flex-col items-center mt-6 space-y-4">
+					<button type="submit" 
+						class="w-full sm:w-auto text-white bg-cyan-700 hover:bg-cyan-800 focus:outline-none focus:ring-4 focus:ring-cyan-300 font-medium rounded-full text-sm px-8 py-3">
+						ログイン
+					</button>
+					<a th:href="@{/forgetPass}" class="text-black-600 hover:text-cyan-500 text-sm sm:text-base">パスワードを忘れた場合はこちら</a>
+					<a th:href="@{/sendMailForm}" class="text-black-600 hover:text-cyan-500 text-sm sm:text-base">新規ユーザー登録はこちら</a>
+					<br />
+				</div>
+			</div>
+		</form>
+		<!-- フッター -->
+		<div class="w-full max-w-full mt-8" th:insert="./common/footer :: footer"></div>
+	</body>
 </html>

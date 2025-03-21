@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<script src="https://cdn.tailwindcss.com"></script>
+		<body class="bg-gray-100 font-sans leading-normal tracking-normal">
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>勤怠システム</title>
+	</head>
+	<body>
+		<!-- ヘッダー -->
+		<div class="w-full" th:insert="./common/header :: header"></div><br/>
+		<p class="mt-6 text-2xl sm:text-3xl text-center">パスワード再設定</p><br/><br/>
+		<form th:action="@{/setForgetPassWord}" method="post" class="w-full max-w-md mx-auto px-4">
+			<input type="hidden" name="id" th:value="${id}">
+			<div class="mt-6">
+				<div class="space-y-4">
+					<div th:if="${error}">
+						<p class="text-lg sm:text-xl mb-2 m-2">再設定するパスワード</p>
+						<input type="password" id="password" name="password" minlength="0" maxlength="128"
+						class="w-full bg-cyan-50 border border-cyan-500 text-cyan-900 placeholder-cyan-700 text-sm rounded-lg focus:ring-cyan-500 focus:border-cyan-500 p-2.5" placeholder="メールアドレスを入力">
+						<br/><input type="checkbox" onclick="toggleVisibility('password')" class="mt-2 m-1">パスワードを表示
+						<br/>
+						<br/>
+						<p class="text-lg sm:text-xl mb-2 m-2">再設定するパスワード(確認)</p>
+						<input type="password" id="repassword" name="repassword" minlength="0" maxlength="128"
+						class="w-full bg-cyan-50 border border-cyan-500 text-cyan-900 placeholder-cyan-700 text-sm rounded-lg focus:ring-cyan-500 focus:border-cyan-500 p-2.5" placeholder="メールアドレスを入力">
+						<br/><input type="checkbox" onclick="toggleVisibility('repassword')" class="mt-2 m-1">パスワード(確認)を表示
+						<br/>
+					</div>
+					<div th:unless="${error}">
+						<p class="text-lg sm:text-xl mb-2 m-2">再設定するパスワード</p>
+						<input type="password" id="password" name="password" minlength="0" maxlength="128"
+						class="w-full bg-cyan-50 border border-cyan-500 text-cyan-900 placeholder-cyan-700 text-sm rounded-lg focus:ring-cyan-500 focus:border-cyan-500 p-2.5" placeholder="メールアドレスを入力">
+						<br/><input type="checkbox" onclick="toggleVisibility('password')" class="mt-2 m-1">パスワードを表示
+						<br/>
+						<br/>
+						<p class="text-lg sm:text-xl mb-2 m-2">再設定するパスワード(確認)</p>
+						<input type="password" id="repassword" name="repassword" minlength="0" maxlength="128"
+						class="w-full bg-cyan-50 border border-cyan-500 text-cyan-900 placeholder-cyan-700 text-sm rounded-lg focus:ring-cyan-500 focus:border-cyan-500 p-2.5" placeholder="メールアドレスを入力">
+						<br/><input type="checkbox" onclick="toggleVisibility('repassword')" class="mt-2 m-1">パスワード(確認)を表示
+						<br/>
+					</div>
+				</div>
+				<br/>
+				<p class="mt-2 text-sm text-red-600 font-medium">[[${errorIdMessage}]]</p>
+				<div class="flex flex-col items-center mt-6 space-y-4">
+					<button type="submit" 
+						class="w-full sm:w-auto text-white bg-cyan-700 hover:bg-cyan-800 focus:outline-none focus:ring-4 focus:ring-cyan-300 font-medium rounded-full text-sm px-8 py-3">
+						パスワードを登録
+					</button>
+					<br />
+				</div>
+				<!-- TODO ボタン -->
+			</div>
+		</form>
+		<script>
+			window.addEventListener("click", enableBeforeUnload, { once: true });
+			window.addEventListener("keydown", enableBeforeUnload, { once: true });
+			function toggleVisibility(inputId) {
+				var input = document.getElementById(inputId);
+				if (input.type === "password") {
+					input.type = "text";
+				} else {
+					input.type = "password";
+				}
+			}
+		</script>
+		<!-- フッター -->
+		<div class="w-full max-w-full mt-8" th:insert="./common/footer :: footer"></div>
+	</body>
+</html>
