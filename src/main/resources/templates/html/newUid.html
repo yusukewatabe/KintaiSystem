@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<script src="https://cdn.tailwindcss.com"></script>
+		<body class="bg-gray-100 font-sans leading-normal tracking-normal">
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>勤怠システム</title>
+	</head>
+	<body>
+		<!-- ヘッダー -->
+		<div class="w-full" th:insert="./common/header :: header"></div><br/>
+		<p class="mt-6 text-2xl sm:text-3xl text-center">新規ユーザー登録</p><br/><br/>
+		<form id="formChange" th:action="@{/api/auth/registerUser}" method="post" class="w-full max-w-md mx-auto px-4">
+			<div th:if="${auth == 'initial'}" class="mt-6">
+				<div th:if="${errorId}">
+					<p class="text-lg sm:text-xl mb-2 m-2">メールアドレス(ログイン時のIDと同一になります。)</p>
+					<input type="text" id="id" name="id" minlength="0" maxlength="128"
+					class="w-full bg-cyan-50 border border-red-500 text-cyan-900 placeholder-red-700 text-sm rounded-lg focus:ring-red-500 focus:border-red-500 p-2.5" placeholder="idを入力">
+					<p class="mt-2 text-sm text-red-600 font-medium">[[${errorIdMessage}]]</p>
+				</div>
+				<div th:unless="${errorId}">
+					<p class="text-lg sm:text-xl mb-2 m-2">メールアドレス(ログイン時のIDと同一になります。)</p>
+					<input type="text" id="id" name="id" minlength="0" maxlength="128"
+					class="w-full bg-cyan-50 border border-cyan-500 text-cyan-900 placeholder-cyan-700 text-sm rounded-lg focus:ring-cyan-500 focus:border-cyan-500 p-2.5" placeholder="idを入力">
+				</div><br/>
+				<div th:if="${errorPass}">
+					<p class="text-lg sm:text-xl mb-2 m-2">パスワード <br/><span class="text-sm">※英大文字、小文字、数字を合わせた6文字以上で入力してください。(記号入力可)</span></p>
+					<input type="password" id="pass" name="pass" minlength="6" maxlength="32"
+					class="w-full bg-cyan-50 border border-red-500 text-cyan-900 placeholder-red-700 text-sm rounded-lg focus:ring-red-500 focus:border-red-500 p-2.5" placeholder="パスワードを入力">
+					<br/><input type="checkbox" onclick="toggleVisibility('pass')" class="mt-2 m-1">パスワードを表示
+					<br/>
+					<p class="mt-2 text-sm text-red-600 font-medium">[[${errorPassMessage}]]</p>
+				</div>
+				<div th:if="${errorRepass}">
+					<br/><p class="text-lg sm:text-xl mb-2 m-2">パスワード(確認)</p>
+					<input type="password" id="repass" name="repass" minlength="6" maxlength="32"
+					class="w-full bg-cyan-50 border border-red-500 text-cyan-900 placeholder-red-700 text-sm rounded-lg focus:ring-red-500 focus:border-red-500 p-2.5" placeholder="パスワードを入力(再)">
+					<br/><input type="checkbox" onclick="toggleVisibility('repass')" class="mt-2 m-1">パスワード(確認)を表示
+					<br/>
+					<p class="mt-2 text-sm text-red-600 font-medium">[[${errorRepassMessage}]]</p>
+				</div>
+				<div th:unless="${errorPass}">
+					<p class="text-lg sm:text-xl mb-2 m-2">パスワード <br/><span class="text-sm">※英大文字、小文字、数字を合わせた6文字以上で入力してください。(記号入力可)</span></p>
+					<input type="password" id="pass" name="pass" minlength="6" maxlength="32"
+					class="w-full bg-cyan-50 border border-cyan-500 text-cyan-900 placeholder-cyan-700 text-sm rounded-lg focus:ring-cyan-500 focus:border-cyan-500 p-2.5" placeholder="パスワードを入力">
+					<br/><input type="checkbox" onclick="toggleVisibility('pass')" class="mt-2 m-1">パスワードを表示
+					<br/>
+				</div>
+				<div th:unless="${errorRepass}">
+					<br/><p class="text-lg sm:text-xl mb-2 m-2">パスワード(確認)</p>
+					<input type="password" id="repass" name="repass" minlength="6" maxlength="32"
+					class="w-full bg-cyan-50 border border-cyan-500 text-cyan-900 placeholder-cyan-700 text-sm rounded-lg focus:ring-cyan-500 focus:border-cyan-500 p-2.5" placeholder="パスワードを入力(確認)">
+					<br/><input type="checkbox" onclick="toggleVisibility('repass')" class="mt-2 m-1">パスワード(確認)を表示
+					<br/>
+				</div>
+				<div th:if="${errorFirstName}">
+					<p class="text-lg sm:text-xl mb-2 m-2">名字</p>
+					<input type="text" id="firstName" name="firstName" minlength="0" maxlength="128"
+					class="w-full bg-cyan-50 border border-red-500 text-cyan-900 placeholder-red-700 text-sm rounded-lg focus:ring-red-500 focus:border-red-500 p-2.5" placeholder="名字を入力">
+					<p class="mt-2 text-sm text-red-600 font-medium">[[${errorFirstNameMessage}]]</p>
+				</div>
+				<div th:unless="${errorFirstName}">
+					<p class="text-lg sm:text-xl mb-2 m-2">名字</p>
+					<input type="text" id="firstName" name="firstName" minlength="0" maxlength="128"
+					class="w-full bg-cyan-50 border border-cyan-500 text-cyan-900 placeholder-cyan-700 text-sm rounded-lg focus:ring-cyan-500 focus:border-cyan-500 p-2.5" placeholder="名字を入力">
+				</div><br/>
+				<div th:if="${errorLastName}">
+					<p class="text-lg sm:text-xl mb-2 m-2">名前</p>
+					<input type="text" id="lastName" name="lastName" minlength="0" maxlength="128"
+					class="w-full bg-cyan-50 border border-red-500 text-cyan-900 placeholder-red-700 text-sm rounded-lg focus:ring-red-500 focus:border-red-500 p-2.5" placeholder="名前を入力">
+					<p class="mt-2 text-sm text-red-600 font-medium">[[${errorLastNameMessage}]]</p>
+				</div>
+				<div th:unless="${errorLastName}">
+					<p class="text-lg sm:text-xl mb-2 m-2">名前</p>
+					<input type="text" id="lastName" name="lastName" minlength="0" maxlength="128"
+					class="w-full bg-cyan-50 border border-cyan-500 text-cyan-900 placeholder-cyan-700 text-sm rounded-lg focus:ring-cyan-500 focus:border-cyan-500 p-2.5" placeholder="名前を入力">
+				</div><br/>
+				<div class="flex flex-col items-center mt-6 space-y-4">
+					<button type="submit" 
+						class="w-full sm:w-auto text-white bg-cyan-700 hover:bg-cyan-800 focus:outline-none focus:ring-4 focus:ring-cyan-300 font-medium rounded-full text-sm px-8 py-3">
+						登録
+					</button><br/>
+				</div>
+				<input type="hidden" name="authInfo" th:value="initial">
+			</div>
+			<div th:if="${auth == 'fixes'}" class="mt-6">
+				<div th:if="${errorId}">
+					<p class="text-lg sm:text-xl mb-2 m-2">メールアドレス(ログイン時のIDと同一になります。)</p>
+					<input type="text" id="id" name="id" minlength="0" maxlength="128" th:value="${id}"
+					class="w-full bg-cyan-50 border border-red-500 text-cyan-900 placeholder-red-700 text-sm rounded-lg focus:ring-red-500 focus:border-red-500 p-2.5" placeholder="idを入力">
+					<p class="mt-2 text-sm text-red-600 font-medium">[[${errorIdMessage}]]</p>
+				</div>
+				<div th:unless="${errorId}">
+					<p class="text-lg sm:text-xl mb-2 m-2">メールアドレス(ログイン時のIDと同一になります。)</p>
+					<input type="text" id="id" name="id" minlength="0" maxlength="128" th:value="${id}"
+					class="w-full bg-cyan-50 border border-cyan-500 text-cyan-900 placeholder-cyan-700 text-sm rounded-lg focus:ring-cyan-500 focus:border-cyan-500 p-2.5" placeholder="idを入力">
+				</div><br/>
+				<div th:if="${errorPass}">
+					<p class="text-lg sm:text-xl mb-2 m-2">パスワード <br/><span class="text-sm">※英大文字、小文字、数字を合わせた6文字以上で入力してください。(記号入力可)</span></p>
+					<input type="password" id="pass" name="pass" minlength="6" maxlength="32"
+					class="w-full bg-cyan-50 border border-red-500 text-cyan-900 placeholder-red-700 text-sm rounded-lg focus:ring-red-500 focus:border-red-500 p-2.5" placeholder="パスワードを入力">
+					<br/><input type="checkbox" onclick="toggleVisibility('pass')" class="mt-2 m-1">パスワードを表示
+					<br/>
+					<p class="mt-2 text-sm text-red-600 font-medium">[[${errorPassMessage}]]</p>
+				</div>
+				<div th:if="${errorRepass}">
+					<br/><p class="text-lg sm:text-xl mb-2 m-2">パスワード(確認)</p>
+					<input type="password" id="repass" name="repass" minlength="6" maxlength="32"
+					class="w-full bg-cyan-50 border border-red-500 text-cyan-900 placeholder-red-700 text-sm rounded-lg focus:ring-red-500 focus:border-red-500 p-2.5" placeholder="パスワードを入力(再)">
+					<br/><input type="checkbox" onclick="toggleVisibility('repass')" class="mt-2 m-1">パスワード(確認)を表示
+					<br/>
+					<p class="mt-2 text-sm text-red-600 font-medium">[[${errorRepassMessage}]]</p>
+				</div>
+				<div th:unless="${errorPass}">
+					<p class="text-lg sm:text-xl mb-2 m-2">パスワード <br/><span class="text-sm">※英大文字、小文字、数字を合わせた6文字以上で入力してください。(記号入力可)</span></p>
+					<input type="password" id="pass" name="pass" minlength="6" maxlength="32"
+					class="w-full bg-cyan-50 border border-cyan-500 text-cyan-900 placeholder-cyan-700 text-sm rounded-lg focus:ring-cyan-500 focus:border-cyan-500 p-2.5" placeholder="パスワードを入力">
+					<br/><input type="checkbox" onclick="toggleVisibility('pass')" class="mt-2 m-1">パスワードを表示
+					<br/>
+				</div>
+				<div th:unless="${errorRepass}">
+					<br/><p class="text-lg sm:text-xl mb-2 m-2">パスワード(確認)</p>
+					<input type="password" id="repass" name="repass" minlength="6" maxlength="32"
+					class="w-full bg-cyan-50 border border-cyan-500 text-cyan-900 placeholder-cyan-700 text-sm rounded-lg focus:ring-cyan-500 focus:border-cyan-500 p-2.5" placeholder="パスワードを入力(確認)">
+					<br/><input type="checkbox" onclick="toggleVisibility('repass')" class="mt-2 m-1">パスワード(確認)を表示
+					<br/>
+				</div>
+				<div th:if="${errorFirstName}">
+					<p class="text-lg sm:text-xl mb-2 m-2">名字</p>
+					<input type="text" id="firstName" name="firstName" minlength="0" maxlength="128" th:value="${firstName}"
+					class="w-full bg-cyan-50 border border-red-500 text-cyan-900 placeholder-red-700 text-sm rounded-lg focus:ring-red-500 focus:border-red-500 p-2.5" placeholder="名字を入力">
+					<p class="mt-2 text-sm text-red-600 font-medium">[[${errorFirstNameMessage}]]</p>
+				</div>
+				<div th:unless="${errorFirstName}">
+					<p class="text-lg sm:text-xl mb-2 m-2">名字</p>
+					<input type="text" id="firstName" name="firstName" minlength="0" maxlength="128" th:value="${firstName}"
+					class="w-full bg-cyan-50 border border-cyan-500 text-cyan-900 placeholder-cyan-700 text-sm rounded-lg focus:ring-cyan-500 focus:border-cyan-500 p-2.5" placeholder="名字を入力">
+				</div><br/>
+				<div th:if="${errorLastName}">
+					<p class="text-lg sm:text-xl mb-2 m-2">名前</p>
+					<input type="text" id="lastName" name="lastName" minlength="0" maxlength="128" th:value="${lastName}"
+					class="w-full bg-cyan-50 border border-red-500 text-cyan-900 placeholder-red-700 text-sm rounded-lg focus:ring-red-500 focus:border-red-500 p-2.5" placeholder="名前を入力">
+					<p class="mt-2 text-sm text-red-600 font-medium">[[${errorLastNameMessage}]]</p>
+				</div>
+				<div th:unless="${errorLastName}">
+					<p class="text-lg sm:text-xl mb-2 m-2">名前</p>
+					<input type="text" id="lastName" name="lastName" minlength="0" maxlength="128" th:value="${lastName}"
+					class="w-full bg-cyan-50 border border-cyan-500 text-cyan-900 placeholder-cyan-700 text-sm rounded-lg focus:ring-cyan-500 focus:border-cyan-500 p-2.5" placeholder="名前を入力">
+				</div><br/>
+				<div class="flex flex-col items-center mt-6 space-y-4">
+					<button type="submit" 
+						class="w-full sm:w-auto text-white bg-cyan-700 hover:bg-cyan-800 focus:outline-none focus:ring-4 focus:ring-cyan-300 font-medium rounded-full text-sm px-8 py-3">
+						登録
+					</button><br/>
+				</div>
+				<input type="hidden" name="authInfo" th:value="fixes">
+			</div>
+		</form>
+		<script>
+			window.addEventListener("click", enableBeforeUnload, { once: true });
+			window.addEventListener("keydown", enableBeforeUnload, { once: true });
+			function toggleVisibility(inputId) {
+				var input = document.getElementById(inputId);
+				if (input.type === "password") {
+					input.type = "text";
+				} else {
+					input.type = "password";
+				}
+			}
+			function changeAction(action) {
+				document.getElementById("formChange").action = action;
+			}
+		</script>
+		<!-- フッター -->
+		<div class="w-full" th:insert="./common/footer :: footer"></div>
+	</body>
+</html>
