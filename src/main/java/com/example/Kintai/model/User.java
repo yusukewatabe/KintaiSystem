@@ -1,5 +1,7 @@
 package com.example.Kintai.model;
 
+import java.sql.Timestamp;
+
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -22,4 +24,10 @@ public class User {
 
 	@Column(name = "lastname", nullable = false)
 	private String lastname;
+
+	@Column(name = "createdate", nullable = false)
+	private Timestamp createdate;
+
+	@Column(name = "lastlogin", nullable = false)
+	private Timestamp lastlogin;
 }

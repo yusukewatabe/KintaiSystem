@@ -3,6 +3,10 @@ package com.example.Kintai.controller;
 import com.example.Kintai.model.User;
 import com.example.Kintai.repository.UserRepository;
 import java.nio.charset.StandardCharsets;
+import java.sql.Timestamp;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -151,12 +155,16 @@ public class AuthController {
 	public String submitUser(@RequestParam String nrtfevah, @RequestParam String okbjrein,
 			@RequestParam String reabtseg,
 			@RequestParam String vsvbrebb) {
+		// 日本時間を取得
+		ZonedDateTime tokyoTime = ZonedDateTime.now(ZoneId.of("Asia/Tokyo"));
+		Timestamp timestamp = Timestamp.valueOf(tokyoTime.toLocalDateTime());
 		// 入力情報をDBへ保存
 		User user = new User();
 		user.setId(nrtfevah);
 		user.setPassword(okbjrein);
 		user.setFirstname(reabtseg);
 		user.setLastname(vsvbrebb);
+		user.setCreatedate(timestamp);
 		userRepository.save(user);
 		// TODO 登録完了画面を表示
 		return "html/home";

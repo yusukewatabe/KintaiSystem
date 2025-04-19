@@ -1,17 +1,24 @@
 package com.example.Kintai.controller;
 
+import com.example.Kintai.model.User;
+import com.example.Kintai.repository.UserRepository;
 import com.example.Kintai.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import java.nio.charset.StandardCharsets;
+import java.sql.Timestamp;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.Base64;
 import org.apache.commons.validator.routines.EmailValidator;
 
 @Controller
 public class HomeController {
 
+	@Autowired
+	private UserRepository userRepository;
 	@Autowired
 	private UserService userService;
 	@Autowired
@@ -92,6 +99,14 @@ public class HomeController {
 		// idとpassが一致しているか確認
 		if (userService.authenticate(id, pass)) {
 			model.addAttribute("status", true);
+			// 日本時間を取得
+			ZonedDateTime tokyoTime = ZonedDateTime.now(ZoneId.of("Asia/Tokyo"));
+			Timestamp timestamp = Timestamp.valueOf(tokyoTime.toLocalDateTime());
+			// dbに最終ログイン時刻を保存
+			User user = userRepository.findById(id).orElseThrow();
+			user.setLastlogin(timestamp);
+			userRepository.save(user);
+
 			return "html/home"; // ログイン成功時のリダイレクト
 		} else {
 			model.addAttribute("status", false);
