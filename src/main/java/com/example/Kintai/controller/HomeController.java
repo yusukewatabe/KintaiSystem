@@ -86,7 +86,7 @@ public class HomeController {
 		return "error"; // error.html にマッピング
 	}
 
-	@GetMapping("/login")
+	@PostMapping("/login")
 	public String login(@RequestParam String id, @RequestParam String pass, Model model) {
 
 		// idとpassが一致しているか確認
