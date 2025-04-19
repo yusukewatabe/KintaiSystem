@@ -1,0 +1,16 @@
+{
+  "name": "kintaisystem",
+  "version": "1.0.0",
+  "description": "この勤怠システムはバックエンドはJava、フレームワークはSpringBoot、  \r フロントエンドはHTML,CSS,JavaScript、テンプレートエンジンはThymeleaf、CSSフレームワークはTailWindcssで作成しております。",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "tailwindcss": "^3.0.0",
+    "tailwindcss-cli": "^0.1.2"
+  }
+}
