@@ -8,7 +8,7 @@
 		<title>勤怠システム</title>
 	</head>
 	<body>
-		<!-- ヘッダー -->
+		<!--/* ヘッダー */-->
 		<div class="w-full" th:insert="./common/header :: header"></div><br/>
 		<div th:if="${transitionLink == 'newUid'}">
 			<p class="mt-6 text-2xl sm:text-3xl text-center">メールアドレス認証</p><br/><br/>
@@ -70,7 +70,7 @@
 				</div>
 			</form>
 		</div>
-		<!-- フッター -->
+		<!--/* フッター */-->
 		<div class="w-full max-w-full mt-8" th:insert="./common/footer :: footer"></div>
 	</body>
 </html>
