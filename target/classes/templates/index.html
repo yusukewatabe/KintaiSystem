@@ -9,17 +9,17 @@
 		<title>勤怠システム</title>
 	</head>
 	<body>
-		<!-- ヘッダー -->
+		<!--/* ヘッダー */-->
 		<div class="w-full max-w-full" th:insert="./common/header :: header"></div>
 		<br />
-		<!-- 紋様ロゴ -->
+		<!--/* 紋様ロゴ */-->
 		<div class="flex flex-col items-center px-4">
 			<img th:src="@{/images/kamon.png}" class="w-auto max-w-[200px]" />
 			<p class="mt-6 text-2xl sm:text-3xl text-center">ログイン</p>
 		</div>
 		<form th:action="@{/login}" method="post" class="w-full max-w-md mx-auto px-4">
 			<div class="mt-6">
-				<!-- 入力チェックがエラーの場合 -->
+				<!--/* 入力チェックがエラーの場合 */-->
 				<div th:if="${error}" class="space-y-4">
 					<div>
 						<label for="error" class="text-lg sm:text-xl mb-2 m-2 block">ID</label>
@@ -33,7 +33,7 @@
 					</div>
 					<p class="mt-2 text-sm text-red-600 font-medium">[[${errorMessage}]]</p>
 				</div>
-				<!-- 入力チェックがエラーでないの場合 -->
+				<!--/* 入力チェックがエラーでないの場合 */-->
 				<div th:unless="${error}" class="space-y-4">
 					<div>
 						<p class="text-lg sm:text-xl mb-2 m-2">ID</p>
@@ -57,7 +57,7 @@
 				</div>
 			</div>
 		</form>
-		<!-- フッター -->
+		<!--/* フッター */-->
 		<div class="w-full max-w-full mt-8" th:insert="./common/footer :: footer"></div>
 	</body>
 </html>
