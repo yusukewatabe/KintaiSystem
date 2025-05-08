@@ -48,7 +48,7 @@ public class AttendanceController {
 		HomeForm homeForm = new HomeForm();
 		// 日付のフォーマット指定
 		SimpleDateFormat nowToday = new SimpleDateFormat("MM/dd HH:mm");
-		// emailをhidden項目に追加するためセット
+		// emailをhidden項目にセット
 		homeForm.setEmail(userId);
 
 		Optional<User> userOpt = userRepository.findById(userId);
@@ -71,7 +71,7 @@ public class AttendanceController {
 			attendance.setWorkDate(today);
 			attendance.setClockInTime(Timestamp.valueOf(now));
 			attendanceRepository.save(attendance);
-			model.addAttribute("clockStatus", HomeConstant.CLOCK_IN);
+			homeForm.setClockStatus(HomeConstant.CLOCK_IN);
 			model.addAttribute("clockStatusMessage", nowToday.format(date) + "に出勤しました。");
 			model.addAttribute("homeForm", homeForm);
 			return "html/home";
@@ -79,19 +79,19 @@ public class AttendanceController {
 			attendance = attendanceOpt.get();
 			if (HomeConstant.CLOCK_IN.equals(action)) {
 				attendance.setClockInTime(Timestamp.valueOf(now));
-				model.addAttribute("clockStatus", HomeConstant.CLOCK_IN);
+				homeForm.setClockStatus(HomeConstant.CLOCK_IN);
 				model.addAttribute("clockStatusMessage", nowToday.format(date) + "に出勤しました。");
 			} else if (HomeConstant.CLOCK_OUT.equals(action)) {
 				attendance.setClockOutTime(Timestamp.valueOf(now));
-				model.addAttribute("clockStatus", HomeConstant.CLOCK_OUT);
+				homeForm.setClockStatus(HomeConstant.CLOCK_OUT);
 				model.addAttribute("clockStatusMessage", nowToday.format(date) + "に退勤しました。");
 			} else if (HomeConstant.BREAK_START.equals(action)) {
 				attendance.setBreakStart(Timestamp.valueOf(now));
-				model.addAttribute("clockStatus", HomeConstant.BREAK_START);
+				homeForm.setClockStatus(HomeConstant.BREAK_START);
 				model.addAttribute("clockStatusMessage", nowToday.format(date) + "に休憩開始しました。");
 			} else if (HomeConstant.BREAK_END.equals(action)) {
 				attendance.setBreakEnd(Timestamp.valueOf(now));
-				model.addAttribute("clockStatus", HomeConstant.BREAK_END);
+				homeForm.setClockStatus(HomeConstant.CLOCK_IN);
 				model.addAttribute("clockStatusMessage", nowToday.format(date) + "に休憩終了しました。");
 			} else {
 				model.addAttribute("clockStatus", HomeConstant.ERROR);

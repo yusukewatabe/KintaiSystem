@@ -1,7 +1,11 @@
 package com.example.Kintai.controller;
 
+import com.example.Kintai.constant.HomeConstant;
 import com.example.Kintai.form.HomeForm;
+import com.example.Kintai.model.Attendance;
+import com.example.Kintai.model.Attendance;
 import com.example.Kintai.model.User;
+import com.example.Kintai.repository.AttendanceRepository;
 import com.example.Kintai.repository.UserRepository;
 import com.example.Kintai.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +18,8 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.Base64;
 import org.apache.commons.validator.routines.EmailValidator;
+import java.util.Optional;
+import java.time.LocalDate;
 
 /**
  * Home.htmlからのリクエストを管理するクラスです。
@@ -26,6 +32,8 @@ public class HomeController {
 
 	@Autowired
 	private UserRepository userRepository;
+	@Autowired
+	private AttendanceRepository attendanceRepository;
 	@Autowired
 	private UserService userService;
 	@Autowired
@@ -98,11 +106,6 @@ public class HomeController {
 		}
 	}
 
-	// @PostMapping("/error")
-	// public String error() {
-	// return "error"; // error.html にマッピング
-	// }
-
 	/**
 	 * index画面からid,passが正しいかチェック
 	 * 
@@ -113,21 +116,46 @@ public class HomeController {
 	 */
 	@PostMapping("/login")
 	public String login(@RequestParam String id, @RequestParam String pass, Model model) {
+		// 日本時間を取得
+		ZonedDateTime tokyoTime = ZonedDateTime.now(ZoneId.of("Asia/Tokyo"));
+		LocalDate today = tokyoTime.toLocalDate();
+		Timestamp timestamp = Timestamp.valueOf(tokyoTime.toLocalDateTime());
+		HomeForm homeForm = new HomeForm();
 
 		// idとpassが一致しているか確認
 		if (userService.authenticate(id, pass)) {
+			Optional<Attendance> optAtt = attendanceRepository.findByUser_IdAndWorkDate(id, today);
+
+			// TODO:ステータスの有無検討
 			model.addAttribute("status", true);
-			// 日本時間を取得
-			ZonedDateTime tokyoTime = ZonedDateTime.now(ZoneId.of("Asia/Tokyo"));
-			Timestamp timestamp = Timestamp.valueOf(tokyoTime.toLocalDateTime());
+			// レコードの有無確認
+			if (optAtt.isPresent()) {
+				Attendance a = optAtt.get();
+				// 出勤済みかどうか
+				if (a.getClockInTime() != null) {
+					homeForm.setClockStatus(HomeConstant.CLOCK_IN);
+				}
+				if (a.getClockOutTime() != null) {
+					homeForm.setClockStatus(HomeConstant.CLOCK_OUT);
+				}
+				if (a.getBreakStart() != null && a.getBreakEnd() == null) {
+					homeForm.setClockStatus(HomeConstant.BREAK_START);
+				}
+				if (a.getClockOutTime() == null && a.getBreakEnd() != null) {
+					homeForm.setClockStatus(HomeConstant.CLOCK_OUT);
+				}
+			} else {
+				// ステータスを退勤にセット
+				homeForm.setClockStatus(HomeConstant.CLOCK_OUT);
+			}
 			// dbに最終ログイン時刻を保存
 			User user = userRepository.findById(id).orElseThrow();
 			user.setLastlogin(timestamp);
 			userRepository.save(user);
-			HomeForm homeForm = new HomeForm();
+			// emailをhidden項目にセット
 			homeForm.setEmail(id);
+			// html側に値を渡す
 			model.addAttribute("homeForm", homeForm);
-			model.addAttribute("userId", id);
 			return "html/home"; // ログイン成功時のリダイレクト
 		} else {
 			model.addAttribute("status", false);

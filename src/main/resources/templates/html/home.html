@@ -10,63 +10,76 @@
 	<body>
 		<!--/* ヘッダー */-->
 		<div class="w-full" th:insert="./common/header :: header"></div><br/>
-		
+
 		<!--/* Body */-->
 		<div class="flex justify-center">
 			<div class="flex flex-col gap-6 items-center text-center">
 				<div class="flex-1 space-y-6 px-10">
 					<p class="text-3xl font-bold">ホーム</p>
 					<div class="flex items-baseline space-x-1">
-						<p class="text-xl sm:text-2xl">現在時刻&nbsp;&nbsp;</p>
-						<span id="hourMinite" class="text-xl sm:text-2xl">--:--</span>:<span id="seconds">--</span>
+						<p class="text-xl sm:text-3xl">現在時刻&nbsp;&nbsp;</p>
+						<span id="hourMinite" class="text-3xl sm:text-2xl">--:--</span>:<span id="seconds">--</span>
 					</div>
-					<p class="text-lg sm:text-xl">◯勤務中</p>
-
-					<div>
-						<p class="text-xs sm:text-sm text-gray-600" th:text="'〇〇時〇〇分に出勤しました。'">〇〇時〇〇分に出勤しました。</p>
+					<!--/* 勤怠ステータス */-->
+					<div th:if="${homeForm.clockStatus == 'clockIn'}">
+						<p class="text-lg sm:text-xl">🟢勤務中</p>
+					</div>
+					<div th:if="${homeForm.clockStatus == 'clockOut'}">
+						<p class="text-lg sm:text-xl">⚪勤務外</p>
+					</div>
+					<div th:if="${homeForm.clockStatus == 'breakStart'}">
+						<p class="text-lg sm:text-xl">🔴休憩中</p>
+					</div>
+					<!--/* 勤怠ステータスメッセージ */-->
+					<div th:if="${homeForm.clockStatus == 'clockIn' || homeForm.clockStatus == 'clockOut' || homeForm.clockStatus == 'breakStart' || homeForm.clockStatus == 'breakEnd'}">
+						<p class="text-xs sm:text-sm text-gray-600">[[${clockStatusMessage}]]</p>
 					</div>
 				</div>
 			</div>
 		</div>
 		<div class="flex justify-center">
 			<div class="flex flex-col gap-6 p-10 max-w-[1000px] w-full">
-			<!--/* ボタン群 */-->
-			<div class="flex-1 items-center text-center">
-				<div class="grid grid-cols-2 gap-4">
-				<button class="bg-blue-500 text-white px-4 py-10 rounded hover:bg-blue-600">出勤</button>
-				<button class="bg-blue-500 text-white px-4 py-10 rounded hover:bg-blue-600">退勤</button>
-				<button class="bg-blue-500 text-white px-4 py-10 rounded hover:bg-blue-600">休憩開始</button>
-				<button class="bg-blue-500 text-white px-4 py-10 rounded hover:bg-blue-600">休憩終了</button>
+				<div class="flex-1 items-center text-center">
+					<!--/* ボタン群 */-->
+					<form method="post" th:action="@{/attendance/clock}">
+						<input type="hidden" name="userId" th:value="${homeForm.email}" />
+						<div class="grid grid-cols-2 gap-4">
+							<button name="action" value="clockIn"
+									class="text-5xl bg-blue-500 text-white px-4 py-10 rounded hover:bg-blue-600">出勤</button>
+							<button name="action" value="clockOut"
+									class="text-5xl bg-blue-500 text-white px-4 py-10 rounded hover:bg-blue-600">退勤</button>
+							<button name="action" value="breakStart"
+									class="text-5xl bg-blue-500 text-white px-4 py-10 rounded hover:bg-blue-600">休憩開始</button>
+							<button name="action" value="breakEnd"
+									class="text-5xl bg-blue-500 text-white px-4 py-10 rounded hover:bg-blue-600">休憩終了</button>
+						</div>
+					</form>
+					<!--/* 勤務状況 */-->
+					<div class="flex rounded py-5 px-4 w-full h-[300px] border border-cyan-400 mt-6">
+						<p class="text-xs sm:text-sm mb-2">直近4日分勤務状況</p>
+					</div>
 				</div>
-		
-				<!--/* 勤務状況 */-->
-				<div class="flex rounded py-5 px-4 w-full h-[300px] border border-cyan-400 mt-6">
-				<p class="text-xs sm:text-sm mb-2">直近4日分勤務状況</p>
+				<!--/* おしらせ */-->
+				<div class="flex-1 items-center text-center">
+					<div class="flex rounded py-5 px-4 w-full h-[565px] border border-cyan-400">
+						<p class="text-2xl font-bold">おしらせ</p>
+					</div>
 				</div>
-			</div>
-		
-			<!--/* おしらせ */-->
-			<div class="flex-1 items-center text-center">
-				<div class="flex rounded py-5 px-4 w-full h-[565px] border border-cyan-400">
-				<p class="text-2xl font-bold">おしらせ</p>
-				</div>
-			</div>
-		
 			</div>
 		</div>
-		
 
+		<!--/* 時間処理(hour,Minite,Second) */-->
 		<script>
 			function updateClock() {
 				const now = new Date();
 				const hour = now.getHours().toString().padStart(2, "0");
 				const minute = now.getMinutes().toString().padStart(2, "0");
 				const second = now.getSeconds().toString().padStart(2, "0");
-			
+
 				document.getElementById("hourMinite").textContent = `${hour}:${minute}`;
 				document.getElementById("seconds").textContent = second;
 			}
-			
+
 			setInterval(updateClock, 1000);
 			updateClock();
 		</script>
