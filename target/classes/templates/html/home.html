@@ -8,42 +8,65 @@
 		<title>勤怠システム</title>
 	</head>
 	<body>
-		<!-- ヘッダー -->
+		<!--/* ヘッダー */-->
 		<div class="w-full" th:insert="./common/header :: header"></div><br/>
 		
-		<!-- Body -->
-		<div class="flex flex-col md:flex-row gap-6 items-start">
-			<div class="flex-1 space-y-6 px-10">
-				<p class="text-3xl font-bold">ホーム</p>
-				<div class="flex items-baseline space-x-1">
-					<p class="text-xl sm:text-2xl">現在時刻&nbsp;&nbsp;</p>
-					<span id="hourMinite" class="text-xl sm:text-2xl">--:--</span>:<span id="seconds">--</span>
-				</div>
-				<p class="text-lg sm:text-xl">◯勤務中</p>
+		<!--/* Body */-->
+		<div class="flex justify-center">
+			<div class="flex flex-col gap-6 items-center text-center">
+				<div class="flex-1 space-y-6 px-10">
+					<p class="text-3xl font-bold">ホーム</p>
+					<div class="flex items-baseline space-x-1">
+						<p class="text-xl sm:text-2xl">現在時刻&nbsp;&nbsp;</p>
+						<span id="hourMinite" class="text-xl sm:text-2xl">--:--</span>:<span id="seconds">--</span>
+					</div>
 
-				<div th:if="${aaa}">
-					<p class="text-xs sm:text-sm text-gray-600" th:text="'〇〇時〇〇分に出勤しました。'">〇〇時〇〇分に出勤しました。</p>
+					<div th:if="${clockStatus == clockIn}">
+						<p class="text-lg sm:text-xl">◯勤務中</p>
+					</div>
+
+					<!--/* 勤務状況のステータス */-->
+					<div th:if="${clockStatus == clockIn}">
+						<p class="text-xs sm:text-sm text-gray-600">[[${clockStatusMessage}]]</p>
+					</div>
 				</div>
 			</div>
 		</div>
-		<div class="flex flex-col md:flex-row gap-6 items-start p-10">
-			<!-- 左カラム：ボタン群 -->
-			<div class="flex grid grid-cols-2 gap-4 w-full h-full">
-				<button class="bg-blue-500 text-white py-10 w-full h-full rounded hover:bg-blue-600">出勤</button>
-				<button class="bg-blue-500 text-white py-10 w-full h-full rounded hover:bg-blue-600">退勤</button>
-				<button class="bg-blue-500 text-white py-10 w-full h-full rounded hover:bg-blue-600">休憩開始</button>
-				<button class="bg-blue-500 text-white py-10 w-full h-full rounded hover:bg-blue-600">休憩終了</button>
-			</div>
-			<!-- 右カラム：勤務状況 -->
-			<div class="flex rounded py-5 px-4 w-full h-[300px] border border-cyan-400">
+		<div class="flex justify-center">
+			<div class="flex flex-col gap-6 p-10 max-w-[1000px] w-full">
+			<!--/* ボタン群 */-->
+			<div class="flex-1 items-center text-center">
+				<form method="post" th:action="@{/attendance/clock}">
+					<input type="hidden" name="userId" th:value="${homeForm.email}" />
+					<div class="grid grid-cols-2 gap-4">
+						<button name="action" value="clockIn"
+								class="bg-blue-500 text-white px-4 py-10 rounded hover:bg-blue-600">出勤</button>
+						<button name="action" value="clockOut"
+								class="bg-blue-500 text-white px-4 py-10 rounded hover:bg-blue-600">退勤</button>
+						<button name="action" value="breakStart"
+								class="bg-blue-500 text-white px-4 py-10 rounded hover:bg-blue-600">休憩開始</button>
+						<button name="action" value="breakEnd"
+								class="bg-blue-500 text-white px-4 py-10 rounded hover:bg-blue-600">休憩終了</button>
+					</div>
+				</form>
+		
+				<!--/* 勤務状況 */-->
+				<div class="flex rounded py-5 px-4 w-full h-[300px] border border-cyan-400 mt-6">
 				<p class="text-xs sm:text-sm mb-2">直近4日分勤務状況</p>
+				</div>
 			</div>
-		</div>
-		<div class="flex flex-col md:flex-row gap-6 items-start p-4">
-			<div class="flex rounded py-5 px-4 w-full h-[300px] border border-cyan-400">
+		
+			<!--/* おしらせ */-->
+			<div class="flex-1 items-center text-center">
+				<div class="flex rounded py-5 px-4 w-full h-[565px] border border-cyan-400">
 				<p class="text-2xl font-bold">おしらせ</p>
+				</div>
+			</div>
+		
 			</div>
 		</div>
+		
+
 		<script>
 			function updateClock() {
 				const now = new Date();
@@ -58,7 +81,7 @@
 			setInterval(updateClock, 1000);
 			updateClock();
 		</script>
-		<!-- フッター -->
+		<!--/* フッター */-->
 		<div class="w-full max-w-full mt-8" th:insert="./common/footer :: footer"></div>
 	</body>
 </html>

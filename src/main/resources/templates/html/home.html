@@ -1,17 +1,76 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 	<head>
-		<script src="https://cdn.tailwindcss.com"></script>
+		<link href="/dist/output.css" rel="stylesheet">
 		<body class="bg-gray-100 font-sans leading-normal tracking-normal">
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<title>勤怠システム</title>
 	</head>
 	<body>
-		<!-- ヘッダー -->
+		<!--/* ヘッダー */-->
 		<div class="w-full" th:insert="./common/header :: header"></div><br/>
-		<p class="mt-6 text-2xl sm:text-3xl text-center">ホーム画面です。</p><br/><br/>
-		<!-- フッター -->
+		
+		<!--/* Body */-->
+		<div class="flex justify-center">
+			<div class="flex flex-col gap-6 items-center text-center">
+				<div class="flex-1 space-y-6 px-10">
+					<p class="text-3xl font-bold">ホーム</p>
+					<div class="flex items-baseline space-x-1">
+						<p class="text-xl sm:text-2xl">現在時刻&nbsp;&nbsp;</p>
+						<span id="hourMinite" class="text-xl sm:text-2xl">--:--</span>:<span id="seconds">--</span>
+					</div>
+					<p class="text-lg sm:text-xl">◯勤務中</p>
+
+					<div>
+						<p class="text-xs sm:text-sm text-gray-600" th:text="'〇〇時〇〇分に出勤しました。'">〇〇時〇〇分に出勤しました。</p>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="flex justify-center">
+			<div class="flex flex-col gap-6 p-10 max-w-[1000px] w-full">
+			<!--/* ボタン群 */-->
+			<div class="flex-1 items-center text-center">
+				<div class="grid grid-cols-2 gap-4">
+				<button class="bg-blue-500 text-white px-4 py-10 rounded hover:bg-blue-600">出勤</button>
+				<button class="bg-blue-500 text-white px-4 py-10 rounded hover:bg-blue-600">退勤</button>
+				<button class="bg-blue-500 text-white px-4 py-10 rounded hover:bg-blue-600">休憩開始</button>
+				<button class="bg-blue-500 text-white px-4 py-10 rounded hover:bg-blue-600">休憩終了</button>
+				</div>
+		
+				<!--/* 勤務状況 */-->
+				<div class="flex rounded py-5 px-4 w-full h-[300px] border border-cyan-400 mt-6">
+				<p class="text-xs sm:text-sm mb-2">直近4日分勤務状況</p>
+				</div>
+			</div>
+		
+			<!--/* おしらせ */-->
+			<div class="flex-1 items-center text-center">
+				<div class="flex rounded py-5 px-4 w-full h-[565px] border border-cyan-400">
+				<p class="text-2xl font-bold">おしらせ</p>
+				</div>
+			</div>
+		
+			</div>
+		</div>
+		
+
+		<script>
+			function updateClock() {
+				const now = new Date();
+				const hour = now.getHours().toString().padStart(2, "0");
+				const minute = now.getMinutes().toString().padStart(2, "0");
+				const second = now.getSeconds().toString().padStart(2, "0");
+			
+				document.getElementById("hourMinite").textContent = `${hour}:${minute}`;
+				document.getElementById("seconds").textContent = second;
+			}
+			
+			setInterval(updateClock, 1000);
+			updateClock();
+		</script>
+		<!--/* フッター */-->
 		<div class="w-full max-w-full mt-8" th:insert="./common/footer :: footer"></div>
 	</body>
 </html>

@@ -8,10 +8,11 @@
 		<title>勤怠システム</title>
 	</head>
 	<body>
-		<!-- ヘッダー -->
+		<!--/* ヘッダー */-->
 		<div class="w-full" th:insert="./common/header :: header"></div><br/>
 		<p class="mt-6 text-2xl sm:text-3xl text-center">新規ユーザー登録</p><br/><br/>
 		<form id="formChange" th:action="@{/api/auth/registerUser}" method="post" class="w-full max-w-md mx-auto px-4">
+			<!--/* 新規ユーザー登録画面初期表示 */-->
 			<div th:if="${auth == 'initial'}" class="mt-6">
 				<div th:unless="${errorId}">
 					<p class="text-lg sm:text-xl mb-2 m-2">メールアドレス(ログイン時のIDと同一になります。)</p>
@@ -51,7 +52,9 @@
 					</button><br/>
 				</div>
 				<input type="hidden" name="authInfo" th:value="initial">
+				<input type="hidden" name="email" th:value="email">
 			</div>
+			<!--/* 入力チェック失敗画面表示 */-->
 			<div th:if="${auth == 'fixes'}" class="mt-6">
 				<div th:if="${errorId}">
 					<p class="text-lg sm:text-xl mb-2 m-2">メールアドレス(ログイン時のIDと同一になります。)</p>
@@ -127,6 +130,7 @@
 					</button><br/>
 				</div>
 				<input type="hidden" name="authInfo" th:value="fixes">
+				<input type="hidden" name="email" th:value="email">
 			</div>
 		</form>
 		<script>
@@ -144,7 +148,7 @@
 				document.getElementById("formChange").action = action;
 			}
 		</script>
-		<!-- フッター -->
+		<!--/* フッター */-->
 		<div class="w-full" th:insert="./common/footer :: footer"></div>
 	</body>
 </html>

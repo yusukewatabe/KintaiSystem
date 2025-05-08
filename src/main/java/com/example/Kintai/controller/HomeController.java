@@ -1,5 +1,6 @@
 package com.example.Kintai.controller;
 
+import com.example.Kintai.form.HomeForm;
 import com.example.Kintai.model.User;
 import com.example.Kintai.repository.UserRepository;
 import com.example.Kintai.service.*;
@@ -14,6 +15,12 @@ import java.time.ZonedDateTime;
 import java.util.Base64;
 import org.apache.commons.validator.routines.EmailValidator;
 
+/**
+ * Home.htmlからのリクエストを管理するクラスです。
+ * 
+ * @author Watabe Yusuke
+ * @version 0.1
+ **/
 @Controller
 public class HomeController {
 
@@ -31,21 +38,24 @@ public class HomeController {
 		return "index";
 	}
 
-	@GetMapping("html/newUid")
-	public String showNewUidForm(Model model) {
-		// newUid.htmlに遷移
-		model.addAttribute("errorPass", false);
-		return "html/newUid";
-	}
-
-	// 新規ユーザー発行のリンクがクリックされた時
+	/**
+	 * 新規ユーザー発行のリンクがクリックされた時
+	 * 
+	 * @param model
+	 * @return
+	 */
 	@GetMapping("/sendMailForm")
 	public String sendMailForm(Model model) {
 		model.addAttribute("transitionLink", "newUid");
 		return "mail/sendMail";
 	}
 
-	// パスワード忘れのリンクがクリックされた時
+	/**
+	 * パスワード忘れのリンクがクリックされた時
+	 * 
+	 * @param model
+	 * @return
+	 */
 	@GetMapping("/forgetPass")
 	public String forgetPassForm(Model model) {
 		model.addAttribute("transitionLink", "forget");
@@ -88,11 +98,19 @@ public class HomeController {
 		}
 	}
 
-	@GetMapping("/error")
-	public String error() {
-		return "error"; // error.html にマッピング
-	}
+	// @PostMapping("/error")
+	// public String error() {
+	// return "error"; // error.html にマッピング
+	// }
 
+	/**
+	 * index画面からid,passが正しいかチェック
+	 * 
+	 * @param id
+	 * @param pass
+	 * @param model
+	 * @return
+	 */
 	@PostMapping("/login")
 	public String login(@RequestParam String id, @RequestParam String pass, Model model) {
 
@@ -106,7 +124,10 @@ public class HomeController {
 			User user = userRepository.findById(id).orElseThrow();
 			user.setLastlogin(timestamp);
 			userRepository.save(user);
-
+			HomeForm homeForm = new HomeForm();
+			homeForm.setEmail(id);
+			model.addAttribute("homeForm", homeForm);
+			model.addAttribute("userId", id);
 			return "html/home"; // ログイン成功時のリダイレクト
 		} else {
 			model.addAttribute("status", false);
@@ -120,7 +141,7 @@ public class HomeController {
 
 	@PostMapping("/setForgetPassWord")
 	public String setForgetPassWord(@RequestParam String id, @RequestParam String password,
-			@RequestParam String repassword) {
+			@RequestParam String repassword, Model model) {
 		String passEncode = null;
 		// passwordエンコード
 		Base64.Encoder encoder = Base64.getEncoder();
@@ -130,6 +151,7 @@ public class HomeController {
 		String idDecode = new String(decoder.decode(id.getBytes(StandardCharsets.UTF_8)));
 		// トークン情報をDBへ保存
 		userService.overridePassword(idDecode, passEncode);
+		model.addAttribute("userId", id);
 		return "html/home";
 	}
 }

@@ -21,6 +21,13 @@ public class AuthController {
 	@Autowired
 	private UserRepository userRepository;
 
+	/**
+	 * 新規ユーザー登録のコントローラー
+	 * 
+	 * @param token
+	 * @param model
+	 * @return
+	 */
 	@GetMapping("/verify")
 	public String verifyToken(@RequestParam String token, Model model) {
 		String decoded = null;
@@ -43,9 +50,11 @@ public class AuthController {
 
 			// emailのバリデーションチェックがOKかNGか
 			if (validatorCheckFlg) {
+				model.addAttribute("email", decoded);
 				model.addAttribute("auth", "initial");
 				return "html/newUid.html";
 			} else {
+				model.addAttribute("email", decoded);
 				model.addAttribute("transitionLink", "newUid");
 				return "mail/verificationFailed";
 			}
@@ -55,6 +64,13 @@ public class AuthController {
 		}
 	}
 
+	/**
+	 * パスワード忘れのコントローラー
+	 * 
+	 * @param token
+	 * @param model
+	 * @return
+	 */
 	@GetMapping("/verify/password")
 	public String verifyTokenRepass(@RequestParam String token, Model model) {
 		String decoded = null;
@@ -89,9 +105,17 @@ public class AuthController {
 		}
 	}
 
+	/**
+	 * newUid画面の入力チェックのコントローラー
+	 * 
+	 * @param token
+	 * @param model
+	 * @return
+	 */
 	@PostMapping("/registerUser")
 	public String registerUser(@RequestParam String id, @RequestParam String pass, @RequestParam String firstName,
-			@RequestParam String lastName, @RequestParam String repass, @RequestParam String authInfo, Model model) {
+			@RequestParam String lastName, @RequestParam String repass, @RequestParam String authInfo,
+			@RequestParam String email, Model model) {
 
 		boolean checkPass = false;
 		boolean checkRepass = false;
@@ -128,6 +152,10 @@ public class AuthController {
 			model.addAttribute("lastName", lastName);
 			return "html/newUid";
 		}
+		if (!id.equals(email)) {
+			model.addAttribute("errorId", true);
+			model.addAttribute("errorIdMessage", "認証されたメールアドレスと誤りがあります。");
+		}
 
 		if (pass.equals(repass) && checkPass == false && checkRepass == false) {
 			String base64PassEncode = null;
@@ -148,9 +176,17 @@ public class AuthController {
 		model.addAttribute("firstName", firstName);
 		model.addAttribute("lastName", lastName);
 		model.addAttribute("auth", "fixes");
+		model.addAttribute("email", email);
 		return "html/newUid";
 	}
 
+	/**
+	 * 新規ユーザーのDB登録用コントローラー
+	 * 
+	 * @param token
+	 * @param model
+	 * @return
+	 */
 	@GetMapping("/submitUser")
 	public String submitUser(@RequestParam String nrtfevah, @RequestParam String okbjrein,
 			@RequestParam String reabtseg,
@@ -166,7 +202,7 @@ public class AuthController {
 		user.setLastname(vsvbrebb);
 		user.setCreatedate(timestamp);
 		userRepository.save(user);
-		// TODO 登録完了画面を表示
+		// TODO:homeではなくユーザー登録成功画面へ遷移に修正
 		return "html/home";
 	}
 
