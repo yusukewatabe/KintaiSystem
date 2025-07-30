@@ -22,19 +22,21 @@ public class HolidayService {
 	 */
 	@PostConstruct
 	public void loadHolidays() throws IOException {
-		try (var reader = new BufferedReader(
+		try (BufferedReader reader = new BufferedReader(
 				new InputStreamReader(
 						new ClassPathResource(HOLIDAY_CSV).getInputStream()))) {
 			reader.readLine();
 			String line;
 			while ((line = reader.readLine()) != null) {
-				var cols = line.split(",", -1);
+				String[] cols = line.split(",", -1);
 				if (cols.length < 2 || cols[0].isBlank())
 					continue;
 				String date = cols[0].trim();
 				String holidayName = cols[1].trim();
 				holidayMap.put(date, holidayName);
 			}
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
 
