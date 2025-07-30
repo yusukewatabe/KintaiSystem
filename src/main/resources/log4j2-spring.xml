@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="WARN">
+	<!-- プロパティ定義 -->
+	<Properties>
+		<!-- 出力ディレクトリ -->
+		<Property name="LOG_PATH">logs</Property>
+		<!-- ベースファイル名 -->
+		<Property name="LOG_FILE">kintai.log</Property>
+	</Properties>
+
+	<!-- ローリングファイルアペンダ -->
+	<Appenders>
+		<Console name="Console" target="SYSTEM_OUT">
+			<PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss} [%t] %-5level %logger{36} - %msg%n" />
+		</Console>
+		<!-- .logの後ろに.gzをつければ自動圧縮される -->
+		<RollingFile name="RollingFile"
+					fileName="${LOG_PATH}/${LOG_FILE}"
+					filePattern="${LOG_PATH}/kintai-%d{yyyy-MM-dd}.log">
+			<PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level %logger{36} - %msg%n"/>
+			<Policies>
+				<!-- 日付ごとにローテート -->
+				<TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+			</Policies>
+			<DefaultRolloverStrategy max="31"/>
+		</RollingFile>
+	</Appenders>
+
+	<!-- ルートロガー設定 -->
+	<Loggers>
+		<Root level="debug">
+			<AppenderRef ref="Console" />
+			<AppenderRef ref="RollingFile"/>
+		</Root>
+	</Loggers>
+</Configuration>

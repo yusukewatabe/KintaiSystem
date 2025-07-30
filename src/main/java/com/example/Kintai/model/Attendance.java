@@ -1,8 +1,5 @@
 package com.example.Kintai.model;
 
-import java.time.LocalDate;
-import java.sql.Timestamp;
-
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -22,17 +19,17 @@ public class Attendance {
 	private User user;
 
 	@Column(name = "work_date")
-	private LocalDate workDate;
+	private String workDate;
 
 	@Column(name = "clock_in_time")
-	private Timestamp clockInTime;
+	private String clockInTime;
 
 	@Column(name = "clock_out_time")
-	private Timestamp clockOutTime;
+	private String clockOutTime;
 
 	@Column(name = "break_start")
-	private Timestamp breakStart;
+	private String breakStart;
 
 	@Column(name = "break_end")
-	private Timestamp breakEnd;
+	private String breakEnd;
 }

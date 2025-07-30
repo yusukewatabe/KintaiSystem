@@ -5,6 +5,7 @@
 		<body class="bg-gray-100 font-sans leading-normal tracking-normal">
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<link rel="icon" th:href="@{/favicon.ico}" />
 		<title>勤怠システム</title>
 	</head>
 	<body>
@@ -32,41 +33,45 @@
 					</div>
 					<!--/* 勤怠ステータスメッセージ */-->
 					<div th:if="${homeForm.clockStatus == 'clockIn' || homeForm.clockStatus == 'clockOut' || homeForm.clockStatus == 'breakStart' || homeForm.clockStatus == 'breakEnd'}">
-						<p class="text-xs sm:text-sm text-gray-600">[[${clockStatusMessage}]]</p>
+						<p class="text-xs sm:text-sm text-gray-600" th:text="${homeForm.clockStatusMessage}"></p>
 					</div>
 				</div>
 			</div>
 		</div>
-		<div class="flex justify-center">
-			<div class="flex flex-col gap-6 p-10 max-w-[1000px] w-full">
-				<div class="flex-1 items-center text-center">
-					<!--/* ボタン群 */-->
-					<form method="post" th:action="@{/attendance/clock}">
+		<form id="formChange" th:action="@{/default}" method="post">
+			<div class="flex justify-center">
+				<div class="flex flex-col gap-6 p-10 max-w-[1000px] w-full">
+					<div class="flex-1 items-center text-center">
+						<!--/* ボタン群 */-->
 						<input type="hidden" name="userId" th:value="${homeForm.email}" />
 						<div class="grid grid-cols-2 gap-4">
-							<button name="action" value="clockIn"
+							<button name="action" value="clockIn" th:formaction="@{/attendance/clock}" type="submit"
 									class="text-5xl bg-blue-500 text-white px-4 py-10 rounded hover:bg-blue-600">出勤</button>
-							<button name="action" value="clockOut"
+							<button name="action" value="clockOut" th:formaction="@{/attendance/clock}" type="submit"
 									class="text-5xl bg-blue-500 text-white px-4 py-10 rounded hover:bg-blue-600">退勤</button>
-							<button name="action" value="breakStart"
+							<button name="action" value="breakStart" th:formaction="@{/attendance/clock}" type="submit"
 									class="text-5xl bg-blue-500 text-white px-4 py-10 rounded hover:bg-blue-600">休憩開始</button>
-							<button name="action" value="breakEnd"
+							<button name="action" value="breakEnd" th:formaction="@{/attendance/clock}" type="submit"
 									class="text-5xl bg-blue-500 text-white px-4 py-10 rounded hover:bg-blue-600">休憩終了</button>
 						</div>
-					</form>
-					<!--/* 勤務状況 */-->
-					<div class="flex rounded py-5 px-4 w-full h-[300px] border border-cyan-400 mt-6">
-						<p class="text-xs sm:text-sm mb-2">直近4日分勤務状況</p>
+						<!--/* 勤務状況 */-->
+						<div class="flex rounded py-5 px-4 w-full h-[300px] border border-cyan-400 mt-6">
+							<p class="text-xs sm:text-sm mb-2">直近4日分勤務状況</p>
+						</div>
 					</div>
-				</div>
-				<!--/* おしらせ */-->
-				<div class="flex-1 items-center text-center">
-					<div class="flex rounded py-5 px-4 w-full h-[565px] border border-cyan-400">
-						<p class="text-2xl font-bold">おしらせ</p>
+					<!--/* おしらせ */-->
+					<div class="flex-1 items-center text-center">
+						<div class="flex rounded py-5 px-4 w-full h-[565px] border border-cyan-400">
+							<p class="text-2xl font-bold">おしらせ</p>
+						</div>
 					</div>
+					<button th:formaction="@{/bulkEditPreview}" type="submit"
+							class="w-full sm:w-auto text-white bg-cyan-700 hover:bg-cyan-800 focus:outline-none focus:ring-4 focus:ring-cyan-300 font-medium rounded-full text-sm px-8 py-3">
+						一括入力画面
+					</button>
 				</div>
 			</div>
-		</div>
+		</form>
 
 		<!--/* 時間処理(hour,Minite,Second) */-->
 		<script>

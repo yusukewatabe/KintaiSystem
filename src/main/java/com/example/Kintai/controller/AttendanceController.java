@@ -12,14 +12,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-
-import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.Optional;
-// import lombok.RequiredArgsConstructor;
 
 @Controller
 @RequiredArgsConstructor
@@ -40,17 +38,27 @@ public class AttendanceController {
 	@PostMapping("/attendance/clock")
 	public String handleClockAction(@RequestParam String userId, @RequestParam String action,
 			Model model, HttpServletRequest request) {
-		// 初期値設定
-		LocalDate today = LocalDate.now();
+		// workDay初期値設定
+		DateTimeFormatter fmtWorkDate = DateTimeFormatter.ofPattern("yyyy/MM/dd");
+		LocalDate workDate = LocalDate.now();
+		String today = workDate.format(fmtWorkDate);
+
+		// 出勤、退勤時間等の初期値設定
 		LocalDateTime now = LocalDateTime.now();
+		DateTimeFormatter fmt = DateTimeFormatter.ofPattern("HH:mm");
+		String currentTime = fmt.format(now);
+
 		Attendance attendance;
+
+		// 出勤、退勤時間等の初期値設定
 		Date date = new Date();
 		HomeForm homeForm = new HomeForm();
-		// 日付のフォーマット指定
+		// 画面に出力するための日付のフォーマット指定
 		SimpleDateFormat nowToday = new SimpleDateFormat("MM/dd HH:mm");
 		// emailをhidden項目にセット
 		homeForm.setEmail(userId);
 
+		// userテーブルからuserIdを検索
 		Optional<User> userOpt = userRepository.findById(userId);
 		if (userOpt.isEmpty()) {
 			model.addAttribute("error", "ユーザーが見つかりません");
@@ -63,42 +71,68 @@ public class AttendanceController {
 
 		if (attendanceOpt.isEmpty()) {
 			if (!HomeConstant.CLOCK_IN.equals(action)) {
-				model.addAttribute("clockStatusMessage", "初回は出勤ボタンを押してください");
+				homeForm.setClockStatusMessage("初回は出勤ボタンを押してください");
+				model.addAttribute("homeForm", homeForm);
 				return "html/home";
 			}
 			attendance = new Attendance();
 			attendance.setUser(user);
 			attendance.setWorkDate(today);
-			attendance.setClockInTime(Timestamp.valueOf(now));
+			attendance.setClockInTime(currentTime);
 			attendanceRepository.save(attendance);
 			homeForm.setClockStatus(HomeConstant.CLOCK_IN);
-			model.addAttribute("clockStatusMessage", nowToday.format(date) + "に出勤しました。");
+			homeForm.setClockStatusMessage(nowToday.format(date) + "に出勤しました。");
 			model.addAttribute("homeForm", homeForm);
 			return "html/home";
 		} else {
 			attendance = attendanceOpt.get();
-			if (HomeConstant.CLOCK_IN.equals(action)) {
-				attendance.setClockInTime(Timestamp.valueOf(now));
+			if (HomeConstant.CLOCK_IN.equals(action) && attendance.getClockInTime() == null) {
+				attendance.setClockInTime(currentTime);
 				homeForm.setClockStatus(HomeConstant.CLOCK_IN);
-				model.addAttribute("clockStatusMessage", nowToday.format(date) + "に出勤しました。");
-			} else if (HomeConstant.CLOCK_OUT.equals(action)) {
-				attendance.setClockOutTime(Timestamp.valueOf(now));
+				homeForm.setClockStatusMessage(nowToday.format(date) + "に出勤しました。");
+			} else if (HomeConstant.CLOCK_IN.equals(action) && attendance.getClockInTime() != null) {
+				homeForm.setClockStatus(HomeConstant.CLOCK_IN);
+				homeForm.setClockStatusMessage("すでに出勤済みです。");
+			} else if (HomeConstant.CLOCK_OUT.equals(action) && attendance.getClockOutTime() == null) {
+				attendance.setClockOutTime(currentTime);
 				homeForm.setClockStatus(HomeConstant.CLOCK_OUT);
-				model.addAttribute("clockStatusMessage", nowToday.format(date) + "に退勤しました。");
-			} else if (HomeConstant.BREAK_START.equals(action)) {
-				attendance.setBreakStart(Timestamp.valueOf(now));
+				homeForm.setClockStatusMessage(nowToday.format(date) + "に退勤しました。");
+			} else if (HomeConstant.CLOCK_OUT.equals(action) && attendance.getClockOutTime() != null) {
+				homeForm.setClockStatus(HomeConstant.CLOCK_OUT);
+				homeForm.setClockStatusMessage("すでに退勤済みです。");
+			} else if (HomeConstant.BREAK_START.equals(action) && attendance.getBreakStart() == null) {
+				attendance.setBreakStart(currentTime);
 				homeForm.setClockStatus(HomeConstant.BREAK_START);
-				model.addAttribute("clockStatusMessage", nowToday.format(date) + "に休憩開始しました。");
-			} else if (HomeConstant.BREAK_END.equals(action)) {
-				attendance.setBreakEnd(Timestamp.valueOf(now));
-				homeForm.setClockStatus(HomeConstant.CLOCK_IN);
-				model.addAttribute("clockStatusMessage", nowToday.format(date) + "に休憩終了しました。");
+				homeForm.setClockStatusMessage(nowToday.format(date) + "に休憩開始しました。");
+			} else if (HomeConstant.BREAK_START.equals(action) && attendance.getBreakStart() != null) {
+				homeForm.setClockStatus(HomeConstant.BREAK_START);
+				homeForm.setClockStatusMessage("すでに休憩開始済みです。");
+			} else if (HomeConstant.BREAK_END.equals(action) && attendance.getBreakEnd() == null) {
+				attendance.setBreakEnd(currentTime);
+				if (attendance.getClockInTime() != null && attendance.getClockOutTime() == null) {
+					// レコードに出勤が打刻されているかつ退勤が打刻されていない場合にステータスをclockInにセット
+					homeForm.setClockStatus(HomeConstant.CLOCK_IN);
+				} else if (attendance.getClockInTime() != null && attendance.getClockOutTime() != null) {
+					// レコードに出勤が打刻されているかつ退勤が打刻されている場合にステータスをclockOutにセット
+					homeForm.setClockStatus(HomeConstant.CLOCK_OUT);
+				}
+				homeForm.setClockStatusMessage(nowToday.format(date) + "に休憩終了しました。");
+			} else if (HomeConstant.BREAK_END.equals(action) && attendance.getBreakEnd() != null) {
+				if (attendance.getClockInTime() != null && attendance.getClockOutTime() == null) {
+					// レコードに出勤が打刻されているかつ退勤が打刻されていない場合にステータスをclockInにセット
+					homeForm.setClockStatus(HomeConstant.CLOCK_IN);
+				} else if (attendance.getClockInTime() != null && attendance.getClockOutTime() != null) {
+					// レコードに出勤が打刻されているかつ退勤が打刻されている場合にステータスをclockOutにセット
+					homeForm.setClockStatus(HomeConstant.CLOCK_OUT);
+				}
+				homeForm.setClockStatusMessage("すでに休憩終了済みです。");
 			} else {
-				model.addAttribute("clockStatus", HomeConstant.ERROR);
-				model.addAttribute("clockStatusMessage", "不明なアクションです");
+				homeForm.setClockStatus(HomeConstant.ERROR);
+				homeForm.setClockStatusMessage("不明なアクションです");
 				model.addAttribute("homeForm", homeForm);
 				return "html/home";
 			}
+
 			model.addAttribute("homeForm", homeForm);
 			attendanceRepository.save(attendance);
 			return "html/home";

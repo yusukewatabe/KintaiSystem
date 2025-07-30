@@ -3,7 +3,6 @@ package com.example.Kintai.controller;
 import com.example.Kintai.constant.HomeConstant;
 import com.example.Kintai.form.HomeForm;
 import com.example.Kintai.model.Attendance;
-import com.example.Kintai.model.Attendance;
 import com.example.Kintai.model.User;
 import com.example.Kintai.repository.AttendanceRepository;
 import com.example.Kintai.repository.UserRepository;
@@ -16,6 +15,7 @@ import java.nio.charset.StandardCharsets;
 import java.sql.Timestamp;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Base64;
 import org.apache.commons.validator.routines.EmailValidator;
 import java.util.Optional;
@@ -118,36 +118,16 @@ public class HomeController {
 	public String login(@RequestParam String id, @RequestParam String pass, Model model) {
 		// 日本時間を取得
 		ZonedDateTime tokyoTime = ZonedDateTime.now(ZoneId.of("Asia/Tokyo"));
-		LocalDate today = tokyoTime.toLocalDate();
 		Timestamp timestamp = Timestamp.valueOf(tokyoTime.toLocalDateTime());
+		DateTimeFormatter fmtWorkDate = DateTimeFormatter.ofPattern("yyyy/MM/dd");
+		LocalDate workDate = LocalDate.now();
+		String today = workDate.format(fmtWorkDate);
+
 		HomeForm homeForm = new HomeForm();
 
 		// idとpassが一致しているか確認
 		if (userService.authenticate(id, pass)) {
-			Optional<Attendance> optAtt = attendanceRepository.findByUser_IdAndWorkDate(id, today);
-
-			// TODO:ステータスの有無検討
-			model.addAttribute("status", true);
-			// レコードの有無確認
-			if (optAtt.isPresent()) {
-				Attendance a = optAtt.get();
-				// 出勤済みかどうか
-				if (a.getClockInTime() != null) {
-					homeForm.setClockStatus(HomeConstant.CLOCK_IN);
-				}
-				if (a.getClockOutTime() != null) {
-					homeForm.setClockStatus(HomeConstant.CLOCK_OUT);
-				}
-				if (a.getBreakStart() != null && a.getBreakEnd() == null) {
-					homeForm.setClockStatus(HomeConstant.BREAK_START);
-				}
-				if (a.getClockOutTime() == null && a.getBreakEnd() != null) {
-					homeForm.setClockStatus(HomeConstant.CLOCK_OUT);
-				}
-			} else {
-				// ステータスを退勤にセット
-				homeForm.setClockStatus(HomeConstant.CLOCK_OUT);
-			}
+			setClockStatus(id, today, model);
 			// dbに最終ログイン時刻を保存
 			User user = userRepository.findById(id).orElseThrow();
 			user.setLastlogin(timestamp);
@@ -167,6 +147,33 @@ public class HomeController {
 		}
 	}
 
+	/**
+	 * index以外からhomeへ遷移が行われた際に使用されるメソッド
+	 * 
+	 * @param id
+	 * @param model
+	 * @return
+	 */
+	@PostMapping("/home")
+	public String backHome(String userId, Model model) {
+		DateTimeFormatter fmtWorkDate = DateTimeFormatter.ofPattern("yyyy/MM/dd");
+		LocalDate workDate = LocalDate.now();
+		String today = workDate.format(fmtWorkDate);
+
+		// 勤怠ステータスを確認
+		setClockStatus(userId, today, model);
+		return "html/home";
+	}
+
+	/**
+	 * 新しいパスワードを再設定
+	 * 
+	 * @param id
+	 * @param password
+	 * @param repassword
+	 * @param model
+	 * @return
+	 */
 	@PostMapping("/setForgetPassWord")
 	public String setForgetPassWord(@RequestParam String id, @RequestParam String password,
 			@RequestParam String repassword, Model model) {
@@ -181,5 +188,45 @@ public class HomeController {
 		userService.overridePassword(idDecode, passEncode);
 		model.addAttribute("userId", id);
 		return "html/home";
+	}
+
+	/**
+	 * 勤務状況を確認し、formにステータスをセットするメソッド
+	 * 
+	 * @param id
+	 * @param today
+	 * @param model
+	 */
+	private void setClockStatus(String id, String today, Model model) {
+		Optional<Attendance> optAtt = attendanceRepository.findByUser_IdAndWorkDate(id, today);
+
+		HomeForm homeForm = new HomeForm();
+		// TODO:ステータスの有無検討
+		model.addAttribute("status", true);
+		// レコードの有無確認
+		if (optAtt.isPresent()) {
+			Attendance attendance = optAtt.get();
+			// 出勤済みかどうか
+			if (attendance.getClockInTime() != null) {
+				homeForm.setClockStatus(HomeConstant.CLOCK_IN);
+			}
+			if (attendance.getClockOutTime() != null) {
+				homeForm.setClockStatus(HomeConstant.CLOCK_OUT);
+			}
+			if (attendance.getBreakStart() != null && attendance.getBreakEnd() == null) {
+				homeForm.setClockStatus(HomeConstant.BREAK_START);
+			}
+			if (attendance.getClockOutTime() == null && attendance.getBreakEnd() != null) {
+				if (attendance.getClockInTime() != null) {
+					homeForm.setClockStatus(HomeConstant.CLOCK_IN);
+				} else {
+					homeForm.setClockStatus(HomeConstant.CLOCK_OUT);
+				}
+			}
+		} else {
+			homeForm.setClockStatus(HomeConstant.CLOCK_OUT);
+			homeForm.setEmail(id);
+		}
+		model.addAttribute("homeForm", homeForm);
 	}
 }

@@ -201,9 +201,10 @@ public class AuthController {
 		user.setFirstname(reabtseg);
 		user.setLastname(vsvbrebb);
 		user.setCreatedate(timestamp);
+		user.setLastlogin(timestamp);
 		userRepository.save(user);
 		// TODO:homeではなくユーザー登録成功画面へ遷移に修正
-		return "html/home";
+		return "mail/verificationSuccess";
 	}
 
 	@GetMapping("/registerUserFixes")
