@@ -5,6 +5,7 @@
 		<body class="bg-gray-100 font-sans leading-normal tracking-normal">
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"class="rounded-md border border-gray-400 w-24 text-center" />
 		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<script type="module" src="/js/dateFormat.js"></script>
 		<link rel="icon" th:href="@{/favicon.ico}">
 		<title>勤怠システム</title>
 	</head>
@@ -52,448 +53,448 @@
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.bulkday1}"></td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.kinmuKubun1}"></td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
-										<input type="text" name="clockInTimeList" th:value="${bulkForm.clockInTime1}" class="rounded-md border border-gray-400 w-24 text-center" />
+										<input type="text" name="clockInTimeList" th:value="${bulkForm.clockInTime1}" class="rounded-md border border-gray-400 w-24 text-center" data-format="HHmm" />
 									</td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
-										<input type="text" name="clockOutTimeList" th:value="${bulkForm.clockOutTime1}" class="rounded-md border border-gray-400 w-24 text-center" />
+										<input type="text" name="clockOutTimeList" th:value="${bulkForm.clockOutTime1}" class="rounded-md border border-gray-400 w-24 text-center" data-format="HHmm" />
 									</td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
-										<input type="text" name="breakStartList" th:value="${bulkForm.breakStart1}" class="rounded-md border border-gray-400 w-24 text-center" />
+										<input type="text" name="breakStartList" th:value="${bulkForm.breakStart1}" class="rounded-md border border-gray-400 w-24 text-center" data-format="HHmm" />
 									</td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
-										<input type="text" name="breakEndList" th:value="${bulkForm.breakEnd1}" class="rounded-md border border-gray-400 w-24 text-center" />
+										<input type="text" name="breakEndList" th:value="${bulkForm.breakEnd1}" class="rounded-md border border-gray-400 w-24 text-center" data-format="HHmm" />
 									</td>
 								</tr>
 									<tr class="odd:bg-white even:bg-gray-50 hover:bg-gray-100">
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.bulkday2}"></td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.kinmuKubun2}"></td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
-										<input type="text" name="clockInTimeList" th:value="${bulkForm.clockInTime2}"class="rounded-md border border-gray-400 w-24 text-center" />
+										<input type="text" name="clockInTimeList" th:value="${bulkForm.clockInTime2}"class="rounded-md border border-gray-400 w-24 text-center" data-format="HHmm" />
 									</td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
-										<input type="text" name="clockOutTimeList" th:value="${bulkForm.clockOutTime2}"class="rounded-md border border-gray-400 w-24 text-center" />
+										<input type="text" name="clockOutTimeList" th:value="${bulkForm.clockOutTime2}"class="rounded-md border border-gray-400 w-24 text-center" data-format="HHmm" />
 									</td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
-										<input type="text" name="breakStartList" th:value="${bulkForm.breakStart2}"class="rounded-md border border-gray-400 w-24 text-center" />
+										<input type="text" name="breakStartList" th:value="${bulkForm.breakStart2}"class="rounded-md border border-gray-400 w-24 text-center" data-format="HHmm" />
 									</td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
-										<input type="text" name="breakEndList" th:value="${bulkForm.breakEnd2}"class="rounded-md border border-gray-400 w-24 text-center" />
+										<input type="text" name="breakEndList" th:value="${bulkForm.breakEnd2}"class="rounded-md border border-gray-400 w-24 text-center" data-format="HHmm" />
 									</td>
 								</tr>
 								<tr class="odd:bg-white even:bg-gray-50 hover:bg-gray-100">
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.bulkday3}"></td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.kinmuKubun3}"></td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
-										<input type="text" name="clockInTimeList" th:value="${bulkForm.clockInTime3}"class="rounded-md border border-gray-400 w-24 text-center" />
+										<input type="text" name="clockInTimeList" th:value="${bulkForm.clockInTime3}"class="rounded-md border border-gray-400 w-24 text-center" data-format="HHmm" />
 									</td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
-										<input type="text" name="clockOutTimeList" th:value="${bulkForm.clockOutTime3}"class="rounded-md border border-gray-400 w-24 text-center" />
+										<input type="text" name="clockOutTimeList" th:value="${bulkForm.clockOutTime3}"class="rounded-md border border-gray-400 w-24 text-center" data-format="HHmm" />
 									</td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
-										<input type="text" name="breakStartList" th:value="${bulkForm.breakStart3}"class="rounded-md border border-gray-400 w-24 text-center" />
+										<input type="text" name="breakStartList" th:value="${bulkForm.breakStart3}"class="rounded-md border border-gray-400 w-24 text-center" data-format="HHmm" />
 									</td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
-										<input type="text" name="breakEndList" th:value="${bulkForm.breakEnd3}"class="rounded-md border border-gray-400 w-24 text-center" />
+										<input type="text" name="breakEndList" th:value="${bulkForm.breakEnd3}"class="rounded-md border border-gray-400 w-24 text-center" data-format="HHmm" />
 									</td>
 								</tr>
 								<tr class="odd:bg-white even:bg-gray-50 hover:bg-gray-100">
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.bulkday4}"></td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.kinmuKubun4}"></td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
-										<input type="text" name="clockInTimeList" th:value="${bulkForm.clockInTime4}"class="rounded-md border border-gray-400 w-24 text-center" />
+										<input type="text" name="clockInTimeList" th:value="${bulkForm.clockInTime4}"class="rounded-md border border-gray-400 w-24 text-center" data-format="HHmm" />
 									</td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
-										<input type="text" name="clockOutTimeList" th:value="${bulkForm.clockOutTime4}"class="rounded-md border border-gray-400 w-24 text-center" />
+										<input type="text" name="clockOutTimeList" th:value="${bulkForm.clockOutTime4}"class="rounded-md border border-gray-400 w-24 text-center" data-format="HHmm" />
 									</td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
-										<input type="text" name="breakStartList" th:value="${bulkForm.breakStart4}"class="rounded-md border border-gray-400 w-24 text-center" />
+										<input type="text" name="breakStartList" th:value="${bulkForm.breakStart4}"class="rounded-md border border-gray-400 w-24 text-center" data-format="HHmm" />
 									</td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
-										<input type="text" name="breakEndList" th:value="${bulkForm.breakEnd4}"class="rounded-md border border-gray-400 w-24 text-center" />
+										<input type="text" name="breakEndList" th:value="${bulkForm.breakEnd4}"class="rounded-md border border-gray-400 w-24 text-center" data-format="HHmm" />
 									</td>
 								</tr>
 								<tr class="odd:bg-white even:bg-gray-50 hover:bg-gray-100">
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.bulkday5}"></td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.kinmuKubun5}"></td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
-										<input type="text" name="clockInTimeList" th:value="${bulkForm.clockInTime5}"class="rounded-md border border-gray-400 w-24 text-center" />
+										<input type="text" name="clockInTimeList" th:value="${bulkForm.clockInTime5}"class="rounded-md border border-gray-400 w-24 text-center" data-format="HHmm" />
 									</td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
-										<input type="text" name="clockOutTimeList" th:value="${bulkForm.clockOutTime5}"class="rounded-md border border-gray-400 w-24 text-center" />
+										<input type="text" name="clockOutTimeList" th:value="${bulkForm.clockOutTime5}"class="rounded-md border border-gray-400 w-24 text-center" data-format="HHmm" />
 									</td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
-										<input type="text" name="breakStartList" th:value="${bulkForm.breakStart5}"class="rounded-md border border-gray-400 w-24 text-center" />
+										<input type="text" name="breakStartList" th:value="${bulkForm.breakStart5}"class="rounded-md border border-gray-400 w-24 text-center" data-format="HHmm" />
 									</td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
-										<input type="text" name="breakEndList" th:value="${bulkForm.breakEnd5}"class="rounded-md border border-gray-400 w-24 text-center" />
+										<input type="text" name="breakEndList" th:value="${bulkForm.breakEnd5}"class="rounded-md border border-gray-400 w-24 text-center" data-format="HHmm" />
 									</td>
 								</tr>
 								<tr class="odd:bg-white even:bg-gray-50 hover:bg-gray-100">
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.bulkday6}"></td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.kinmuKubun6}"></td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
-										<input type="text" name="clockInTimeList" th:value="${bulkForm.clockInTime6}"class="rounded-md border border-gray-400 w-24 text-center" />
+										<input type="text" name="clockInTimeList" th:value="${bulkForm.clockInTime6}"class="rounded-md border border-gray-400 w-24 text-center" data-format="HHmm" />
 									</td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
-										<input type="text" name="clockOutTimeList" th:value="${bulkForm.clockOutTime6}"class="rounded-md border border-gray-400 w-24 text-center" />
+										<input type="text" name="clockOutTimeList" th:value="${bulkForm.clockOutTime6}"class="rounded-md border border-gray-400 w-24 text-center" data-format="HHmm" />
 									</td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
-										<input type="text" name="breakStartList" th:value="${bulkForm.breakStart6}"class="rounded-md border border-gray-400 w-24 text-center" />
+										<input type="text" name="breakStartList" th:value="${bulkForm.breakStart6}"class="rounded-md border border-gray-400 w-24 text-center" data-format="HHmm" />
 									</td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
-										<input type="text" name="breakEndList" th:value="${bulkForm.breakEnd6}"class="rounded-md border border-gray-400 w-24 text-center" />
+										<input type="text" name="breakEndList" th:value="${bulkForm.breakEnd6}"class="rounded-md border border-gray-400 w-24 text-center" data-format="HHmm" />
 									</td>
 								</tr>
 								<tr class="odd:bg-white even:bg-gray-50 hover:bg-gray-100">
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.bulkday7}"></td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.kinmuKubun7}"></td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
-										<input type="text" name="clockInTimeList" th:value="${bulkForm.clockInTime7}"class="rounded-md border border-gray-400 w-24 text-center" />
+										<input type="text" name="clockInTimeList" th:value="${bulkForm.clockInTime7}"class="rounded-md border border-gray-400 w-24 text-center" data-format="HHmm" />
 									</td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
-										<input type="text" name="clockOutTimeList" th:value="${bulkForm.clockOutTime7}"class="rounded-md border border-gray-400 w-24 text-center" />
+										<input type="text" name="clockOutTimeList" th:value="${bulkForm.clockOutTime7}"class="rounded-md border border-gray-400 w-24 text-center" data-format="HHmm" />
 									</td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
-										<input type="text" name="breakStartList" th:value="${bulkForm.breakStart7}"class="rounded-md border border-gray-400 w-24 text-center" />
+										<input type="text" name="breakStartList" th:value="${bulkForm.breakStart7}"class="rounded-md border border-gray-400 w-24 text-center" data-format="HHmm" />
 									</td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
-										<input type="text" name="breakEndList" th:value="${bulkForm.breakEnd7}"class="rounded-md border border-gray-400 w-24 text-center" />
+										<input type="text" name="breakEndList" th:value="${bulkForm.breakEnd7}"class="rounded-md border border-gray-400 w-24 text-center" data-format="HHmm" />
 									</td>
 								</tr>
 								<tr class="odd:bg-white even:bg-gray-50 hover:bg-gray-100">
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.bulkday8}"></td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.kinmuKubun8}"></td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
-										<input type="text" name="clockInTimeList" th:value="${bulkForm.clockInTime8}"class="rounded-md border border-gray-400 w-24 text-center" />
+										<input type="text" name="clockInTimeList" th:value="${bulkForm.clockInTime8}"class="rounded-md border border-gray-400 w-24 text-center" data-format="HHmm" />
 									</td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
-										<input type="text" name="clockOutTimeList" th:value="${bulkForm.clockOutTime8}"class="rounded-md border border-gray-400 w-24 text-center" />
+										<input type="text" name="clockOutTimeList" th:value="${bulkForm.clockOutTime8}"class="rounded-md border border-gray-400 w-24 text-center" data-format="HHmm" />
 									</td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
-										<input type="text" name="breakStartList" th:value="${bulkForm.breakStart8}"class="rounded-md border border-gray-400 w-24 text-center" />
+										<input type="text" name="breakStartList" th:value="${bulkForm.breakStart8}"class="rounded-md border border-gray-400 w-24 text-center" data-format="HHmm" />
 									</td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
-										<input type="text" name="breakEndList" th:value="${bulkForm.breakEnd8}"class="rounded-md border border-gray-400 w-24 text-center" />
+										<input type="text" name="breakEndList" th:value="${bulkForm.breakEnd8}"class="rounded-md border border-gray-400 w-24 text-center" data-format="HHmm" />
 									</td>
 								</tr>
 								<tr class="odd:bg-white even:bg-gray-50 hover:bg-gray-100">
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.bulkday9}"></td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.kinmuKubun9}"></td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
-										<input type="text" name="clockInTimeList" th:value="${bulkForm.clockInTime9}"class="rounded-md border border-gray-400 w-24 text-center" />
+										<input type="text" name="clockInTimeList" th:value="${bulkForm.clockInTime9}"class="rounded-md border border-gray-400 w-24 text-center" data-format="HHmm" />
 									</td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
-										<input type="text" name="clockOutTimeList" th:value="${bulkForm.clockOutTime9}"class="rounded-md border border-gray-400 w-24 text-center" />
+										<input type="text" name="clockOutTimeList" th:value="${bulkForm.clockOutTime9}"class="rounded-md border border-gray-400 w-24 text-center" data-format="HHmm" />
 									</td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
-										<input type="text" name="breakStartList" th:value="${bulkForm.breakStart9}"class="rounded-md border border-gray-400 w-24 text-center" />
+										<input type="text" name="breakStartList" th:value="${bulkForm.breakStart9}"class="rounded-md border border-gray-400 w-24 text-center" data-format="HHmm" />
 									</td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
-										<input type="text" name="breakEndList" th:value="${bulkForm.breakEnd9}"class="rounded-md border border-gray-400 w-24 text-center" />
+										<input type="text" name="breakEndList" th:value="${bulkForm.breakEnd9}"class="rounded-md border border-gray-400 w-24 text-center" data-format="HHmm" />
 									</td>
 								</tr>
 								<tr class="odd:bg-white even:bg-gray-50 hover:bg-gray-100">
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.bulkday10}"></td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.kinmuKubun10}"></td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
-										<input type="text" name="clockInTimeList" th:value="${bulkForm.clockInTime1}"class="rounded-md border border-gray-400 w-24 text-center" />
+										<input type="text" name="clockInTimeList" th:value="${bulkForm.clockInTime1}"class="rounded-md border border-gray-400 w-24 text-center" data-format="HHmm" />
 									</td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
-										<input type="text" name="clockOutTimeList" th:value="${bulkForm.clockOutTime10}"class="rounded-md border border-gray-400 w-24 text-center" />
+										<input type="text" name="clockOutTimeList" th:value="${bulkForm.clockOutTime10}"class="rounded-md border border-gray-400 w-24 text-center" data-format="HHmm" />
 									</td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
-										<input type="text" name="breakStartList" th:value="${bulkForm.breakStart10}"class="rounded-md border border-gray-400 w-24 text-center" />
+										<input type="text" name="breakStartList" th:value="${bulkForm.breakStart10}"class="rounded-md border border-gray-400 w-24 text-center" data-format="HHmm" />
 									</td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
-										<input type="text" name="breakEndList" th:value="${bulkForm.breakEnd10}"class="rounded-md border border-gray-400 w-24 text-center" />
+										<input type="text" name="breakEndList" th:value="${bulkForm.breakEnd10}"class="rounded-md border border-gray-400 w-24 text-center" data-format="HHmm" />
 									</td>
 								</tr>
 								<tr class="odd:bg-white even:bg-gray-50 hover:bg-gray-100">
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.bulkday11}"></td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.kinmuKubun11}"></td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
-										<input type="text" name="clockInTimeList" th:value="${bulkForm.clockInTime11}"class="rounded-md border border-gray-400 w-24 text-center" />
+										<input type="text" name="clockInTimeList" th:value="${bulkForm.clockInTime11}"class="rounded-md border border-gray-400 w-24 text-center" data-format="HHmm" />
 									</td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
-										<input type="text" name="clockOutTimeList" th:value="${bulkForm.clockOutTime11}"class="rounded-md border border-gray-400 w-24 text-center" />
+										<input type="text" name="clockOutTimeList" th:value="${bulkForm.clockOutTime11}"class="rounded-md border border-gray-400 w-24 text-center" data-format="HHmm" />
 									</td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
-										<input type="text" name="breakStartList" th:value="${bulkForm.breakStart11}"class="rounded-md border border-gray-400 w-24 text-center" />
+										<input type="text" name="breakStartList" th:value="${bulkForm.breakStart11}"class="rounded-md border border-gray-400 w-24 text-center" data-format="HHmm" />
 									</td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
-										<input type="text" name="breakEndList" th:value="${bulkForm.breakEnd11}"class="rounded-md border border-gray-400 w-24 text-center" />
+										<input type="text" name="breakEndList" th:value="${bulkForm.breakEnd11}"class="rounded-md border border-gray-400 w-24 text-center" data-format="HHmm" />
 									</td>
 								</tr>
 								<tr class="odd:bg-white even:bg-gray-50 hover:bg-gray-100">
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.bulkday12}"></td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.kinmuKubun12}"></td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
-										<input type="text" name="clockInTimeList" th:value="${bulkForm.clockInTime12}"class="rounded-md border border-gray-400 w-24 text-center" />
+										<input type="text" name="clockInTimeList" th:value="${bulkForm.clockInTime12}"class="rounded-md border border-gray-400 w-24 text-center" data-format="HHmm" />
 									</td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
-										<input type="text" name="clockOutTimeList" th:value="${bulkForm.clockOutTime12}"class="rounded-md border border-gray-400 w-24 text-center" />
+										<input type="text" name="clockOutTimeList" th:value="${bulkForm.clockOutTime12}"class="rounded-md border border-gray-400 w-24 text-center" data-format="HHmm" />
 									</td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
-										<input type="text" name="breakStartList" th:value="${bulkForm.breakStart12}"class="rounded-md border border-gray-400 w-24 text-center" />
+										<input type="text" name="breakStartList" th:value="${bulkForm.breakStart12}"class="rounded-md border border-gray-400 w-24 text-center" data-format="HHmm" />
 									</td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
-										<input type="text" name="breakEndList" th:value="${bulkForm.breakEnd12}"class="rounded-md border border-gray-400 w-24 text-center" />
+										<input type="text" name="breakEndList" th:value="${bulkForm.breakEnd12}"class="rounded-md border border-gray-400 w-24 text-center" data-format="HHmm" />
 									</td>
 								</tr>
 								<tr class="odd:bg-white even:bg-gray-50 hover:bg-gray-100">
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.bulkday13}"></td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.kinmuKubun13}"></td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
-										<input type="text" name="clockInTimeList" th:value="${bulkForm.clockInTime13}"class="rounded-md border border-gray-400 w-24 text-center" />
+										<input type="text" name="clockInTimeList" th:value="${bulkForm.clockInTime13}"class="rounded-md border border-gray-400 w-24 text-center" data-format="HHmm" />
 									</td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
-										<input type="text" name="clockOutTimeList" th:value="${bulkForm.clockOutTime13}"class="rounded-md border border-gray-400 w-24 text-center" />
+										<input type="text" name="clockOutTimeList" th:value="${bulkForm.clockOutTime13}"class="rounded-md border border-gray-400 w-24 text-center" data-format="HHmm" />
 									</td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
-										<input type="text" name="breakStartList" th:value="${bulkForm.breakStart13}"class="rounded-md border border-gray-400 w-24 text-center" />
+										<input type="text" name="breakStartList" th:value="${bulkForm.breakStart13}"class="rounded-md border border-gray-400 w-24 text-center" data-format="HHmm" />
 									</td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
-										<input type="text" name="breakEndList" th:value="${bulkForm.breakEnd13}"class="rounded-md border border-gray-400 w-24 text-center" />
+										<input type="text" name="breakEndList" th:value="${bulkForm.breakEnd13}"class="rounded-md border border-gray-400 w-24 text-center" data-format="HHmm" />
 									</td>
 								</tr>
 								<tr class="odd:bg-white even:bg-gray-50 hover:bg-gray-100">
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.bulkday14}"></td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.kinmuKubun14}"></td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
-										<input type="text" name="clockInTimeList" th:value="${bulkForm.clockInTime14}"class="rounded-md border border-gray-400 w-24 text-center" />
+										<input type="text" name="clockInTimeList" th:value="${bulkForm.clockInTime14}"class="rounded-md border border-gray-400 w-24 text-center" data-format="HHmm" />
 									</td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
-										<input type="text" name="clockOutTimeList" th:value="${bulkForm.clockOutTime14}"class="rounded-md border border-gray-400 w-24 text-center" />
+										<input type="text" name="clockOutTimeList" th:value="${bulkForm.clockOutTime14}"class="rounded-md border border-gray-400 w-24 text-center" data-format="HHmm" />
 									</td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
-										<input type="text" name="breakStartList" th:value="${bulkForm.breakStart14}"class="rounded-md border border-gray-400 w-24 text-center" />
+										<input type="text" name="breakStartList" th:value="${bulkForm.breakStart14}"class="rounded-md border border-gray-400 w-24 text-center" data-format="HHmm" />
 									</td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
-										<input type="text" name="breakEndList" th:value="${bulkForm.breakEnd14}"class="rounded-md border border-gray-400 w-24 text-center" />
+										<input type="text" name="breakEndList" th:value="${bulkForm.breakEnd14}"class="rounded-md border border-gray-400 w-24 text-center" data-format="HHmm" />
 									</td>
 								</tr>
 								<tr class="odd:bg-white even:bg-gray-50 hover:bg-gray-100">
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.bulkday15}"></td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.kinmuKubun15}"></td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
-										<input type="text" name="clockInTimeList" th:value="${bulkForm.clockInTime15}"class="rounded-md border border-gray-400 w-24 text-center" />
+										<input type="text" name="clockInTimeList" th:value="${bulkForm.clockInTime15}"class="rounded-md border border-gray-400 w-24 text-center" data-format="HHmm" />
 									</td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
-										<input type="text" name="clockOutTimeList" th:value="${bulkForm.clockOutTime15}"class="rounded-md border border-gray-400 w-24 text-center" />
+										<input type="text" name="clockOutTimeList" th:value="${bulkForm.clockOutTime15}"class="rounded-md border border-gray-400 w-24 text-center" data-format="HHmm" />
 									</td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
-										<input type="text" name="breakStartList" th:value="${bulkForm.breakStart15}"class="rounded-md border border-gray-400 w-24 text-center" />
+										<input type="text" name="breakStartList" th:value="${bulkForm.breakStart15}"class="rounded-md border border-gray-400 w-24 text-center" data-format="HHmm" />
 									</td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
-										<input type="text" name="breakEndList" th:value="${bulkForm.breakEnd15}"class="rounded-md border border-gray-400 w-24 text-center" />
+										<input type="text" name="breakEndList" th:value="${bulkForm.breakEnd15}"class="rounded-md border border-gray-400 w-24 text-center" data-format="HHmm" />
 									</td>
 								</tr>
 								<tr class="odd:bg-white even:bg-gray-50 hover:bg-gray-100">
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.bulkday16}"></td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.kinmuKubun16}"></td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
-										<input type="text" name="clockInTimeList" th:value="${bulkForm.clockInTime16}"class="rounded-md border border-gray-400 w-24 text-center" />
+										<input type="text" name="clockInTimeList" th:value="${bulkForm.clockInTime16}"class="rounded-md border border-gray-400 w-24 text-center" data-format="HHmm" />
 									</td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
-										<input type="text" name="clockOutTimeList" th:value="${bulkForm.clockOutTime16}"class="rounded-md border border-gray-400 w-24 text-center" />
+										<input type="text" name="clockOutTimeList" th:value="${bulkForm.clockOutTime16}"class="rounded-md border border-gray-400 w-24 text-center" data-format="HHmm" />
 									</td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
-										<input type="text" name="breakStartList" th:value="${bulkForm.breakStart16}"class="rounded-md border border-gray-400 w-24 text-center" />
+										<input type="text" name="breakStartList" th:value="${bulkForm.breakStart16}"class="rounded-md border border-gray-400 w-24 text-center" data-format="HHmm" />
 									</td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
-										<input type="text" name="breakEndList" th:value="${bulkForm.breakEnd16}"class="rounded-md border border-gray-400 w-24 text-center" />
+										<input type="text" name="breakEndList" th:value="${bulkForm.breakEnd16}"class="rounded-md border border-gray-400 w-24 text-center" data-format="HHmm" />
 									</td>
 								</tr>
 								<tr class="odd:bg-white even:bg-gray-50 hover:bg-gray-100">
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.bulkday17}"></td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.kinmuKubun17}"></td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
-										<input type="text" name="clockInTimeList" th:value="${bulkForm.clockInTime17}"class="rounded-md border border-gray-400 w-24 text-center" />
+										<input type="text" name="clockInTimeList" th:value="${bulkForm.clockInTime17}"class="rounded-md border border-gray-400 w-24 text-center" data-format="HHmm" />
 									</td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
-										<input type="text" name="clockOutTimeList" th:value="${bulkForm.clockOutTime17}"class="rounded-md border border-gray-400 w-24 text-center" />
+										<input type="text" name="clockOutTimeList" th:value="${bulkForm.clockOutTime17}"class="rounded-md border border-gray-400 w-24 text-center" data-format="HHmm" />
 									</td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
-										<input type="text" name="breakStartList" th:value="${bulkForm.breakStart17}"class="rounded-md border border-gray-400 w-24 text-center" />
+										<input type="text" name="breakStartList" th:value="${bulkForm.breakStart17}"class="rounded-md border border-gray-400 w-24 text-center" data-format="HHmm" />
 									</td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
-										<input type="text" name="breakEndList" th:value="${bulkForm.breakEnd17}"class="rounded-md border border-gray-400 w-24 text-center" />
+										<input type="text" name="breakEndList" th:value="${bulkForm.breakEnd17}"class="rounded-md border border-gray-400 w-24 text-center" data-format="HHmm" />
 									</td>
 								</tr>
 								<tr class="odd:bg-white even:bg-gray-50 hover:bg-gray-100">
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.bulkday18}"></td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.kinmuKubun18}"></td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
-										<input type="text" name="clockInTimeList" th:value="${bulkForm.clockInTime18}"class="rounded-md border border-gray-400 w-24 text-center" />
+										<input type="text" name="clockInTimeList" th:value="${bulkForm.clockInTime18}"class="rounded-md border border-gray-400 w-24 text-center" data-format="HHmm" />
 									</td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
-										<input type="text" name="clockOutTimeList" th:value="${bulkForm.clockOutTime18}"class="rounded-md border border-gray-400 w-24 text-center" />
+										<input type="text" name="clockOutTimeList" th:value="${bulkForm.clockOutTime18}"class="rounded-md border border-gray-400 w-24 text-center" data-format="HHmm" />
 									</td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
-										<input type="text" name="breakStartList" th:value="${bulkForm.breakStart18}"class="rounded-md border border-gray-400 w-24 text-center" />
+										<input type="text" name="breakStartList" th:value="${bulkForm.breakStart18}"class="rounded-md border border-gray-400 w-24 text-center" data-format="HHmm" />
 									</td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
-										<input type="text" name="breakEndList" th:value="${bulkForm.breakEnd18}"class="rounded-md border border-gray-400 w-24 text-center" />
+										<input type="text" name="breakEndList" th:value="${bulkForm.breakEnd18}"class="rounded-md border border-gray-400 w-24 text-center" data-format="HHmm" />
 									</td>
 								</tr>
 								<tr class="odd:bg-white even:bg-gray-50 hover:bg-gray-100">
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.bulkday19}"></td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.kinmuKubun19}"></td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
-										<input type="text" name="clockInTimeList" th:value="${bulkForm.clockInTime19}"class="rounded-md border border-gray-400 w-24 text-center" />
+										<input type="text" name="clockInTimeList" th:value="${bulkForm.clockInTime19}"class="rounded-md border border-gray-400 w-24 text-center" data-format="HHmm" />
 									</td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
-										<input type="text" name="clockOutTimeList" th:value="${bulkForm.clockOutTime19}"class="rounded-md border border-gray-400 w-24 text-center" />
+										<input type="text" name="clockOutTimeList" th:value="${bulkForm.clockOutTime19}"class="rounded-md border border-gray-400 w-24 text-center" data-format="HHmm" />
 									</td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
-										<input type="text" name="breakStartList" th:value="${bulkForm.breakStart19}"class="rounded-md border border-gray-400 w-24 text-center" />
+										<input type="text" name="breakStartList" th:value="${bulkForm.breakStart19}"class="rounded-md border border-gray-400 w-24 text-center" data-format="HHmm" />
 									</td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
-										<input type="text" name="breakEndList" th:value="${bulkForm.breakEnd19}"class="rounded-md border border-gray-400 w-24 text-center" />
+										<input type="text" name="breakEndList" th:value="${bulkForm.breakEnd19}"class="rounded-md border border-gray-400 w-24 text-center" data-format="HHmm" />
 									</td>
 								</tr>
 								<tr class="odd:bg-white even:bg-gray-50 hover:bg-gray-100">
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.bulkday20}"></td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.kinmuKubun20}"></td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
-										<input type="text" name="clockInTimeList" th:value="${bulkForm.clockInTime20}"class="rounded-md border border-gray-400 w-24 text-center" />
+										<input type="text" name="clockInTimeList" th:value="${bulkForm.clockInTime20}"class="rounded-md border border-gray-400 w-24 text-center" data-format="HHmm" />
 									</td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
-										<input type="text" name="clockOutTimeList" th:value="${bulkForm.clockOutTime20}"class="rounded-md border border-gray-400 w-24 text-center" />
+										<input type="text" name="clockOutTimeList" th:value="${bulkForm.clockOutTime20}"class="rounded-md border border-gray-400 w-24 text-center" data-format="HHmm" />
 									</td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
-										<input type="text" name="breakStartList" th:value="${bulkForm.breakStart20}"class="rounded-md border border-gray-400 w-24 text-center" />
+										<input type="text" name="breakStartList" th:value="${bulkForm.breakStart20}"class="rounded-md border border-gray-400 w-24 text-center" data-format="HHmm" />
 									</td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
-										<input type="text" name="breakEndList" th:value="${bulkForm.breakEnd20}"class="rounded-md border border-gray-400 w-24 text-center" />
+										<input type="text" name="breakEndList" th:value="${bulkForm.breakEnd20}"class="rounded-md border border-gray-400 w-24 text-center" data-format="HHmm" />
 									</td>
 								</tr>
 								<tr class="odd:bg-white even:bg-gray-50 hover:bg-gray-100">
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.bulkday21}"></td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.kinmuKubun21}"></td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
-										<input type="text" name="clockInTimeList" th:value="${bulkForm.clockInTime21}"class="rounded-md border border-gray-400 w-24 text-center" />
+										<input type="text" name="clockInTimeList" th:value="${bulkForm.clockInTime21}"class="rounded-md border border-gray-400 w-24 text-center" data-format="HHmm" />
 									</td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
-										<input type="text" name="clockOutTimeList" th:value="${bulkForm.clockOutTime21}"class="rounded-md border border-gray-400 w-24 text-center" />
+										<input type="text" name="clockOutTimeList" th:value="${bulkForm.clockOutTime21}"class="rounded-md border border-gray-400 w-24 text-center" data-format="HHmm" />
 									</td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
-										<input type="text" name="breakStartList" th:value="${bulkForm.breakStart21}"class="rounded-md border border-gray-400 w-24 text-center" />
+										<input type="text" name="breakStartList" th:value="${bulkForm.breakStart21}"class="rounded-md border border-gray-400 w-24 text-center" data-format="HHmm" />
 									</td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
-										<input type="text" name="breakEndList" th:value="${bulkForm.breakEnd21}"class="rounded-md border border-gray-400 w-24 text-center" />
+										<input type="text" name="breakEndList" th:value="${bulkForm.breakEnd21}"class="rounded-md border border-gray-400 w-24 text-center" data-format="HHmm" />
 									</td>
 								</tr>
 								<tr class="odd:bg-white even:bg-gray-50 hover:bg-gray-100">
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.bulkday22}"></td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.kinmuKubun22}"></td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
-										<input type="text" name="clockInTimeList" th:value="${bulkForm.clockInTime22}"class="rounded-md border border-gray-400 w-24 text-center" />
+										<input type="text" name="clockInTimeList" th:value="${bulkForm.clockInTime22}"class="rounded-md border border-gray-400 w-24 text-center" data-format="HHmm" />
 									</td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
-										<input type="text" name="clockOutTimeList" th:value="${bulkForm.clockOutTime22}"class="rounded-md border border-gray-400 w-24 text-center" />
+										<input type="text" name="clockOutTimeList" th:value="${bulkForm.clockOutTime22}"class="rounded-md border border-gray-400 w-24 text-center" data-format="HHmm" />
 									</td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
-										<input type="text" name="breakStartList" th:value="${bulkForm.breakStart22}"class="rounded-md border border-gray-400 w-24 text-center" />
+										<input type="text" name="breakStartList" th:value="${bulkForm.breakStart22}"class="rounded-md border border-gray-400 w-24 text-center" data-format="HHmm" />
 									</td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
-										<input type="text" name="breakEndList" th:value="${bulkForm.breakEnd22}"class="rounded-md border border-gray-400 w-24 text-center" />
+										<input type="text" name="breakEndList" th:value="${bulkForm.breakEnd22}"class="rounded-md border border-gray-400 w-24 text-center" data-format="HHmm" />
 									</td>
 								</tr>
 								<tr class="odd:bg-white even:bg-gray-50 hover:bg-gray-100">
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.bulkday23}"></td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.kinmuKubun23}"></td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
-										<input type="text" name="clockInTimeList" th:value="${bulkForm.clockInTime23}"class="rounded-md border border-gray-400 w-24 text-center" />
+										<input type="text" name="clockInTimeList" th:value="${bulkForm.clockInTime23}"class="rounded-md border border-gray-400 w-24 text-center" data-format="HHmm" />
 									</td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
-										<input type="text" name="clockOutTimeList" th:value="${bulkForm.clockOutTime23}"class="rounded-md border border-gray-400 w-24 text-center" />
+										<input type="text" name="clockOutTimeList" th:value="${bulkForm.clockOutTime23}"class="rounded-md border border-gray-400 w-24 text-center" data-format="HHmm" />
 									</td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
-										<input type="text" name="breakStartList" th:value="${bulkForm.breakStart23}"class="rounded-md border border-gray-400 w-24 text-center" />
+										<input type="text" name="breakStartList" th:value="${bulkForm.breakStart23}"class="rounded-md border border-gray-400 w-24 text-center" data-format="HHmm" />
 									</td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
-										<input type="text" name="breakEndList" th:value="${bulkForm.breakEnd23}"class="rounded-md border border-gray-400 w-24 text-center" />
+										<input type="text" name="breakEndList" th:value="${bulkForm.breakEnd23}"class="rounded-md border border-gray-400 w-24 text-center" data-format="HHmm" />
 									</td>
 								</tr>
 								<tr class="odd:bg-white even:bg-gray-50 hover:bg-gray-100">
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.bulkday24}"></td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.kinmuKubun24}"></td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
-										<input type="text" name="clockInTimeList" th:value="${bulkForm.clockInTime24}"class="rounded-md border border-gray-400 w-24 text-center" />
+										<input type="text" name="clockInTimeList" th:value="${bulkForm.clockInTime24}"class="rounded-md border border-gray-400 w-24 text-center" data-format="HHmm" />
 									</td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
-										<input type="text" name="clockOutTimeList" th:value="${bulkForm.clockOutTime24}"class="rounded-md border border-gray-400 w-24 text-center" />
+										<input type="text" name="clockOutTimeList" th:value="${bulkForm.clockOutTime24}"class="rounded-md border border-gray-400 w-24 text-center" data-format="HHmm" />
 									</td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
-										<input type="text" name="breakStartList" th:value="${bulkForm.breakStart24}"class="rounded-md border border-gray-400 w-24 text-center" />
+										<input type="text" name="breakStartList" th:value="${bulkForm.breakStart24}"class="rounded-md border border-gray-400 w-24 text-center" data-format="HHmm" />
 									</td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
-										<input type="text" name="breakEndList" th:value="${bulkForm.breakEnd24}"class="rounded-md border border-gray-400 w-24 text-center" />
+										<input type="text" name="breakEndList" th:value="${bulkForm.breakEnd24}"class="rounded-md border border-gray-400 w-24 text-center" data-format="HHmm" />
 									</td>
 								</tr>
 								<tr class="odd:bg-white even:bg-gray-50 hover:bg-gray-100">
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.bulkday25}"></td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.kinmuKubun25}"></td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
-										<input type="text" name="clockInTimeList" th:value="${bulkForm.clockInTime25}"class="rounded-md border border-gray-400 w-24 text-center" />
+										<input type="text" name="clockInTimeList" th:value="${bulkForm.clockInTime25}"class="rounded-md border border-gray-400 w-24 text-center" data-format="HHmm" />
 									</td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
-										<input type="text" name="clockOutTimeList" th:value="${bulkForm.clockOutTime25}"class="rounded-md border border-gray-400 w-24 text-center" />
+										<input type="text" name="clockOutTimeList" th:value="${bulkForm.clockOutTime25}"class="rounded-md border border-gray-400 w-24 text-center" data-format="HHmm" />
 									</td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
-										<input type="text" name="breakStartList" th:value="${bulkForm.breakStart25}"class="rounded-md border border-gray-400 w-24 text-center" />
+										<input type="text" name="breakStartList" th:value="${bulkForm.breakStart25}"class="rounded-md border border-gray-400 w-24 text-center" data-format="HHmm" />
 									</td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
-										<input type="text" name="breakEndList" th:value="${bulkForm.breakEnd25}"class="rounded-md border border-gray-400 w-24 text-center" />
+										<input type="text" name="breakEndList" th:value="${bulkForm.breakEnd25}"class="rounded-md border border-gray-400 w-24 text-center" data-format="HHmm" />
 									</td>
 								</tr>
 								<tr class="odd:bg-white even:bg-gray-50 hover:bg-gray-100">
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.bulkday26}"></td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.kinmuKubun26}"></td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
-										<input type="text" name="clockInTimeList" th:value="${bulkForm.clockInTime26}"class="rounded-md border border-gray-400 w-24 text-center" />
+										<input type="text" name="clockInTimeList" th:value="${bulkForm.clockInTime26}"class="rounded-md border border-gray-400 w-24 text-center" data-format="HHmm" />
 									</td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
-										<input type="text" name="clockOutTimeList" th:value="${bulkForm.clockOutTime26}"class="rounded-md border border-gray-400 w-24 text-center" />
+										<input type="text" name="clockOutTimeList" th:value="${bulkForm.clockOutTime26}"class="rounded-md border border-gray-400 w-24 text-center" data-format="HHmm" />
 									</td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
-										<input type="text" name="breakStartList" th:value="${bulkForm.breakStart26}"class="rounded-md border border-gray-400 w-24 text-center" />
+										<input type="text" name="breakStartList" th:value="${bulkForm.breakStart26}"class="rounded-md border border-gray-400 w-24 text-center" data-format="HHmm" />
 									</td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
-										<input type="text" name="breakEndList" th:value="${bulkForm.breakEnd26}"class="rounded-md border border-gray-400 w-24 text-center" />
+										<input type="text" name="breakEndList" th:value="${bulkForm.breakEnd26}"class="rounded-md border border-gray-400 w-24 text-center" data-format="HHmm" />
 									</td>
 								</tr>
 								<tr class="odd:bg-white even:bg-gray-50 hover:bg-gray-100">
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.bulkday27}"></td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.kinmuKubun27}"></td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
-										<input type="text" name="clockInTimeList" th:value="${bulkForm.clockInTime27}"class="rounded-md border border-gray-400 w-24 text-center" />
+										<input type="text" name="clockInTimeList" th:value="${bulkForm.clockInTime27}"class="rounded-md border border-gray-400 w-24 text-center" data-format="HHmm" />
 									</td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
-										<input type="text" name="clockOutTimeList" th:value="${bulkForm.clockOutTime27}"class="rounded-md border border-gray-400 w-24 text-center" />
+										<input type="text" name="clockOutTimeList" th:value="${bulkForm.clockOutTime27}"class="rounded-md border border-gray-400 w-24 text-center" data-format="HHmm" />
 									</td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
-										<input type="text" name="breakStartList" th:value="${bulkForm.breakStart27}"class="rounded-md border border-gray-400 w-24 text-center" />
+										<input type="text" name="breakStartList" th:value="${bulkForm.breakStart27}"class="rounded-md border border-gray-400 w-24 text-center" data-format="HHmm" />
 									</td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
-										<input type="text" name="breakEndList" th:value="${bulkForm.breakEnd27}"class="rounded-md border border-gray-400 w-24 text-center" />
+										<input type="text" name="breakEndList" th:value="${bulkForm.breakEnd27}"class="rounded-md border border-gray-400 w-24 text-center" data-format="HHmm" />
 									</td>
 								</tr>
 								<tr class="odd:bg-white even:bg-gray-50 hover:bg-gray-100">
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.bulkday28}"></td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.kinmuKubun28}"></td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
-										<input type="text" name="clockInTimeList" th:value="${bulkForm.clockInTime28}"class="rounded-md border border-gray-400 w-24 text-center" />
+										<input type="text" name="clockInTimeList" th:value="${bulkForm.clockInTime28}"class="rounded-md border border-gray-400 w-24 text-center" data-format="HHmm" />
 									</td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
-										<input type="text" name="clockOutTimeList" th:value="${bulkForm.clockOutTime28}"class="rounded-md border border-gray-400 w-24 text-center" />
+										<input type="text" name="clockOutTimeList" th:value="${bulkForm.clockOutTime28}"class="rounded-md border border-gray-400 w-24 text-center" data-format="HHmm" />
 									</td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
-										<input type="text" name="breakStartList" th:value="${bulkForm.breakStart28}"class="rounded-md border border-gray-400 w-24 text-center" />
+										<input type="text" name="breakStartList" th:value="${bulkForm.breakStart28}"class="rounded-md border border-gray-400 w-24 text-center" data-format="HHmm" />
 									</td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
-										<input type="text" name="breakEndList" th:value="${bulkForm.breakEnd28}"class="rounded-md border border-gray-400 w-24 text-center" />
+										<input type="text" name="breakEndList" th:value="${bulkForm.breakEnd28}"class="rounded-md border border-gray-400 w-24 text-center" data-format="HHmm" />
 									</td>
 								</tr>
 								<!--/* 29日がない場合は非表示 */-->
@@ -502,16 +503,16 @@
 										<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.bulkday29}"></td>
 										<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.kinmuKubun29}"></td>
 										<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
-											<input type="text" name="clockInTimeList" th:value="${bulkForm.clockInTime29}"class="rounded-md border border-gray-400 w-24 text-center" />
+											<input type="text" name="clockInTimeList" th:value="${bulkForm.clockInTime29}"class="rounded-md border border-gray-400 w-24 text-center" data-format="HHmm" />
 										</td>
 										<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
-											<input type="text" name="clockOutTimeList" th:value="${bulkForm.clockOutTime29}"class="rounded-md border border-gray-400 w-24 text-center" />
+											<input type="text" name="clockOutTimeList" th:value="${bulkForm.clockOutTime29}"class="rounded-md border border-gray-400 w-24 text-center" data-format="HHmm" />
 										</td>
 										<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
-											<input type="text" name="breakStartList" th:value="${bulkForm.breakStart29}"class="rounded-md border border-gray-400 w-24 text-center" />
+											<input type="text" name="breakStartList" th:value="${bulkForm.breakStart29}"class="rounded-md border border-gray-400 w-24 text-center" data-format="HHmm" />
 										</td>
 										<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
-											<input type="text" name="breakEndList" th:value="${bulkForm.breakEnd29}"class="rounded-md border border-gray-400 w-24 text-center" />
+											<input type="text" name="breakEndList" th:value="${bulkForm.breakEnd29}"class="rounded-md border border-gray-400 w-24 text-center" data-format="HHmm" />
 										</td>
 									</tr>
 								</div>
@@ -521,16 +522,16 @@
 										<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.bulkday30}"></td>
 										<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.kinmuKubun30}"></td>
 										<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
-											<input type="text" name="clockInTimeList" th:value="${bulkForm.clockInTime30}"class="rounded-md border border-gray-400 w-24 text-center" />
+											<input type="text" name="clockInTimeList" th:value="${bulkForm.clockInTime30}"class="rounded-md border border-gray-400 w-24 text-center" data-format="HHmm" />
 										</td>
 										<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
-											<input type="text" name="clockOutTimeList" th:value="${bulkForm.clockOutTime30}"class="rounded-md border border-gray-400 w-24 text-center" />
+											<input type="text" name="clockOutTimeList" th:value="${bulkForm.clockOutTime30}"class="rounded-md border border-gray-400 w-24 text-center" data-format="HHmm" />
 										</td>
 										<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
-											<input type="text" name="breakStartList" th:value="${bulkForm.breakStart30}"class="rounded-md border border-gray-400 w-24 text-center" />
+											<input type="text" name="breakStartList" th:value="${bulkForm.breakStart30}"class="rounded-md border border-gray-400 w-24 text-center" data-format="HHmm" />
 										</td>
 										<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
-											<input type="text" name="breakEndList" th:value="${bulkForm.breakEnd30}"class="rounded-md border border-gray-400 w-24 text-center" />
+											<input type="text" name="breakEndList" th:value="${bulkForm.breakEnd30}"class="rounded-md border border-gray-400 w-24 text-center" data-format="HHmm" />
 										</td>
 									</tr>
 								</div>
@@ -540,16 +541,16 @@
 										<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.bulkday31}"></td>
 										<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.kinmuKubun31}"></td>
 										<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
-											<input type="text" name="clockInTimeList" th:value="${bulkForm.clockInTime31}"class="rounded-md border border-gray-400 w-24 text-center" />
+											<input type="text" name="clockInTimeList" th:value="${bulkForm.clockInTime31}"class="rounded-md border border-gray-400 w-24 text-center" data-format="HHmm" />
 										</td>
 										<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
-											<input type="text" name="clockOutTimeList" th:value="${bulkForm.clockOutTime31}"class="rounded-md border border-gray-400 w-24 text-center" />
+											<input type="text" name="clockOutTimeList" th:value="${bulkForm.clockOutTime31}"class="rounded-md border border-gray-400 w-24 text-center" data-format="HHmm" />
 										</td>
 										<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
-											<input type="text" name="breakStartList" th:value="${bulkForm.breakStart31}"class="rounded-md border border-gray-400 w-24 text-center" />
+											<input type="text" name="breakStartList" th:value="${bulkForm.breakStart31}"class="rounded-md border border-gray-400 w-24 text-center" data-format="HHmm" />
 										</td>
 										<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
-											<input type="text" name="breakEndList" th:value="${bulkForm.breakEnd31}"class="rounded-md border border-gray-400 w-24 text-center" />
+											<input type="text" name="breakEndList" th:value="${bulkForm.breakEnd31}"class="rounded-md border border-gray-400 w-24 text-center" data-format="HHmm" />
 										</td>
 									</tr>
 								</div>
