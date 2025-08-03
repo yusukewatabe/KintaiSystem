@@ -5,13 +5,13 @@ dayjs.extend(window.dayjs_plugin_customParseFormat);
  * （全角「０～９」「：」も半角に変換されます）
  */
 export function toHalfWidth(str) {
-  return String(str)
-    // 全角英数字・記号（FF01〜FF5E）を半角（U+0021〜U+007E）に
-    .replace(/[\uFF01-\uFF5E]/g, ch =>
-      String.fromCharCode(ch.charCodeAt(0) - 0xFEE0)
-    )
-    // 全角スペース U+3000 → 半角スペース
-    .replace(/\u3000/g, ' ');
+	return String(str)
+		// 全角英数字・記号（FF01〜FF5E）を半角（U+0021〜U+007E）に
+		.replace(/[\uFF01-\uFF5E]/g, ch =>
+			String.fromCharCode(ch.charCodeAt(0) - 0xFEE0)
+		)
+		// 全角スペース U+3000 → 半角スペース
+		.replace(/\u3000/g, ' ');
 }
 
 /**
@@ -19,41 +19,48 @@ export function toHalfWidth(str) {
  * 全角／半角の 0-9 と 全角／半角のコロンのみ許可
  */
 export function isAllowedChars(str) {
-  // 半角 0-9, 全角 ０-９, 半角 :, 全角 ： のみ
-  const re = /^[0-9\uFF10-\uFF19:\uFF1A]+$/;
-  return re.test(str);
+	// 半角 0-9, 全角 ０-９, 半角 :, 全角 ： のみ
+	const re = /^[0-9\uFF10-\uFF19:\uFF1A]+$/;
+	return re.test(str);
 }
 
-/** Moment.js を使ったフォーマッタ */
+/** Day.js を使ったフォーマッタ */
 export function toHHMMWithMoment(input) {
 	// 「:」を除去して数字だけに
-	let zeroPadding = input.replace(/:/g, '');
+	let hhPart, mmPart;
+	if (input.includes(':')){
+		const [hhRaw, mmRaw] = input.split(':');
+		hhPart = hhRaw;
+		mmPart = mmRaw;
+	} else {
+		if (input.length <= 2) {
+			hhPart = input;
+			mmPart = '0';
+		} else {
+			hhPart = input.slice(0, input.length - 2);
+			mmPart = input.slice(-2);
+		}
+	}
+		// zeroPadding = input.replace(/:/g, '');
 	// 4 桁になるよう左ゼロ埋め ("900"→"0900")
-	if (zeroPadding.length < 4) {
-		zeroPadding = zeroPadding.padStart(4, '0');
-	}
 
-	// 
-	let hh = parseInt(zeroPadding.slice(0, 2), 10);
-	let mm = parseInt(zeroPadding.slice(2, 4), 10);
+	// 数値にパース
+	const hhNum = parseInt(hhPart, 10);
+	const mmNum = parseInt(mmPart, 10);
 
-	// 前二桁（hh）が 01～23 の整数か判定
-	if (hh < 1 || hh > 23) {
-		alert('時間は 01～23 の間で入力してください');
+	// 範囲チェック
+	if (isNaN(hhNum) || hhNum < 0 || hhNum > 23) {
+		alert('時間は 00～23 の間で入力してください');
 		return '';
-	} else if (!hh.length < 2){
-		hh = (hh.toString()).padStart(2, '0');
 	}
-
-	// 後二桁（mm）が 00～59 の整数か判定
-	if (mm < 0 || mm > 59) {
+	if (isNaN(mmNum) || mmNum < 0 || mmNum > 59) {
 		alert('分は 00～59 の間で入力してください');
 		return '';
-	} else if(!mm.length < 2){
-		mm = (mm.toString()).padStart(2, '0');
 	}
 
-	// hhとmmを文字列として結合
+	// ２桁パディングして組み立て
+	const hh = hhNum.toString().padStart(2, '0');
+	const mm = mmNum.toString().padStart(2, '0');
 	let hhMm = hh + mm;
 	return dayjs(hhMm, ['Hmm', 'HHmm']).format('HH:mm');
 }
