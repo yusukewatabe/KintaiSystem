@@ -101,12 +101,6 @@
 			<artifactId>dayjs</artifactId>
 			<version>1.11.7</version>
 		</dependency>
-		<!-- customParseFormat プラグイン -->
-		<!-- <dependency>
-			<groupId>org.webjars.npm</groupId>
-			<artifactId>dayjs-plugin-customParseFormat</artifactId>
-			<version>1.11.7</version>
-		</dependency> -->
 	</dependencies>
 
 	<build>
