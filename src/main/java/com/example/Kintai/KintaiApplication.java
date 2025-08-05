@@ -6,6 +6,9 @@ import org.springframework.boot.web.servlet.support.SpringBootServletInitializer
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
+/**
+ * Tomcat起動時にコントローラー等をスキャンするクラス
+ */
 @SpringBootApplication
 @ComponentScan({ "com.example.Kintai.controller", "com.example.Kintai.service" })
 @EnableJpaRepositories(basePackages = "com.example.Kintai.repository")

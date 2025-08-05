@@ -9,6 +9,12 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
 import jakarta.annotation.PostConstruct;
 
+/**
+ * 祝日判定のビジネスロジックが記載されているクラス
+ * 
+ * @author Watabe Yusuke
+ * @version 0.1
+ */
 @Service
 public class HolidayService {
 
@@ -43,7 +49,7 @@ public class HolidayService {
 	/**
 	 * 指定日が祝日かどうかを返す
 	 * 
-	 * @param date 判定したい日
+	 * @param date 判定日
 	 * @return CSVに含まれている祝日
 	 */
 	public String judgeHoliday(String date) {

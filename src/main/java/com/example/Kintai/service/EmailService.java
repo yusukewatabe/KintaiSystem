@@ -10,6 +10,12 @@ import java.util.Base64;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 
+/**
+ * 新規ユーザー、パスワード忘れに伴うメール送信に関するビジネスロジックが記載されているクラス
+ * 
+ * @author Watabe Yusuke
+ * @version 0.1
+ */
 @Service
 public class EmailService {
 
@@ -19,8 +25,7 @@ public class EmailService {
 	/**
 	 * 新規ユーザーのメール認証送信するメソッド
 	 * 
-	 * @param toEmail
-	 * 
+	 * @param toEmail メールアドレス
 	 */
 	public void sendVerificationEmail(String toEmail) {
 		String base64Encode = null;
@@ -52,8 +57,7 @@ public class EmailService {
 	/**
 	 * パスワード忘れのメール認証送信するメソッド
 	 * 
-	 * @param toEmail
-	 * 
+	 * @param toEmail メールアドレス
 	 */
 	public void forgetPassSendEmail(String toEmail) {
 		String base64Encode = null;

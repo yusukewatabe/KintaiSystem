@@ -19,6 +19,12 @@ import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.Optional;
 
+/**
+ * bulkEdit.htmlで入力された時間をDBに保存するクラス
+ * 
+ * @author Watabe Yusuke
+ * @version 0.1
+ */
 @Controller
 @RequiredArgsConstructor
 public class AttendanceController {
@@ -29,15 +35,14 @@ public class AttendanceController {
 	/**
 	 * Home画面から押されたボタンを判定し、dbに時間を登録するメソッド
 	 * 
-	 * @param userId
-	 * @param action
-	 * @param model
-	 * @param request
-	 * @return
+	 * @param userId ユーザーID
+	 * @param action 勤怠ステータス
+	 * @param model Spring MVC のモデルオブジェクト
+	 * @return 表示するビュー名
 	 */
 	@PostMapping("/attendance/clock")
 	public String handleClockAction(@RequestParam String userId, @RequestParam String action,
-			Model model, HttpServletRequest request) {
+			Model model) {
 		// workDay初期値設定
 		DateTimeFormatter fmtWorkDate = DateTimeFormatter.ofPattern("yyyy/MM/dd");
 		LocalDate workDate = LocalDate.now();

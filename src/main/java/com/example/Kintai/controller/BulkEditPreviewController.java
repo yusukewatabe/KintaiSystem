@@ -8,10 +8,17 @@ import com.example.Kintai.repository.AttendanceRepository;
 import com.example.Kintai.service.BulkEditService;
 import org.springframework.ui.Model;
 
+/**
+ * bulkEditPreview.htmlからリクエストされた処理をするクラス
+ * 
+ * @author Watabe Yusuke
+ * @version 0.1
+ */
 @Controller
 @RequiredArgsConstructor
 public class BulkEditPreviewController {
 
+	/** db保存するためのリポジトリ */
 	private final AttendanceRepository attendanceRepository;
 
 	/** bulkEditPreviewのMappingPath */
@@ -27,8 +34,8 @@ public class BulkEditPreviewController {
 	 * 月の勤怠一覧を表示するメソッド
 	 * 
 	 * @param userId メールアドレス
-	 * @param model  モデル
-	 * @return bulkEditPreview.htmlを表示
+	 * @param model Spring MVC のモデルオブジェクト
+	 * @return 表示するビュー名
 	 */
 	@PostMapping(BULKEDITPREVIEW_PATH)
 	public String handleClockAction(String userId, Model model) {

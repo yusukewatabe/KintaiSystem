@@ -4,6 +4,12 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+/**
+ * Attendanceテーブルのクラス
+ * 
+ * @author Watabe Yusuke
+ * @version 0.1
+ */
 @Entity
 @Table(name = "attendances")
 @Getter

@@ -1,7 +1,7 @@
 package com.example.Kintai.constant;
 
 /**
- * Home.htmlの定数を管理するクラスです。
+ * Home.htmlの定数を管理するクラス
  * 
  * @author Watabe Yusuke
  * @version 0.1

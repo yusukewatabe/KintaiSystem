@@ -3,6 +3,12 @@ package com.example.Kintai.form;
 import lombok.Getter;
 import lombok.Setter;
 
+/**
+ * bulkEdit、bulkEditPreviewのFormを管理するクラス
+ * 
+ * @author Watabe Yusuke
+ * @version 0.1
+ */
 @Getter
 @Setter
 public class BulkForm {

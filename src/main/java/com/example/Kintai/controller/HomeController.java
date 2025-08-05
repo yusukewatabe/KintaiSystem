@@ -22,7 +22,7 @@ import java.util.Optional;
 import java.time.LocalDate;
 
 /**
- * Home.htmlからのリクエストを管理するクラスです。
+ * Home.htmlからのリクエストを処理するクラスです。
  * 
  * @author Watabe Yusuke
  * @version 0.1
@@ -39,6 +39,12 @@ public class HomeController {
 	@Autowired
 	private EmailService emailService;
 
+	/**
+	 * 初期画面を表示するメソッド
+	 * 
+	 * @param model
+	 * @return
+	 */
 	@GetMapping("/")
 	public String index(Model model) {
 		model.addAttribute("status", false);
@@ -47,10 +53,10 @@ public class HomeController {
 	}
 
 	/**
-	 * 新規ユーザー発行のリンクがクリックされた時
+	 * 新規ユーザー発行のリンクがクリックされた処理をするメソッド
 	 * 
-	 * @param model
-	 * @return
+	 * @param model Spring MVC のモデルオブジェクト
+	 * @return 表示するビュー名
 	 */
 	@GetMapping("/sendMailForm")
 	public String sendMailForm(Model model) {
@@ -59,10 +65,10 @@ public class HomeController {
 	}
 
 	/**
-	 * パスワード忘れのリンクがクリックされた時
+	 * パスワード忘れのリンクがクリックされた処理をするメソッド
 	 * 
-	 * @param model
-	 * @return
+	 * @param model Spring MVC のモデルオブジェクト
+	 * @return 表示するビュー名
 	 */
 	@GetMapping("/forgetPass")
 	public String forgetPassForm(Model model) {
@@ -70,6 +76,13 @@ public class HomeController {
 		return "mail/sendMail";
 	}
 
+	/**
+	 * メールアドレスが正しいか判定し、該当メールアドレスに新規ユーザー登録のメールを送信するメソッド
+	 * 
+	 * @param id メールアドレス
+	 * @param model Spring MVC のモデルオブジェクト
+	 * @return 表示するビュー名
+	 */
 	@PostMapping("/sendMail")
 	public String sendMail(@RequestParam String id, Model model) {
 		if (id.isEmpty() || id == null) {
@@ -88,6 +101,13 @@ public class HomeController {
 		}
 	}
 
+	/**
+	 * メールアドレスが正しいか判定し、該当メールアドレスにパスワード忘れのメールを送信するメソッド
+	 * 
+	 * @param id メールアドレス
+	 * @param model Spring MVC のモデルオブジェクト
+	 * @return 表示するビュー名
+	 */
 	@PostMapping("/sendMailForget")
 	public String sendMailForget(@RequestParam String id, Model model) {
 		if (id.isEmpty() || id == null) {
@@ -107,12 +127,12 @@ public class HomeController {
 	}
 
 	/**
-	 * index画面からid,passが正しいかチェック
+	 * id,passが正しいかdbへ参照し、正しいid,passか判定するメソッド
 	 * 
-	 * @param id
-	 * @param pass
-	 * @param model
-	 * @return
+	 * @param id メールアドレス
+	 * @param pass パスワード
+	 * @param model Spring MVC のモデルオブジェクト
+	 * @return 表示するビュー名
 	 */
 	@PostMapping("/login")
 	public String login(@RequestParam String id, @RequestParam String pass, Model model) {
@@ -150,9 +170,9 @@ public class HomeController {
 	/**
 	 * index以外からhomeへ遷移が行われた際に使用されるメソッド
 	 * 
-	 * @param id
-	 * @param model
-	 * @return
+	 * @param id メールアドレス
+	 * @param model Spring MVC のモデルオブジェクト
+	 * @return 表示するビュー名
 	 */
 	@PostMapping("/home")
 	public String backHome(String userId, Model model) {
@@ -166,13 +186,13 @@ public class HomeController {
 	}
 
 	/**
-	 * 新しいパスワードを再設定
+	 * 新しいパスワードを再設定するメソッド
 	 * 
-	 * @param id
-	 * @param password
-	 * @param repassword
-	 * @param model
-	 * @return
+	 * @param id メールアドレス
+	 * @param password パスワード
+	 * @param repassword 再入力パスワード
+	 * @param model Spring MVC のモデルオブジェクト
+	 * @return 表示するビュー名
 	 */
 	@PostMapping("/setForgetPassWord")
 	public String setForgetPassWord(@RequestParam String id, @RequestParam String password,
@@ -193,9 +213,9 @@ public class HomeController {
 	/**
 	 * 勤務状況を確認し、formにステータスをセットするメソッド
 	 * 
-	 * @param id
-	 * @param today
-	 * @param model
+	 * @param id メールアドレス
+	 * @param today 現在日付
+	 * @param model Spring MVC のモデルオブジェクト
 	 */
 	private void setClockStatus(String id, String today, Model model) {
 		Optional<Attendance> optAtt = attendanceRepository.findByUser_IdAndWorkDate(id, today);

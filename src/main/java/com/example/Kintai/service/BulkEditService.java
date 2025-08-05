@@ -18,6 +18,12 @@ import com.example.Kintai.form.HomeForm;
 import com.example.Kintai.model.Attendance;
 import com.example.Kintai.repository.AttendanceRepository;
 
+/**
+ * BulkEditに関するビジネスロジックが記載されているクラス
+ * 
+ * @author Watabe Yusuke
+ * @version 0.1
+ */
 @Service
 public class BulkEditService {
 
@@ -79,11 +85,11 @@ public class BulkEditService {
 	private HolidayService holidayService;
 
 	/**
+	 * 月の一覧をformに格納するメソッド
 	 * 
-	 * @param userId
-	 * @param attendanceRepository
-	 * @param model
-	 * @return
+	 * @param userId ユーザーID
+	 * @param attendanceRepository AttendanceRepository
+	 * @param model Spring MVC のモデルオブジェクト
 	 */
 	public void bulkEditAndPreview(String userId, AttendanceRepository attendanceRepository, Model model) {
 
@@ -278,7 +284,7 @@ public class BulkEditService {
 	 *
 	 * @param year  西暦年
 	 * @param month 月（1～12）
-	 * @return
+	 * @return 月(yyyy/MM/dd)のリスト
 	 */
 	public List<String> listDates(int year, int month) {
 		YearMonth ym = YearMonth.of(year, month);
@@ -297,7 +303,7 @@ public class BulkEditService {
 	 *
 	 * @param year  西暦年
 	 * @param month 月（1～12）
-	 * @return
+	 * @return 日付、曜日(M/d (E))のリスト
 	 */
 	private List<String> listDatesWithWeekdays(int year, int month) {
 		YearMonth ym = YearMonth.of(year, month);
@@ -314,9 +320,9 @@ public class BulkEditService {
 	/**
 	 * 初日と末日を取得するメソッド
 	 * 
-	 * @param year
-	 * @param month
-	 * @return
+	 * @param year 西暦年
+	 * @param month 月
+	 * @return 月の初日、末日のリスト
 	 */
 	private static List<String> listMonth(int year, int month) {
 		YearMonth ym = YearMonth.of(year, month);

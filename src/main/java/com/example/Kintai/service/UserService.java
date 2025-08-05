@@ -8,6 +8,12 @@ import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 import java.util.Optional;
 
+/**
+ * パスワードのエンコード、デコードに関するビジネスロジックが記載されているクラス
+ * 
+ * @author Watabe Yusuke
+ * @version 0.1
+ */
 @Service
 public class UserService {
 	@Autowired
@@ -35,6 +41,5 @@ public class UserService {
 		} else {
 			return false;
 		}
-
 	}
 }

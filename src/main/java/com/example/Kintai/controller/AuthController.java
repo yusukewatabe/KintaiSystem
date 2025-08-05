@@ -14,6 +14,12 @@ import java.util.Base64;
 import org.springframework.stereotype.Controller;
 import org.apache.commons.validator.routines.EmailValidator;
 
+/**
+ * 新規ユーザー登録及びパスワード忘れに関するクラス
+ * 
+ * @author Watabe Yusuke
+ * @version 0.1
+ */
 @Controller
 @RequestMapping("/api/auth")
 public class AuthController {
@@ -22,11 +28,12 @@ public class AuthController {
 	private UserRepository userRepository;
 
 	/**
-	 * 新規ユーザー登録のコントローラー
+	 * ユーザー登録のリンクをクリックした際にメールアドレスが正しい形式か判定、
+	 * 正しい際は入力画面へ遷移。不正な場合はエラー画面へ遷移
 	 * 
-	 * @param token
-	 * @param model
-	 * @return
+	 * @param token Base64エンコードされたメールアドレス
+	 * @param model Spring MVC のモデルオブジェクト
+	 * @return 表示するビュー名
 	 */
 	@GetMapping("/verify")
 	public String verifyToken(@RequestParam String token, Model model) {
@@ -65,11 +72,12 @@ public class AuthController {
 	}
 
 	/**
-	 * パスワード忘れのコントローラー
+	 * パスワード忘れのリンクをクリックした際にメールアドレスが正しい形式か判定し、
+	 * 正しい際は入力画面へ遷移。不正な場合はエラー画面へ遷移
 	 * 
-	 * @param token
-	 * @param model
-	 * @return
+	 * @param token Base64エンコードされたメールアドレス
+	 * @param model Spring MVC のモデルオブジェクト
+	 * @return 表示するビュー名
 	 */
 	@GetMapping("/verify/password")
 	public String verifyTokenRepass(@RequestParam String token, Model model) {
@@ -106,15 +114,21 @@ public class AuthController {
 	}
 
 	/**
-	 * newUid画面の入力チェックのコントローラー
+	 * newUid.htmlにて入力された内容を入力チェックし、
+	 * 正しい場合次の画面へ遷移、入力チェックに失敗した場合再度newUidへ遷移
 	 * 
-	 * @param token
-	 * @param model
-	 * @return
+	 * @param id メールアドレス
+	 * @param pass パスワード
+	 * @param firstName 名字
+	 * @param lastName 名前
+	 * @param repass 再入力パスワード
+	 * @param email リンク内のパラメーター
+	 * @param model Spring MVC のモデルオブジェクト
+	 * @return 表示するビュー名
 	 */
 	@PostMapping("/registerUser")
 	public String registerUser(@RequestParam String id, @RequestParam String pass, @RequestParam String firstName,
-			@RequestParam String lastName, @RequestParam String repass, @RequestParam String authInfo,
+			@RequestParam String lastName, @RequestParam String repass,
 			@RequestParam String email, Model model) {
 
 		boolean checkPass = false;
@@ -181,39 +195,50 @@ public class AuthController {
 	}
 
 	/**
-	 * 新規ユーザーのDB登録用コントローラー
+	 * newUidResult.htmlにて確定ボタンが押された際にDBに保存するメソッド
 	 * 
-	 * @param token
-	 * @param model
-	 * @return
+	 * @param userId メールアドレス
+	 * @param passWord パスワード
+	 * @param firstName 名字
+	 * @param lastName 名前
+	 * @return 表示するビュー名
 	 */
 	@GetMapping("/submitUser")
-	public String submitUser(@RequestParam String nrtfevah, @RequestParam String okbjrein,
-			@RequestParam String reabtseg,
-			@RequestParam String vsvbrebb) {
+	public String submitUser(@RequestParam("nrtfevah") String userId, @RequestParam("okbjrein") String passWord,
+			@RequestParam("reabtseg") String firstName,
+			@RequestParam("vsvbrebb") String lastName) {
 		// 日本時間を取得
 		ZonedDateTime tokyoTime = ZonedDateTime.now(ZoneId.of("Asia/Tokyo"));
 		Timestamp timestamp = Timestamp.valueOf(tokyoTime.toLocalDateTime());
 		// 入力情報をDBへ保存
 		User user = new User();
-		user.setId(nrtfevah);
-		user.setPassword(okbjrein);
-		user.setFirstname(reabtseg);
-		user.setLastname(vsvbrebb);
+		user.setId(userId);
+		user.setPassword(passWord);
+		user.setFirstname(firstName);
+		user.setLastname(lastName);
 		user.setCreatedate(timestamp);
 		user.setLastlogin(timestamp);
 		userRepository.save(user);
-		// TODO:homeではなくユーザー登録成功画面へ遷移に修正
+
 		return "mail/verificationSuccess";
 	}
 
+	/**
+	 * newUidResult.htmlで修正ボタンが押された場合newUid.htmlに必要な情報を渡すメソッド
+	 * 
+	 * @param id メールアドレス
+	 * @param firstName 名字
+	 * @param lastName 名前
+	 * @param model Spring MVC のモデルオブジェクト
+	 * @return 表示するビュー名
+	 */
 	@GetMapping("/registerUserFixes")
-	public String submitUser(@RequestParam String nrtfevah, @RequestParam String reabtseg,
-			@RequestParam String vsvbrebb, Model model) {
+	public String submitUser(@RequestParam("nrtfevah") String id, @RequestParam("reabtseg") String firstName,
+			@RequestParam("vsvbrebb") String lastName, Model model) {
 
-		model.addAttribute("id", nrtfevah);
-		model.addAttribute("firstName", reabtseg);
-		model.addAttribute("lastName", vsvbrebb);
+		model.addAttribute("id", id);
+		model.addAttribute("firstName", firstName);
+		model.addAttribute("lastName", lastName);
 		model.addAttribute("auth", "fixes");
 		return "html/newUid";
 	}
