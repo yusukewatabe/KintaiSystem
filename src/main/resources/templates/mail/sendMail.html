@@ -11,18 +11,18 @@
 	<body>
 		<!--/* ヘッダー */-->
 		<div class="w-full" th:insert="./common/header :: header"></div><br/>
-		<div th:if="${transitionLink == 'newUid'}">
+		<div th:if="${indexForm.transitionLink == 'newUid'}">
 			<p class="mt-6 text-2xl sm:text-3xl text-center">メールアドレス認証</p><br/><br/>
-			<form th:action="@{/sendMail}" method="post" class="w-full max-w-md mx-auto px-4">
+			<form th:action="@{/sendMailNewUid}" method="post" class="w-full max-w-md mx-auto px-4">
 				<div class="mt-6">
-					<div th:if="${errorId}" class="space-y-4">
+					<div th:if="${indexForm.sendMailErrorFlg}" class="space-y-4">
 						<div>
-							<label for="errorId" class="text-lg sm:text-xl mb-2 m-2 block">認証するメールアドレス</label>
+							<label for="indexForm.sendMailErrorFlg" class="text-lg sm:text-xl mb-2 m-2 block">認証するメールアドレス</label>
 							<input type="text" id="id" name="id" minlength="0" maxlength="128"
 							class="w-full bg-cyan-50 border border-red-500 text-cyan-900 placeholder-red-700 text-sm rounded-lg focus:ring-red-500 focus:border-red-500 p-2.5" placeholder="メールアドレスを入力">
 						</div>
 					</div>
-					<div th:unless="${errorId}" class="space-y-4">
+					<div th:unless="${indexForm.sendMailErrorFlg}" class="space-y-4">
 						<div>
 							<p class="text-lg sm:text-xl mb-2 m-2">認証するメールアドレス</p>
 							<input type="text" id="id" name="id" minlength="0" maxlength="128"
@@ -30,29 +30,33 @@
 						</div>
 					</div>
 					<br/>
-					<p class="mt-2 text-sm text-red-600 font-medium">[[${errorIdMessage}]]</p>
+					<p class="mt-2 text-sm text-red-600 font-medium"th:text="${indexForm.sendMailErrorMessage}"></p>
 					<div class="flex flex-col items-center mt-6 space-y-4">
 						<button type="submit" 
 							class="w-full sm:w-auto text-white bg-cyan-700 hover:bg-cyan-800 focus:outline-none focus:ring-4 focus:ring-cyan-300 font-medium rounded-full text-sm px-8 py-3">
 							認証メールを送信
+						</button>
+						<button type="submit" th:formaction="@{/backIndex}"
+							class="w-full sm:w-auto text-white bg-cyan-700 hover:bg-cyan-800 focus:outline-none focus:ring-4 focus:ring-cyan-300 font-medium rounded-full text-sm px-8 py-3">
+							ログイン画面へ戻る
 						</button>
 						<br />
 					</div>
 				</div>
 			</form>
 		</div>
-		<div th:if="${transitionLink == 'forget'}">
+		<div th:if="${indexForm.transitionLink == 'forget'}">
 			<p class="mt-6 text-2xl sm:text-3xl text-center">パスワード再設定</p><br/><br/>
 			<form th:action="@{/sendMailForget}" method="post" class="w-full max-w-md mx-auto px-4">
 				<div class="mt-6">
-					<div th:if="${errorId}" class="space-y-4">
+					<div th:if="${indexForm.sendMailErrorFlg}" class="space-y-4">
 						<div>
 							<label for="errorId" class="text-lg sm:text-xl mb-2 m-2 block">登録しているメールアドレス</label>
 							<input type="text" id="id" name="id" minlength="0" maxlength="128"
 							class="w-full bg-cyan-50 border border-red-500 text-cyan-900 placeholder-red-700 text-sm rounded-lg focus:ring-red-500 focus:border-red-500 p-2.5" placeholder="メールアドレスを入力">
 						</div>
 					</div>
-					<div th:unless="${errorId}" class="space-y-4">
+					<div th:unless="${indexForm.sendMailErrorFlg}" class="space-y-4">
 						<div>
 							<p class="text-lg sm:text-xl mb-2 m-2">登録しているメールアドレス</p>
 							<input type="text" id="id" name="id" minlength="0" maxlength="128"
@@ -60,13 +64,16 @@
 						</div>
 					</div>
 					<br/>
-					<p class="mt-2 text-sm text-red-600 font-medium">[[${errorIdMessage}]]</p>
+					<p class="mt-2 text-sm text-red-600 font-medium" th:value="${indexForm.sendMailErrorMessage}"></p>
 					<div class="flex flex-col items-center mt-6 space-y-4">
 						<button type="submit" 
 							class="w-full sm:w-auto text-white bg-cyan-700 hover:bg-cyan-800 focus:outline-none focus:ring-4 focus:ring-cyan-300 font-medium rounded-full text-sm px-8 py-3">
 							認証メールを送信
 						</button>
-						<br />
+						<button type="submit" th:formaction="@{/backIndex}"
+							class="w-full sm:w-auto text-white bg-cyan-700 hover:bg-cyan-800 focus:outline-none focus:ring-4 focus:ring-cyan-300 font-medium rounded-full text-sm px-8 py-3">
+							ログイン画面へ戻る
+						</button>
 					</div>
 				</div>
 			</form>

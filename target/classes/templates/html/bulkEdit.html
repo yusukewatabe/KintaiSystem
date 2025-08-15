@@ -17,7 +17,7 @@
 		<form th:action="@{/default}" method="post">
 			<div class="flex justify-center py-3">
 				<div class="w-full max-w-screen-lg px-4">
-					<input type="hidden" name="userId" th:value="${homeForm.email}" />
+					<input type="hidden" name="userId" th:value="${indexForm.email}" />
 					<div class="flex justify-between items-center w-full mb-2">
 						<div class="flex gap-4">
 							<button type="submit" th:formaction="@{/home}" onclick="if(!confirm('編集はまだ確定していません。\nホーム画面へ戻ってもよろしいですか？')) { event.preventDefault(); }"

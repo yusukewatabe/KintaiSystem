@@ -14,14 +14,14 @@
 		<div class="w-full max-w-full" th:insert="./common/header :: header"></div><br />
 		<p class="mt-6 text-2xl sm:text-3xl text-center">入力情報確認</p><br/><br/>
 		<form id="formChange" th:action="@{/default}" method="get" class="w-full max-w-md mx-auto px-4">
-			<input type="hidden" name="nrtfevah" th:value="${id}">
-			<p class="mt-2 text-sm text-red-600 font-medium">id：[[${id}]]</p>
-			<input type="hidden" name="okbjrein" th:value="${pass}">
+			
+			<p class="mt-2 text-sm text-red-600 font-medium">id：<span th:text="${newUidViewForm.inputEmail}"></span></p>
+			
 			<p class="mt-2 text-sm text-red-600 font-medium">パスワード：パスワードは表示されません。</p>
-			<input type="hidden" name="reabtseg" th:value="${firstName}">
-			<p class="mt-2 text-sm text-red-600 font-medium">名字：[[${firstName}]]</p>
-			<input type="hidden" name="vsvbrebb" th:value="${lastName}">
-			<p class="mt-2 text-sm text-red-600 font-medium">名前：[[${lastName}]]</p>
+			
+			<p class="mt-2 text-sm text-red-600 font-medium">名字：<span th:text="${newUidViewForm.inputFirstName}"></span></p>
+
+			<p class="mt-2 text-sm text-red-600 font-medium">名前：<span th:text="${newUidViewForm.inputLastName}"></span></p>
 			<div class="mt-6">
 				<div class="flex flex-col items-center mt-6 space-y-4">
 					<button type="submit" th:formaction="@{/api/auth/submitUser}"
@@ -34,6 +34,10 @@
 					</button>
 				</div>
 			</div>
+			<input type="hidden" name="nrtfevah" th:value="${newUidViewForm.inputEmail}" />
+			<input type="hidden" name="okbjrein" th:value="${newUidViewForm.inputPass}" />
+			<input type="hidden" name="reabtseg" th:value="${newUidViewForm.inputFirstName}" />
+			<input type="hidden" name="vsvbrebb" th:value="${newUidViewForm.inputLastName}" />
 		</form>
 		<!--/* フッター */-->
 		<div class="w-full max-w-full mt-8" th:insert="./common/footer :: footer"></div>

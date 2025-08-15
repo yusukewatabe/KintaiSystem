@@ -9,14 +9,17 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
+import com.example.Kintai.constant.DateFormatConstant;
+import com.example.Kintai.constant.FormConstant;
 import com.example.Kintai.form.BulkForm;
 import com.example.Kintai.form.HomeForm;
+import com.example.Kintai.form.IndexForm;
 import com.example.Kintai.model.Attendance;
 import com.example.Kintai.repository.AttendanceRepository;
+import com.example.Kintai.util.MessageUtil;
 
 /**
  * BulkEditに関するビジネスロジックが記載されているクラス
@@ -27,11 +30,20 @@ import com.example.Kintai.repository.AttendanceRepository;
 @Service
 public class BulkEditService {
 
+	@Autowired
+	private HolidayService holidayService;
+
+	@Autowired
+	private MessageUtil messageUtil;
+
 	/** 初日を判定や正常終了を示す */
 	private static final int MULTIPLE_USE_ZERO = 0;
 
 	/** 末日を判定や異常終了を示す */
 	private static final int MULTIPLE_USE_ONE = 1;
+
+	/** リストサイズ数 */
+	private static final int LISTSIZE_TWO = 2;
 
 	/** 休日 */
 	private static final String HOLIDAY = "休日";
@@ -57,12 +69,6 @@ public class BulkEditService {
 	/** kinmuKubun1~31のセッター */
 	private static final String SETTER_BREAKEND = "setBreakEnd";
 
-	/** bulkFormのAttribute用の定数 */
-	private static final String ATTRIBUTE_BULKFORM = "bulkForm";
-
-	/** homeFormのAttribute用の定数 */
-	private static final String ATTRIBUTE_HOMEFORM = "homeForm";
-
 	/** 土曜日を判定 */
 	private static final String SATURDAY_JUDGEMENT = "(土)";
 
@@ -75,14 +81,23 @@ public class BulkEditService {
 	/** formに空文字をセット */
 	private static final String SET_FORM_EMPTY = "";
 
-	/** 日付フォーマット（月、日、曜日） */
-	private static final String DATE_FORMAT_DAYOFWEEK = "MM/dd (E)";
+	/**  メッセージID：EMK_011 */
+	private static final String EMK011 = "EMK_011";
 
-	/** 日付フォーマット（年、月、日） */
-	private static final String DATE_FORMAT_YYYY_MM_DD = "yyyy/MM/dd";
+	/**  メッセージID：EMK_012 */
+	private static final String EMK012 = "EMK_012";
 
-	@Autowired
-	private HolidayService holidayService;
+	/**  メッセージID：EMK_013 */
+	private static final String EMK013 = "EMK_013";
+
+	/**  メッセージID：EMK_014 */
+	private static final String EMK014 = "EMK_014";
+
+	/**  メッセージID：EMK_015 */
+	private static final String EMK015 = "EMK_015";
+
+	/**  メッセージID：EMK_016 */
+	private static final String EMK016 = "EMK_016";
 
 	/**
 	 * 月の一覧をformに格納するメソッド
@@ -95,6 +110,7 @@ public class BulkEditService {
 
 		BulkForm bulkform = new BulkForm();
 		HomeForm homeForm = new HomeForm();
+		IndexForm indexForm = new IndexForm();
 		YearMonth ym = YearMonth.now(ZoneId.of(TIMEZONE_ASIA_TOKYO));
 		List<String> monthFormatList = listDatesWithWeekdays(ym.getYear(), ym.getMonthValue());
 		List<String> monthList = listDates(ym.getYear(), ym.getMonthValue());
@@ -116,7 +132,7 @@ public class BulkEditService {
 				mDay.invoke(bulkform, bulkdayValue);
 			} catch (Exception e) {
 				e.printStackTrace();
-				throw new RuntimeException("BulkForm setter (Bulkday) 呼び出し失敗: " + bulkdayMethod, e);
+				throw new RuntimeException(messageUtil.getErrorMessage(EMK011) + bulkdayMethod, e);
 			}
 
 			// dbから出勤、退勤、休憩開始時間、休憩終了時間を取得し、formに格納
@@ -159,7 +175,7 @@ public class BulkEditService {
 						mTime.invoke(bulkform, recordClockInTime);
 					} catch (Exception e) {
 						e.printStackTrace();
-						throw new RuntimeException("BulkForm setter (clockInTime) 呼び出し失敗: " + clockInMethod, e);
+						throw new RuntimeException(messageUtil.getErrorMessage(EMK012) + clockInMethod, e);
 					}
 				} else {
 					// 出勤時間がnullの場合
@@ -168,7 +184,7 @@ public class BulkEditService {
 						mTime.invoke(bulkform, SET_FORM_EMPTY);
 					} catch (Exception e) {
 						e.printStackTrace();
-						throw new RuntimeException("BulkForm setter (clockInTime) 呼び出し失敗: " + clockInMethod, e);
+						throw new RuntimeException(messageUtil.getErrorMessage(EMK012) + clockInMethod, e);
 					}
 				}
 				if (recordClockOutTime != null) {
@@ -179,7 +195,7 @@ public class BulkEditService {
 						mTime.invoke(bulkform, recordClockOutTime);
 					} catch (Exception e) {
 						e.printStackTrace();
-						throw new RuntimeException("BulkForm setter (clockOutTime) 呼び出し失敗: " + clockOutMethod, e);
+						throw new RuntimeException(messageUtil.getErrorMessage(EMK013) + clockOutMethod, e);
 					}
 				} else {
 					// 退勤時間がnullの場合空文字をFormに格納
@@ -188,7 +204,7 @@ public class BulkEditService {
 						mTime.invoke(bulkform, SET_FORM_EMPTY);
 					} catch (Exception e) {
 						e.printStackTrace();
-						throw new RuntimeException("BulkForm setter (clockOutTime) 呼び出し失敗: " + clockOutMethod, e);
+						throw new RuntimeException(messageUtil.getErrorMessage(EMK013) + clockOutMethod, e);
 					}
 				}
 				if (recordBreakStart != null) {
@@ -199,7 +215,7 @@ public class BulkEditService {
 						mTime.invoke(bulkform, recordBreakStart);
 					} catch (Exception e) {
 						e.printStackTrace();
-						throw new RuntimeException("BulkForm setter (breakStart) 呼び出し失敗: " + breakStartMethod, e);
+						throw new RuntimeException("" + breakStartMethod, e);
 					}
 				} else {
 					// 休憩時間がnullの場合空文字をFormに格納
@@ -208,7 +224,7 @@ public class BulkEditService {
 						mTime.invoke(bulkform, SET_FORM_EMPTY);
 					} catch (Exception e) {
 						e.printStackTrace();
-						throw new RuntimeException("BulkForm setter (breakStart) 呼び出し失敗: " + breakStartMethod, e);
+						throw new RuntimeException(messageUtil.getErrorMessage(EMK014) + breakStartMethod, e);
 					}
 				}
 				if (recordBreakEnd != null) {
@@ -219,7 +235,7 @@ public class BulkEditService {
 						mTime.invoke(bulkform, recordBreakEnd);
 					} catch (Exception e) {
 						e.printStackTrace();
-						throw new RuntimeException("BulkForm setter (breakEnd) 呼び出し失敗: " + breakEndMethod, e);
+						throw new RuntimeException(messageUtil.getErrorMessage(EMK014) + breakEndMethod, e);
 					}
 				} else {
 					// 休憩終了時間がnullの場合空文字をFormに格納
@@ -228,7 +244,7 @@ public class BulkEditService {
 						mTime.invoke(bulkform, SET_FORM_EMPTY);
 					} catch (Exception e) {
 						e.printStackTrace();
-						throw new RuntimeException("BulkForm setter (breakEnd) 呼び出し失敗: " + breakEndMethod, e);
+						throw new RuntimeException(messageUtil.getErrorMessage(EMK015) + breakEndMethod, e);
 					}
 				}
 			} else {
@@ -238,28 +254,28 @@ public class BulkEditService {
 					mTime.invoke(bulkform, SET_FORM_EMPTY);
 				} catch (Exception e) {
 					e.printStackTrace();
-					throw new RuntimeException("BulkForm setter (clockInTime) 呼び出し失敗: " + clockInMethod, e);
+					throw new RuntimeException(messageUtil.getErrorMessage(EMK015) + clockInMethod, e);
 				}
 				try {
 					Method mTime = BulkForm.class.getMethod(clockOutMethod, String.class);
 					mTime.invoke(bulkform, SET_FORM_EMPTY);
 				} catch (Exception e) {
 					e.printStackTrace();
-					throw new RuntimeException("BulkForm setter (clockOutTime) 呼び出し失敗: " + clockOutMethod, e);
+					throw new RuntimeException(messageUtil.getErrorMessage(EMK013) + clockOutMethod, e);
 				}
 				try {
 					Method mTime = BulkForm.class.getMethod(breakStartMethod, String.class);
 					mTime.invoke(bulkform, SET_FORM_EMPTY);
 				} catch (Exception e) {
 					e.printStackTrace();
-					throw new RuntimeException("BulkForm setter (breakStart) 呼び出し失敗: " + breakStartMethod, e);
+					throw new RuntimeException(messageUtil.getErrorMessage(EMK014) + breakStartMethod, e);
 				}
 				try {
 					Method mTime = BulkForm.class.getMethod(breakEndMethod, String.class);
 					mTime.invoke(bulkform, SET_FORM_EMPTY);
 				} catch (Exception e) {
 					e.printStackTrace();
-					throw new RuntimeException("BulkForm setter (breakEnd) 呼び出し失敗: " + breakEndMethod, e);
+					throw new RuntimeException(messageUtil.getErrorMessage(EMK015) + breakEndMethod, e);
 				}
 			}
 
@@ -270,13 +286,14 @@ public class BulkEditService {
 				mKinmu.invoke(bulkform, kinmuKubun);
 			} catch (Exception e) {
 				e.printStackTrace();
-				throw new RuntimeException("BulkForm setter (KinmuKubun) 呼び出し失敗: " + kinmuMethod, e);
+				throw new RuntimeException(messageUtil.getErrorMessage(EMK016) + kinmuMethod, e);
 			}
 		}
-		homeForm.setEmail(userId);
+		indexForm.setEmail(userId);
 
-		model.addAttribute(ATTRIBUTE_HOMEFORM, homeForm);
-		model.addAttribute(ATTRIBUTE_BULKFORM, bulkform);
+		model.addAttribute(FormConstant.ATTRIBUTE_HOMEFORM, homeForm);
+		model.addAttribute(FormConstant.ATTRIBUTE_INDEXFORM, indexForm);
+		model.addAttribute(FormConstant.ATTRIBUTE_BULKFORM, bulkform);
 	}
 
 	/**
@@ -288,7 +305,7 @@ public class BulkEditService {
 	 */
 	public List<String> listDates(int year, int month) {
 		YearMonth ym = YearMonth.of(year, month);
-		DateTimeFormatter fmt = DateTimeFormatter.ofPattern(DATE_FORMAT_YYYY_MM_DD, Locale.JAPANESE);
+		DateTimeFormatter fmt = DateTimeFormatter.ofPattern(DateFormatConstant.DATETIME_FORMAT_YYYY_MM_DD, Locale.JAPANESE);
 
 		List<String> result = new ArrayList<>(ym.lengthOfMonth());
 		for (int i = 1; i <= ym.lengthOfMonth(); i++) {
@@ -307,7 +324,7 @@ public class BulkEditService {
 	 */
 	private List<String> listDatesWithWeekdays(int year, int month) {
 		YearMonth ym = YearMonth.of(year, month);
-		DateTimeFormatter fmt = DateTimeFormatter.ofPattern(DATE_FORMAT_DAYOFWEEK, Locale.JAPANESE);
+		DateTimeFormatter fmt = DateTimeFormatter.ofPattern(DateFormatConstant.DATE_FORMAT_DAYOFWEEK, Locale.JAPANESE);
 
 		List<String> result = new ArrayList<>(ym.lengthOfMonth());
 		for (int i = 1; i <= ym.lengthOfMonth(); i++) {
@@ -326,11 +343,11 @@ public class BulkEditService {
 	 */
 	private static List<String> listMonth(int year, int month) {
 		YearMonth ym = YearMonth.of(year, month);
-		DateTimeFormatter fmt = DateTimeFormatter.ofPattern(DATE_FORMAT_YYYY_MM_DD, Locale.JAPANESE);
+		DateTimeFormatter fmt = DateTimeFormatter.ofPattern(DateFormatConstant.DATETIME_FORMAT_YYYY_MM_DD, Locale.JAPANESE);
 
-		List<String> result = new ArrayList<>(2);
+		List<String> result = new ArrayList<>(LISTSIZE_TWO);
 
-		LocalDate firstDate = ym.atDay(1);
+		LocalDate firstDate = ym.atDay(MULTIPLE_USE_ONE);
 		LocalDate lastDate = ym.atEndOfMonth();
 		// 月の初日
 		result.add(firstDate.format(fmt));

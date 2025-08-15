@@ -4,7 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 /**
- * bulkEdit、bulkEditPreviewのFormを管理するクラス
+ * bulkEdit、bulkEditPreviewのて使用されるgetter,setterを管理するクラス
  * 
  * @author Watabe Yusuke
  * @version 0.1

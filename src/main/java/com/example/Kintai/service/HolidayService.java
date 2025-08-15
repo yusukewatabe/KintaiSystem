@@ -18,8 +18,26 @@ import jakarta.annotation.PostConstruct;
 @Service
 public class HolidayService {
 
-	// CSV のパス（resources 以下）
+	/** CSV のパス（resources 以下） */
 	private static final String HOLIDAY_CSV = "static/syukujitsu.csv";
+
+	/** 祝日が見つからない場合にnotFoundを返却 */
+	private static final String NOT_FOUND = "notFound";
+
+	/** CSV内の,で区切られるかの判定に使用 */
+	private static final String COMMA = ",";
+
+	/**  */
+	private static final int MUINUS_ONE = -1;
+
+	/** リストで0番目を取得するために使用 */
+	private static final int LIST_USE_ZERO = 0;
+
+	/** リストで1番目を取得するために使用 */
+	private static final int LIST_USE_ONE = 1;
+
+	/** 長さを2に固定する */
+	private static final int MULTIPLE_USE_TWO = 2;
 
 	private final Map<String, String> holidayMap = new HashMap<>();
 
@@ -34,11 +52,11 @@ public class HolidayService {
 			reader.readLine();
 			String line;
 			while ((line = reader.readLine()) != null) {
-				String[] cols = line.split(",", -1);
-				if (cols.length < 2 || cols[0].isBlank())
+				String[] cols = line.split(COMMA, MUINUS_ONE);
+				if (cols.length < MULTIPLE_USE_TWO || cols[LIST_USE_ZERO].isBlank())
 					continue;
-				String date = cols[0].trim();
-				String holidayName = cols[1].trim();
+				String date = cols[LIST_USE_ZERO].trim();
+				String holidayName = cols[LIST_USE_ONE].trim();
 				holidayMap.put(date, holidayName);
 			}
 		} catch (Exception e) {
@@ -54,12 +72,10 @@ public class HolidayService {
 	 */
 	public String judgeHoliday(String date) {
 		// 比較用に同じフォーマットの文字列を作成
-		// String key = date.format(CSV_FMT);
-		System.out.println("[DEBUG] lookup key='" + date + "'");
 		if (holidayMap.containsKey(date)) {
 			return holidayMap.get(date);
 		} else {
-			return "notFound";
+			return NOT_FOUND;
 		}
 	}
 }

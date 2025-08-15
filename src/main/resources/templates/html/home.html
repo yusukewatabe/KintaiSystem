@@ -43,7 +43,7 @@
 				<div class="flex flex-col gap-6 p-10 max-w-[1000px] w-full">
 					<div class="flex-1 items-center text-center">
 						<!--/* ボタン群 */-->
-						<input type="hidden" name="userId" th:value="${homeForm.email}" />
+						<input type="hidden" name="userId" th:value="${indexForm.email}" />
 						<div class="grid grid-cols-2 gap-4">
 							<button name="action" value="clockIn" th:formaction="@{/attendance/clock}" type="submit"
 									class="text-5xl bg-blue-500 text-white px-4 py-10 rounded hover:bg-blue-600">出勤</button>

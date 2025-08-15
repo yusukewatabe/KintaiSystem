@@ -6,7 +6,6 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
-
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 
@@ -21,6 +20,29 @@ public class EmailService {
 
 	@Autowired
 	private JavaMailSender mailSender;
+
+	/** メールアドレスに添付するURL */
+	private static final String URL_NEWUID_LINK = "http://localhost:8081/api/auth/verify?token=";
+
+	private static final String URL_FORGET_LINK = "http://localhost:8081/api/auth/verify/password?token=";
+
+	/** メールアドレスのタイトル(新規ユーザー登録) */
+	private static final String MAIL_TITLE_NEWUSER = "勤怠管理システムからメール認証のお願い";
+
+	/** メールアドレスのタイトル(パスワード忘れ) */
+	private static final String MAIL_TITLE_FORGET_PASSWORD = "勤怠管理システムからパスワード再入力のお願い";
+
+	/** メールコンテンツ内のタイトル */
+	private static final String MAIL_CONTENT_TITILE_NEWUSER = "<p>以下のリンクをクリックして認証を完了してください</p>";
+
+	/** メールコンテンツ内のタイトル */
+	private static final String MAIL_CONTENT_TITILE_FORGETPASSWORD = "<p>以下のリンクをクリックしてパスワードの再発行を完了してください</p>";
+
+	/** メールコンテンツ内の最初のbody */
+	private static final String MAIL_CONTENT_BODY_FIRST = "<p><a href='";
+
+	/** メールコンテンツ内の最初のbody */
+	private static final String MAIL_CONTENT_BODY_SECOND = "'>認証リンク</a></p>";
 
 	/**
 	 * 新規ユーザーのメール認証送信するメソッド
@@ -37,16 +59,15 @@ public class EmailService {
 			e.printStackTrace();
 		}
 
-		String link = "http://localhost:8081/api/auth/verify?token=" + base64Encode;
-		String subject = "勤怠管理システムからメール認証のお願い";
-		String content = "<p>以下のリンクをクリックして認証を完了してください</p>"
-				+ "<p><a href='" + link + "'>認証リンク</a></p>";
+		String link = URL_NEWUID_LINK + base64Encode;
+		String content = MAIL_CONTENT_TITILE_NEWUSER + MAIL_CONTENT_BODY_FIRST + 
+						link + MAIL_CONTENT_BODY_SECOND;
 
 		try {
 			MimeMessage message = mailSender.createMimeMessage();
 			MimeMessageHelper helper = new MimeMessageHelper(message, true);
 			helper.setTo(toEmail);
-			helper.setSubject(subject);
+			helper.setSubject(MAIL_TITLE_NEWUSER);
 			helper.setText(content, true);
 			mailSender.send(message);
 		} catch (MessagingException e) {
@@ -70,16 +91,15 @@ public class EmailService {
 			e.printStackTrace();
 		}
 
-		String link = "http://localhost:8081/api/auth/verify/password?token=" + base64Encode;
-		String subject = "勤怠管理システムからパスワード再入力のお願い";
-		String content = "<p>以下のリンクをクリックしてパスワードの再発行を完了してください</p>"
-				+ "<p><a href='" + link + "'>認証リンク</a></p>";
+		String link = URL_FORGET_LINK + base64Encode;
+		String content = MAIL_CONTENT_TITILE_FORGETPASSWORD + MAIL_CONTENT_BODY_FIRST + 
+						link + MAIL_CONTENT_BODY_SECOND;
 
 		try {
 			MimeMessage message = mailSender.createMimeMessage();
 			MimeMessageHelper helper = new MimeMessageHelper(message, true);
 			helper.setTo(toEmail);
-			helper.setSubject(subject);
+			helper.setSubject(MAIL_TITLE_FORGET_PASSWORD);
 			helper.setText(content, true);
 			mailSender.send(message);
 		} catch (MessagingException e) {

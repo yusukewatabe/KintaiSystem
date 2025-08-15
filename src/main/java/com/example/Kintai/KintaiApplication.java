@@ -10,7 +10,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
  * Tomcat起動時にコントローラー等をスキャンするクラス
  */
 @SpringBootApplication
-@ComponentScan({ "com.example.Kintai.controller", "com.example.Kintai.service" })
+@ComponentScan({ "com.example.Kintai.controller", "com.example.Kintai.service", "com.example.Kintai.util" })
 @EnableJpaRepositories(basePackages = "com.example.Kintai.repository")
 public class KintaiApplication extends SpringBootServletInitializer {
 

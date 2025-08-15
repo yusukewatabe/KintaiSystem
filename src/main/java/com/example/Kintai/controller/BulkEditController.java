@@ -3,6 +3,9 @@ package com.example.Kintai.controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import com.example.Kintai.constant.DateFormatConstant;
+import com.example.Kintai.constant.MappingPathNameConstant;
+import com.example.Kintai.constant.ViewNameConstant;
 import com.example.Kintai.model.Attendance;
 import com.example.Kintai.model.User;
 import com.example.Kintai.repository.AttendanceRepository;
@@ -10,7 +13,6 @@ import com.example.Kintai.repository.UserRepository;
 import com.example.Kintai.service.BulkEditService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import lombok.RequiredArgsConstructor;
 import java.time.YearMonth;
 import java.time.ZoneId;
 import java.util.List;
@@ -23,30 +25,16 @@ import java.util.Optional;
  * @version 0.1
  */
 @Controller
-@RequiredArgsConstructor
 public class BulkEditController {
 
-	private final AttendanceRepository attendanceRepository;
-
-	/** bulkEditPreviewのMappingPath */
-	private static final String BULKEDIT_PATH = "/bulkEdit";
-
-	/** bulkEdit.htmlへの遷移Path */
-	private static final String BULKEDIT_HTML_PATH = "html/bulkEdit";
-
-	/** bulkEdit.htmlへの遷移Path */
-	private static final String BULKEDITPREVIEW_DATABASESET_PATH = "/bulkEditDecision";
-
-	/** bulkEdit.htmlへの遷移Path */
-	private static final String BULKEDITPREVIEW_HTML_PATH = "html/bulkEditPreview";
-
-	/** タイムゾーンをアジア/東京 */
-	private static final String TIMEZONE_ASIA_TOKYO = "Asia/Tokyo";
+	@Autowired
+	private AttendanceRepository attendanceRepository;
 
 	@Autowired
 	private BulkEditService bulkEditService;
 
-	private final UserRepository userRepository;
+	@Autowired
+	private UserRepository userRepository;
 
 	/**
 	 * 一括編集画面へ遷移するメソッド
@@ -55,11 +43,11 @@ public class BulkEditController {
 	 * @param model Spring MVC のモデルオブジェクト
 	 * @return 表示するビュー名
 	 */
-	@PostMapping(BULKEDIT_PATH)
-	public String handleClockAction(String userId, Model model) {
+	@PostMapping(MappingPathNameConstant.BULKEDIT_PATH)
+	public String editPreview(String userId, Model model) {
 
 		bulkEditService.bulkEditAndPreview(userId, attendanceRepository, model);
-		return BULKEDIT_HTML_PATH;
+		return ViewNameConstant.BULKEDIT_HTML_PATH;
 	}
 
 	/**
@@ -73,12 +61,12 @@ public class BulkEditController {
 	 * @param breakEndList 休憩終了時間のリスト(1~31)
 	 * @return 表示するビュー名
 	 */
-	@PostMapping(BULKEDITPREVIEW_DATABASESET_PATH)
-	public String handleClockAction(String userId, Model model, @RequestParam List<String> clockInTimeList,
+	@PostMapping(MappingPathNameConstant.BULKEDITPREVIEW_DATABASESET_PATH)
+	public String clockListDbSubmit(String userId, Model model, @RequestParam List<String> clockInTimeList,
 			@RequestParam List<String> clockOutTimeList, @RequestParam List<String> breakStartList,
 			@RequestParam List<String> breakEndList) {
 
-		YearMonth ym = YearMonth.now(ZoneId.of(TIMEZONE_ASIA_TOKYO));
+		YearMonth ym = YearMonth.now(ZoneId.of(DateFormatConstant.TIMEZONE_ASIA_TOKYO));
 
 		Attendance attendance = new Attendance();
 
@@ -137,14 +125,14 @@ public class BulkEditController {
 
 		// dbからテーブルの値を取得
 		bulkEditService.bulkEditAndPreview(userId, attendanceRepository, model);
-		return BULKEDITPREVIEW_HTML_PATH;
+		return ViewNameConstant.BULKEDITPREVIEW_HTML_PATH;
 	}
 
 	/**
 	 * null及び空文字チェックをするメソッド
 	 * 
 	 * @param check チェックする文字列
-	 * @return boolean
+	 * @return true or false
 	 */
 	private boolean emptyAndNullCheck(String check) {
 		return check == null || check.isBlank();

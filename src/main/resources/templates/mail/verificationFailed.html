@@ -14,10 +14,10 @@
 		<div class="flex flex-col items-center mt-6 space-y-4">
 			<p class="mt-6 text-2xl sm:text-3xl text-center">認証に失敗しました。</p>
 			<p class="mt-6 text-2xl sm:text-3xl text-center">再度メール認証からやり直してください。</p><br/>
-			<div th:if="${transitionLink == 'newUid'}">
+			<div th:if="${indexForm.transitionLink == 'newUid'}">
 				<a th:href="@{/sendMailForm}" class="text-black-600 hover:text-cyan-500 text-xl">再度のメール認証はこちら</a>
 			</div>
-			<div th:if="${transitionLink == 'forget'}">
+			<div th:if="${indexForm.transitionLink == 'forget'}">
 				<a th:href="@{/forgetPass}" class="text-black-600 hover:text-cyan-500 text-xl">再度のメール認証はこちら</a>
 			</div>
 		</div>
