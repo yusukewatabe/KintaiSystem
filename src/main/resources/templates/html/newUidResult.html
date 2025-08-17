@@ -34,10 +34,10 @@
 					</button>
 				</div>
 			</div>
-			<input type="hidden" name="nrtfevah" th:value="${newUidViewForm.inputEmail}" />
+			<input type="hidden" name="nrtfevah" th:value="${newUidForm.encodeId}" />
 			<input type="hidden" name="okbjrein" th:value="${newUidViewForm.inputPass}" />
-			<input type="hidden" name="reabtseg" th:value="${newUidViewForm.inputFirstName}" />
-			<input type="hidden" name="vsvbrebb" th:value="${newUidViewForm.inputLastName}" />
+			<input type="hidden" name="reabtseg" th:value="${newUidForm.encodeFirstName}" />
+			<input type="hidden" name="vsvbrebb" th:value="${newUidForm.encodeLastName}" />
 		</form>
 		<!--/* フッター */-->
 		<div class="w-full max-w-full mt-8" th:insert="./common/footer :: footer"></div>
