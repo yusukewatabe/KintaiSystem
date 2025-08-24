@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
-
 import com.jp.Kintai.constant.FormConstant;
 import com.jp.Kintai.constant.HomeConstant;
 import com.jp.Kintai.form.HomeForm;
@@ -13,7 +12,6 @@ import com.jp.Kintai.model.Attendance;
 import com.jp.Kintai.model.User;
 import com.jp.Kintai.repository.AttendanceRepository;
 import com.jp.Kintai.repository.UserRepository;
-
 import java.util.Optional;
 
 /**
@@ -88,8 +86,6 @@ public class UserService {
 
 		HomeForm homeForm = new HomeForm();
 		IndexForm indexForm = new IndexForm();
-		// TODO:ステータスの有無検討
-		model.addAttribute("status", true);
 		// レコードの有無確認
 		if (optAtt.isPresent()) {
 			Attendance attendance = optAtt.get();

@@ -11,9 +11,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-
 import com.jp.Kintai.constant.DateFormatConstant;
 import com.jp.Kintai.constant.FormConstant;
+import com.jp.Kintai.constant.HomeConstant;
 import com.jp.Kintai.constant.MappingPathNameConstant;
 import com.jp.Kintai.constant.NewUidConstant;
 import com.jp.Kintai.constant.ViewNameConstant;
@@ -50,16 +50,31 @@ public class IndexController {
 	 * @param model Spring MVC のモデルオブジェクト
 	 * @return 表示するビュー名
 	 */
-	@GetMapping("/")
+	@GetMapping(MappingPathNameConstant.INDEX_PATH)
 	public String index(Model model) {
 		IndexForm indexForm = new IndexForm();
 
 		indexForm.setErrorFlg(false);
-		// TODO:ステータス使用有無
-		model.addAttribute("status", false);
+		model.addAttribute(HomeConstant.MONTH_VIEW, true);
+		model.addAttribute(HomeConstant.LOGOUT_VIEW, true);
 		// index.htmlに遷移
 		model.addAttribute(FormConstant.ATTRIBUTE_INDEXFORM, indexForm);
 		return ViewNameConstant.INDEX_VIEW;
+	}
+
+	/**
+	 * クレジット画面を表示するメソッド
+	 * 
+	 * @param model Spring MVC のモデルオブジェクト
+	 * @return 表示するビュー名
+	 */
+	@GetMapping(MappingPathNameConstant.CREDIT_PATH)
+	public String credit(Model model) {
+		model.addAttribute(HomeConstant.CREDIT_VIEW, true);
+		model.addAttribute(HomeConstant.LOGIN_VIEW, true);
+		model.addAttribute(HomeConstant.MONTH_VIEW, true);
+		model.addAttribute(HomeConstant.LOGOUT_VIEW, true);
+		return ViewNameConstant.CREDIT_VIEW;
 	}
 
 	/**
@@ -74,6 +89,8 @@ public class IndexController {
 		indexForm.setSendMailErrorFlg(false);
 		indexForm.setTransitionLink(NewUidConstant.TRANSITIONLINK_NEWUID);
 		model.addAttribute(FormConstant.ATTRIBUTE_INDEXFORM, indexForm);
+		model.addAttribute(HomeConstant.MONTH_VIEW, true);
+		model.addAttribute(HomeConstant.LOGOUT_VIEW, true);
 		return ViewNameConstant.MAIL_SENDMAIL_VIEW;
 	}
 
@@ -89,6 +106,8 @@ public class IndexController {
 		indexForm.setSendMailErrorFlg(false);
 		indexForm.setTransitionLink(NewUidConstant.TRANSITIONLINK_FORGET);
 		model.addAttribute(FormConstant.ATTRIBUTE_INDEXFORM, indexForm);
+		model.addAttribute(HomeConstant.MONTH_VIEW, true);
+		model.addAttribute(HomeConstant.LOGOUT_VIEW, true);
 		return ViewNameConstant.MAIL_SENDMAIL_VIEW;
 	}
 
@@ -123,8 +142,6 @@ public class IndexController {
 			model.addAttribute(FormConstant.ATTRIBUTE_INDEXFORM, indexForm);
 			return ViewNameConstant.HOME_VIEW; // ログイン成功時のリダイレクト
 		} else {
-			// TODO ステータス使用検討
-			model.addAttribute("status", false);
 			indexForm.setErrorFlg(true);
 			indexForm.setErrorMessage(messageUtil.getErrorMessage(EMK009));
 

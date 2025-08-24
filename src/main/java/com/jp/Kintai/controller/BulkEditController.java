@@ -3,16 +3,18 @@ package com.jp.Kintai.controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-
 import com.jp.Kintai.constant.DateFormatConstant;
+import com.jp.Kintai.constant.HomeConstant;
 import com.jp.Kintai.constant.MappingPathNameConstant;
 import com.jp.Kintai.constant.ViewNameConstant;
+import com.jp.Kintai.enumClass.LogLevel;
 import com.jp.Kintai.model.Attendance;
 import com.jp.Kintai.model.User;
 import com.jp.Kintai.repository.AttendanceRepository;
 import com.jp.Kintai.repository.UserRepository;
 import com.jp.Kintai.service.BulkEditService;
-
+import com.jp.Kintai.util.LoggerUtil;
+import com.jp.Kintai.util.MessageUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import java.time.YearMonth;
@@ -38,6 +40,18 @@ public class BulkEditController {
 	@Autowired
 	private UserRepository userRepository;
 
+	@Autowired
+	private MessageUtil messageUtil;
+
+	@Autowired
+	private LoggerUtil loggerUtil;
+
+	/** メッセージID：EMK_035 */
+	private static final String EMK035 = "EMK_035";
+
+	/** メッセージID：EMK_036 */
+	private static final String EMK036 = "EMK_036";
+
 	/**
 	 * 一括編集画面へ遷移するメソッド
 	 * 
@@ -47,11 +61,7 @@ public class BulkEditController {
 	 */
 	@PostMapping(MappingPathNameConstant.BULKEDIT_PATH)
 	public String editPreview(String userId, Model model) {
-
-		if(!bulkEditService.bulkEditAndPreview(userId, attendanceRepository, model)){
-			return "error";
-		}
-		
+		bulkEditService.bulkEditAndPreview(userId, attendanceRepository, model);
 		return ViewNameConstant.BULKEDIT_HTML_PATH;
 	}
 
@@ -77,9 +87,8 @@ public class BulkEditController {
 
 		Optional<User> userOpt = userRepository.findById(userId);
 		if (userOpt.isEmpty()) {
-			// TODO エラー処理へ遷移
-			model.addAttribute("error", "ユーザーが見つかりません");
-			return "error";
+			loggerUtil.LogOutput(LogLevel.ERROR, messageUtil.getErrorMessage(EMK035), messageUtil.getErrorMessage(EMK036));
+			return ViewNameConstant.ERROR_PATH;
 		}
 
 		// 月の一覧を取得
@@ -130,6 +139,8 @@ public class BulkEditController {
 
 		// dbからテーブルの値を取得
 		bulkEditService.bulkEditAndPreview(userId, attendanceRepository, model);
+		model.addAttribute(HomeConstant.MONTH_VIEW, true);
+		model.addAttribute(HomeConstant.MONTH_VIEW, true);
 		return ViewNameConstant.BULKEDITPREVIEW_HTML_PATH;
 	}
 

@@ -8,6 +8,9 @@ package com.jp.Kintai.constant;
  **/
 public class MappingPathNameConstant {
 
+	/** indexメソッドにMappingされるパス */
+	public static final String INDEX_PATH = "/";
+
 	/** AuthControllerに遷移するRequestMappingのパス */
 	public static final String REQUEST_API_AUTH_PATH = "/api/auth";
 
@@ -16,6 +19,9 @@ public class MappingPathNameConstant {
 
 	/** backHomeメソッドにMappingされるパス */
 	public static final String HOME_PATH = "/home";
+
+	/** creditメソッドにMappingされるパス */
+	public static final String CREDIT_PATH = "/credit";
 
 	/** sendMailFormメソッドにMappingされるパス */
 	public static final String NEWUID_PATH = "/newUid";

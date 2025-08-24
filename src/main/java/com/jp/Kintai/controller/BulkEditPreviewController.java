@@ -1,12 +1,11 @@
 package com.jp.Kintai.controller;
 
 import org.springframework.web.bind.annotation.PostMapping;
-
+import com.jp.Kintai.constant.HomeConstant;
 import com.jp.Kintai.constant.MappingPathNameConstant;
 import com.jp.Kintai.constant.ViewNameConstant;
 import com.jp.Kintai.repository.AttendanceRepository;
 import com.jp.Kintai.service.BulkEditService;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -38,6 +37,7 @@ public class BulkEditPreviewController {
 
 		// dbからテーブルの値を取得
 		bulkEditService.bulkEditAndPreview(userId, attendanceRepository, model);
+		model.addAttribute(HomeConstant.MONTH_VIEW, true);
 		return ViewNameConstant.BULKEDITPREVIEW_HTML_PATH;
 	}
 

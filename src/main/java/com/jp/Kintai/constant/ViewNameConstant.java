@@ -11,6 +11,9 @@ public class ViewNameConstant {
 	/** index.htmlのビュー名 */
 	public static final String INDEX_VIEW = "index";
 
+	/** credit.htmlのビュー名 */
+	public static final String CREDIT_VIEW = "credit";
+
 	/** home.htmlのビュー名 */
 	public static final String HOME_VIEW = "html/home";
 
@@ -19,9 +22,6 @@ public class ViewNameConstant {
 
 	/** newUidResult.htmlのビュー名 */
 	public static final String NEWUID_RESULT_VIEW = "html/newUidResult";
-
-	/** verificationSuccess.htmlのビュー名 */
-	public static final String MAIL_VERIFISATION_SUCCESS_VIEW = "mail/verificationSuccess";
 
 	/** verificationFailed.htmlのビュー名 */
 	public static final String MAIL_VERIFISATION_FAILED_VIEW = "mail/verificationFailed";
@@ -40,4 +40,10 @@ public class ViewNameConstant {
 
 	/** bulkEditPreview.htmlのビュー名 */
 	public static final String BULKEDITPREVIEW_HTML_PATH = "html/bulkEditPreview";
+
+	/** passOverrideSuccess.htmlのビュー名 */
+	public static final String SUCCESS_PATH = "html/success";
+
+	/** error.htmlのビュー名 */
+	public static final String ERROR_PATH = "error/error";
 }

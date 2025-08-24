@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<link href="/dist/output.css" rel="stylesheet">
+		<body class="bg-gray-100 font-sans leading-normal tracking-normal">
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<script th:src="@{/webjars/dayjs/1.11.7/dayjs.min.js}"></script>
+		<script th:src="@{/webjars/dayjs/1.11.7/plugin/utc.js}"></script>
+		<script th:src="@{/webjars/dayjs/1.11.7/plugin/timezone.js}"></script>
+		<link rel="icon" th:href="@{/favicon.ico}" />
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+		<title>勤怠システム</title>
+	</head>
+	<body>
+		<!--/* ヘッダー */-->
+		<div class="w-full max-w-full" th:insert="./common/errorHeader :: header"></div>
+		<p class="mt-6 text-2xl sm:text-3xl text-center">システムエラーが発生しました。</p><br/>
+		<p class="mt-2 text-sm text-red-600 font-medium text-center">再度同様のエラーが発生する場合は管理者に発生時刻を連絡ください。</p>
+		<p class="mt-2 text-sm text-red-600 font-medium text-center">発生時刻：<span id="timeOfOccurrence"></span></p>
+		<p class="mt-2 text-sm text-red-600 font-medium text-center">エラーコード：<span th:text="${status}"></span></p>
+		<!--/* フッター */-->
+		<div class="w-full max-w-full mt-8" th:insert="./common/footer :: footer"></div>
+		<script>
+			dayjs.extend(window.dayjs_plugin_utc);
+			dayjs.extend(window.dayjs_plugin_timezone);
+
+			const el2 = document.getElementById('timeOfOccurrence');
+			function tick2() {
+				el2.textContent = dayjs().tz('Asia/Tokyo').format('YYYY/MM/DD HH:mm:ss');
+			}
+			tick2();
+		</script>
+	</body>
+</html>

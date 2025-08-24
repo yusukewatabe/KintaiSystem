@@ -14,12 +14,20 @@
 		<div class="flex flex-col items-center mt-6 space-y-4">
 			<p class="mt-6 text-2xl sm:text-3xl text-center">認証に失敗しました。</p>
 			<p class="mt-6 text-2xl sm:text-3xl text-center">再度メール認証からやり直してください。</p><br/>
-			<div th:if="${indexForm.transitionLink == 'newUid'}">
-				<a th:href="@{/sendMailForm}" class="text-black-600 hover:text-cyan-500 text-xl">再度のメール認証はこちら</a>
-			</div>
-			<div th:if="${indexForm.transitionLink == 'forget'}">
-				<a th:href="@{/forgetPass}" class="text-black-600 hover:text-cyan-500 text-xl">再度のメール認証はこちら</a>
-			</div>
+			<form th:action="@{/default}" method="post">
+				<div th:if="${indexForm.transitionLink == 'newUid'}">
+					<button type="submit" th:formaction="@{/sendMailNewUid}"
+						class="w-full sm:w-auto text-white bg-cyan-700 hover:bg-cyan-800 focus:outline-none focus:ring-4 focus:ring-cyan-300 font-medium rounded-full text-sm px-8 py-3">
+						再度のメール認証はこちら
+					</button>
+				</div>
+				<div th:if="${indexForm.transitionLink == 'forget'}">
+					<button type="submit" th:formaction="@{/sendMailForget}"
+						class="w-full sm:w-auto text-white bg-cyan-700 hover:bg-cyan-800 focus:outline-none focus:ring-4 focus:ring-cyan-300 font-medium rounded-full text-sm px-8 py-3">
+						再度のメール認証はこちら
+					</button>
+				</div>
+			</form>
 		</div>
 		<!--/* フッター */-->
 		<div class="w-full max-w-full mt-8" th:insert="./common/footer :: footer"></div>

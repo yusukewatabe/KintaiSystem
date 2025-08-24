@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<link href="/dist/output.css" rel="stylesheet">
+		<body class="bg-gray-100 font-sans leading-normal tracking-normal">
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<link rel="icon" th:href="@{/favicon.ico}" />
+		<title>勤怠システム</title>
+	</head>
+	<body>
+		<!--/* ヘッダー */-->
+		<div class="w-full" th:insert="./common/header :: header"></div><br/>
+		<div class="flex flex-col items-center mt-6 space-y-4">
+			<form th:action="@{/}">
+				<div th:if="${indexForm.transitionLink == 'newUid'}">
+					<p class="mt-6 text-2xl sm:text-3xl text-center">以下メールアドレスの登録に成功しました。</p><br/><br/>
+					<p class="mt-6 text-2xl sm:text-3xl text-center">メールアドレス：<span th:text="${indexForm.email}"></span></p><br/>
+					<p class="mt-6 text-2xl sm:text-3xl text-center">ログインする場合は下記ボタンからログイン画面へ移動ください。</p><br/>
+					<button type="submit" class="w-full sm:w-auto text-white bg-cyan-700 hover:bg-cyan-800 focus:outline-none focus:ring-4 focus:ring-cyan-300 font-medium rounded-full text-sm px-8 py-3">
+						ログイン画面へ
+					</button>
+				</div>
+				<div th:if="${indexForm.transitionLink == 'forget'}">
+					<p class="mt-6 text-2xl sm:text-3xl text-center">以下メールアドレスのパスワードの再設定に成功しました。</p><br/><br/>
+					<p class="mt-6 text-2xl sm:text-3xl text-center">メールアドレス：<span th:text="${indexForm.email}"></span></p><br/>
+					<p class="mt-6 text-2xl sm:text-3xl text-center">ログインする場合は下記ボタンからログイン画面へ移動ください。</p><br/>
+					<button type="submit" class="w-full sm:w-auto text-white bg-cyan-700 hover:bg-cyan-800 focus:outline-none focus:ring-4 focus:ring-cyan-300 font-medium rounded-full text-sm px-8 py-3">
+						ログイン画面へ
+					</button>
+				</div>
+			</form>
+		</div>
+		<!--/* フッター */-->
+		<div class="w-full max-w-full mt-8" th:insert="./common/footer :: footer"></div>
+	</body>
+</html>

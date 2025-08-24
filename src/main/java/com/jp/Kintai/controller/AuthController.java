@@ -7,9 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
 import com.jp.Kintai.constant.DateFormatConstant;
 import com.jp.Kintai.constant.FormConstant;
+import com.jp.Kintai.constant.HomeConstant;
 import com.jp.Kintai.constant.MappingPathNameConstant;
 import com.jp.Kintai.constant.NewUidConstant;
 import com.jp.Kintai.constant.ViewNameConstant;
@@ -20,7 +20,6 @@ import com.jp.Kintai.model.User;
 import com.jp.Kintai.repository.UserRepository;
 import com.jp.Kintai.util.Base64Util;
 import com.jp.Kintai.util.MessageUtil;
-
 import org.springframework.stereotype.Controller;
 import org.apache.commons.validator.routines.EmailValidator;
 
@@ -86,18 +85,11 @@ public class AuthController {
 		NewUidForm newUidForm = new NewUidForm();
 
 		if (!token.isEmpty() && token != null) {
-			try {
-				decodeString = base64Util.base64Decode(token);
-				if (EmailValidator.getInstance().isValid(decodeString)) {
-					validatorCheckFlg = true;
-				} else {
-					validatorCheckFlg = false;
-				}
-			} catch (Exception e) {
+			decodeString = base64Util.base64Decode(token);
+			if (EmailValidator.getInstance().isValid(decodeString)) {
+				validatorCheckFlg = true;
+			} else {
 				validatorCheckFlg = false;
-				e.printStackTrace();
-				// TODO:エラーを表示
-				return "error";
 			}
 
 			// emailのバリデーションチェックがOKかNGか
@@ -105,16 +97,22 @@ public class AuthController {
 				newUidForm.setEmail(decodeString);
 				newUidForm.setAuthFlg(false);
 				model.addAttribute(FormConstant.ATTRIBUTE_NEWUIDFORM, newUidForm);
+				model.addAttribute(HomeConstant.MONTH_VIEW, true);
+				model.addAttribute(HomeConstant.LOGOUT_VIEW, true);
 				return ViewNameConstant.NEWUID_VIEW;
 			} else {
 				newUidForm.setEmail(decodeString);
 				indexForm.setTransitionLink(NewUidConstant.TRANSITIONLINK_NEWUID);
 				model.addAttribute(FormConstant.ATTRIBUTE_NEWUIDFORM, newUidForm);
 				model.addAttribute(FormConstant.ATTRIBUTE_INDEXFORM, indexForm);
+				model.addAttribute(HomeConstant.MONTH_VIEW, true);
+				model.addAttribute(HomeConstant.LOGOUT_VIEW, true);
 				return ViewNameConstant.MAIL_VERIFISATION_FAILED_VIEW;
 			}
 
 		} else {
+			model.addAttribute(HomeConstant.MONTH_VIEW, true);
+			model.addAttribute(HomeConstant.LOGOUT_VIEW, true);
 			return ViewNameConstant.MAIL_VERIFISATION_FAILED_VIEW;
 		}
 	}
@@ -135,33 +133,32 @@ public class AuthController {
 		NewUidForm newUidForm = new NewUidForm();
 
 		if (!token.isEmpty() && token != null) {
-			try {
-				// Base64デコード
-				decodeString = base64Util.base64Decode(token);
-				if (EmailValidator.getInstance().isValid(decodeString)) {
-					validatorCheckFlg = true;
-				} else {
-					validatorCheckFlg = false;
-				}
-			} catch (Exception e) {
-				e.printStackTrace();
+			// Base64デコード
+			decodeString = base64Util.base64Decode(token);
+			if (EmailValidator.getInstance().isValid(decodeString)) {
+				validatorCheckFlg = true;
+			} else {
 				validatorCheckFlg = false;
-				// TODO:エラーを表示
-				return "error";
 			}
 
 			// emailのバリデーションチェックがOKかNGか
 			if (validatorCheckFlg) {
 				newUidForm.setEncodeEmail(token);
 				model.addAttribute(FormConstant.ATTRIBUTE_NEWUIDFORM, newUidForm);
+				model.addAttribute(HomeConstant.MONTH_VIEW, true);
+				model.addAttribute(HomeConstant.LOGOUT_VIEW, true);
 				return ViewNameConstant.REPASS_VIEW;
 			} else {
 				indexForm.setTransitionLink(NewUidConstant.TRANSITIONLINK_FORGET);
 				model.addAttribute(FormConstant.ATTRIBUTE_INDEXFORM, indexForm);
+				model.addAttribute(HomeConstant.MONTH_VIEW, true);
+				model.addAttribute(HomeConstant.LOGOUT_VIEW, true);
 				return ViewNameConstant.MAIL_VERIFISATION_FAILED_VIEW;
 			}
 
 		} else {
+			model.addAttribute(HomeConstant.MONTH_VIEW, true);
+			model.addAttribute(HomeConstant.LOGOUT_VIEW, true);
 			return ViewNameConstant.MAIL_VERIFISATION_FAILED_VIEW;
 		}
 	}
@@ -221,6 +218,8 @@ public class AuthController {
 			newUidViewForm.setInputLastName(lastName);
 			model.addAttribute(FormConstant.ATTRIBUTE_NEWUIDFORM, newUidForm);
 			model.addAttribute(FormConstant.ATTRIBUTE_NEWUIDVIEWFORM, newUidViewForm);
+			model.addAttribute(HomeConstant.MONTH_VIEW, true);
+			model.addAttribute(HomeConstant.LOGOUT_VIEW, true);
 			return ViewNameConstant.NEWUID_VIEW;
 		}
 		if (userRepository.findById(id).isPresent()) {
@@ -232,6 +231,8 @@ public class AuthController {
 			newUidViewForm.setInputLastName(lastName);
 			model.addAttribute(FormConstant.ATTRIBUTE_NEWUIDFORM, newUidForm);
 			model.addAttribute(FormConstant.ATTRIBUTE_NEWUIDVIEWFORM, newUidViewForm);
+			model.addAttribute(HomeConstant.MONTH_VIEW, true);
+			model.addAttribute(HomeConstant.LOGOUT_VIEW, true);
 			return ViewNameConstant.NEWUID_VIEW;
 		}
 
@@ -240,7 +241,7 @@ public class AuthController {
 			String passEncode = null;
 			String firstNameEncode = null;
 			String lastNameEncode = null;
-			// TODO:パスワードエンコードを使用
+			// BCryptPasswordEncoderにてパスワードをエンコード
 			passEncode = passwordEncoder.encode(pass);
 
 			newUidViewForm.setInputEmail(id);
@@ -251,6 +252,8 @@ public class AuthController {
 			newUidForm.setEncodeFirstName(firstNameEncode);
 			newUidForm.setEncodeLastName(lastNameEncode);
 			model.addAttribute(FormConstant.ATTRIBUTE_NEWUIDVIEWFORM, newUidViewForm);
+			model.addAttribute(HomeConstant.MONTH_VIEW, true);
+			model.addAttribute(HomeConstant.LOGOUT_VIEW, true);
 			return ViewNameConstant.NEWUID_RESULT_VIEW;
 		} else if (checkRepass != true) {
 			newUidForm.setErrorPassFlg(true);
@@ -263,6 +266,8 @@ public class AuthController {
 		newUidForm.setEmail(email);
 		model.addAttribute(FormConstant.ATTRIBUTE_NEWUIDFORM, newUidForm);
 		model.addAttribute(FormConstant.ATTRIBUTE_NEWUIDVIEWFORM, newUidViewForm);
+		model.addAttribute(HomeConstant.MONTH_VIEW, true);
+		model.addAttribute(HomeConstant.LOGOUT_VIEW, true);
 		return ViewNameConstant.NEWUID_VIEW;
 	}
 
@@ -273,27 +278,21 @@ public class AuthController {
 	 * @param passWord パスワード
 	 * @param firstName 名字
 	 * @param lastName 名前
+	 * @param model Spring MVC のモデルオブジェクト
 	 * @return 表示するビュー名
 	 */
 	@GetMapping(MappingPathNameConstant.SUBMIT_USER_PATH)
 	public String submitUser(@RequestParam("nrtfevah") String userId, @RequestParam("okbjrein") String passWord,
 			@RequestParam("reabtseg") String firstName,
-			@RequestParam("vsvbrebb") String lastName) {
+			@RequestParam("vsvbrebb") String lastName, Model model) {
 		// 日本時間を取得
 		ZonedDateTime tokyoTime = ZonedDateTime.now(ZoneId.of(DateFormatConstant.TIMEZONE_ASIA_TOKYO));
 		Timestamp timestamp = Timestamp.valueOf(tokyoTime.toLocalDateTime());
+		IndexForm indexForm = new IndexForm();
 
-		String idDecode = null;
-		String firstNameDecode = null;
-		String lastNameDecode = null;
-
-		try {
-			idDecode = base64Util.base64Decode(userId);
-			firstNameDecode = base64Util.base64Decode(firstName);
-			lastNameDecode = base64Util.base64Decode(lastName);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		String idDecode = base64Util.base64Decode(userId);
+		String firstNameDecode = base64Util.base64Decode(firstName);
+		String lastNameDecode = base64Util.base64Decode(lastName);
 
 		// 入力情報をDBへ保存
 		User user = new User();
@@ -304,8 +303,12 @@ public class AuthController {
 		user.setCreatedate(timestamp);
 		user.setLastlogin(timestamp);
 		userRepository.save(user);
-		// TODO 認証成功画面ではなく、登録成功画面へ遷移(flgで文言変更)
-		return ViewNameConstant.MAIL_VERIFISATION_SUCCESS_VIEW;
+		indexForm.setEmail(idDecode);
+		indexForm.setTransitionLink(NewUidConstant.TRANSITIONLINK_NEWUID);
+		model.addAttribute(FormConstant.ATTRIBUTE_INDEXFORM, indexForm);
+		model.addAttribute(HomeConstant.MONTH_VIEW, true);
+		model.addAttribute(HomeConstant.LOGOUT_VIEW, true);
+		return ViewNameConstant.SUCCESS_PATH;
 	}
 
 	/**
@@ -324,17 +327,9 @@ public class AuthController {
 		NewUidForm newUidForm = new NewUidForm();
 		NewUidViewForm newUidViewForm = new NewUidViewForm();
 
-		String idDecode = null;
-		String firstNameDecode = null;
-		String lastNameDecode = null;
-
-		try {
-			idDecode = base64Util.base64Decode(userId);
-			firstNameDecode = base64Util.base64Decode(firstName);
-			lastNameDecode = base64Util.base64Decode(lastName);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		String idDecode = base64Util.base64Decode(userId);
+		String firstNameDecode = base64Util.base64Decode(firstName);
+		String lastNameDecode = base64Util.base64Decode(lastName);
 
 		newUidViewForm.setInputEmail(idDecode);
 		newUidViewForm.setInputFirstName(firstNameDecode);
@@ -343,6 +338,8 @@ public class AuthController {
 		newUidForm.setEmail(idDecode);
 		model.addAttribute(FormConstant.ATTRIBUTE_NEWUIDFORM, newUidForm);
 		model.addAttribute(FormConstant.ATTRIBUTE_NEWUIDVIEWFORM, newUidViewForm);
+		model.addAttribute(HomeConstant.MONTH_VIEW, true);
+		model.addAttribute(HomeConstant.LOGOUT_VIEW, true);
 		return ViewNameConstant.NEWUID_VIEW;
 	}
 }

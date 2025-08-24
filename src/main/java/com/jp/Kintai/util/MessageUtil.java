@@ -1,10 +1,9 @@
 package com.jp.Kintai.util;
 
-import java.util.MissingResourceException;
 import java.util.ResourceBundle;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.apache.logging.log4j.Logger;
-import org.apache.logging.log4j.LogManager;
+import com.jp.Kintai.enumClass.LogLevel;
 
 /**
  * keyをもとにメッセージを取得するクラス
@@ -16,10 +15,17 @@ import org.apache.logging.log4j.LogManager;
 @Service
 public class MessageUtil {
 
-	private static final Logger logger = LogManager.getLogger(MessageUtil.class);
+	@Autowired
+	private LoggerUtil loggerUtil;
 
 	/** プロパティファイルのパス（resources 以下） */
 	private static final String MESSAGE_PROPERTIES = "static/messages";
+
+	/** メッセージID：EMK_034 */
+	private static final String EMK034 = "MessageUtil.java/getErrorMessageにてエラーが発生しました。";
+
+	/** 空文字 */
+	private static final String EMPTY = "";
 
 	/**
 	 * プロパティファイルからvalueを取得するメソッド
@@ -27,17 +33,14 @@ public class MessageUtil {
 	 * @return メッセージ内容
 	 */
 	public String getErrorMessage(String key){
-		String message = "";
+		String message = EMPTY;
 		try{
 			ResourceBundle rb = ResourceBundle.getBundle(MESSAGE_PROPERTIES);
 			message = rb.getString(key);
-
 		} catch(Exception e){
-			// TODO:logger使う
-			logger.error("[ERROR]エラーが発生しました。" + e);
-			throw new MissingResourceException(message, message, key);
+			String errorMessage = e.toString();
+			loggerUtil.LogOutput(LogLevel.ERROR, EMK034, errorMessage);
 		}
-
 		return message;
 	}
 }

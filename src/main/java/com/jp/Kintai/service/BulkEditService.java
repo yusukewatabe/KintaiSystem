@@ -12,18 +12,16 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
-
 import com.jp.Kintai.constant.DateFormatConstant;
 import com.jp.Kintai.constant.FormConstant;
+import com.jp.Kintai.enumClass.LogLevel;
 import com.jp.Kintai.form.BulkForm;
 import com.jp.Kintai.form.HomeForm;
 import com.jp.Kintai.form.IndexForm;
 import com.jp.Kintai.model.Attendance;
 import com.jp.Kintai.repository.AttendanceRepository;
+import com.jp.Kintai.util.LoggerUtil;
 import com.jp.Kintai.util.MessageUtil;
-
-import org.apache.logging.log4j.Logger;
-import org.apache.logging.log4j.LogManager;
 
 /**
  * BulkEditに関するビジネスロジックが記載されているクラス
@@ -39,6 +37,9 @@ public class BulkEditService {
 
 	@Autowired
 	private MessageUtil messageUtil;
+
+	@Autowired
+	private LoggerUtil loggerUtil;
 
 	/** 初日を判定や正常終了を示す */
 	private static final int MULTIPLE_USE_ZERO = 0;
@@ -100,8 +101,6 @@ public class BulkEditService {
 	/**  メッセージID：EMK_016 */
 	private static final String EMK016 = "EMK_016";
 
-	private static final Logger logger = LogManager.getLogger(BulkEditService.class);
-
 	/**
 	 * 月の一覧をformに格納するメソッド
 	 * 
@@ -110,7 +109,7 @@ public class BulkEditService {
 	 * @param model Spring MVC のモデルオブジェクト
 	 * @return true or false
 	 */
-	public boolean bulkEditAndPreview(String userId, AttendanceRepository attendanceRepository, Model model) {
+	public void bulkEditAndPreview(String userId, AttendanceRepository attendanceRepository, Model model) {
 
 		BulkForm bulkform = new BulkForm();
 		HomeForm homeForm = new HomeForm();
@@ -135,9 +134,8 @@ public class BulkEditService {
 				Method mDay = BulkForm.class.getMethod(bulkdayMethod, String.class);
 				mDay.invoke(bulkform, bulkdayValue);
 			} catch (Exception e) {
-				logger.error(messageUtil.getErrorMessage(EMK011) + bulkdayMethod + e);
-				e.printStackTrace();
-				return false;
+				String errorMessage = e.toString();
+				loggerUtil.LogOutput(LogLevel.ERROR, messageUtil.getErrorMessage(EMK011) + bulkdayMethod, errorMessage);
 			}
 
 			// dbから出勤、退勤、休憩開始時間、休憩終了時間を取得し、formに格納
@@ -179,9 +177,8 @@ public class BulkEditService {
 						Method mTime = BulkForm.class.getMethod(clockInMethod, String.class);
 						mTime.invoke(bulkform, recordClockInTime);
 					} catch (Exception e) {
-						logger.error(messageUtil.getErrorMessage(EMK012) + clockInMethod, e);
-						e.printStackTrace();
-						return false;
+						String errorMessage = e.toString();
+						loggerUtil.LogOutput(LogLevel.ERROR, messageUtil.getErrorMessage(EMK012) + clockInMethod, errorMessage);
 					}
 				} else {
 					// 出勤時間がnullの場合
@@ -189,9 +186,8 @@ public class BulkEditService {
 						Method mTime = BulkForm.class.getMethod(clockInMethod, String.class);
 						mTime.invoke(bulkform, SET_FORM_EMPTY);
 					} catch (Exception e) {
-						e.printStackTrace();
-						logger.error(messageUtil.getErrorMessage(EMK012) + clockInMethod, e);
-						return false;
+						String errorMessage = e.toString();
+						loggerUtil.LogOutput(LogLevel.ERROR, messageUtil.getErrorMessage(EMK012) + clockInMethod, errorMessage);
 					}
 				}
 				if (recordClockOutTime != null) {
@@ -201,9 +197,8 @@ public class BulkEditService {
 						Method mTime = BulkForm.class.getMethod(clockOutMethod, String.class);
 						mTime.invoke(bulkform, recordClockOutTime);
 					} catch (Exception e) {
-						logger.error(messageUtil.getErrorMessage(EMK013) + clockOutMethod, e);
-						e.printStackTrace();
-						return false;
+						String errorMessage = e.toString();
+						loggerUtil.LogOutput(LogLevel.ERROR, messageUtil.getErrorMessage(EMK013) + clockOutMethod, errorMessage);
 					}
 				} else {
 					// 退勤時間がnullの場合空文字をFormに格納
@@ -211,9 +206,8 @@ public class BulkEditService {
 						Method mTime = BulkForm.class.getMethod(clockOutMethod, String.class);
 						mTime.invoke(bulkform, SET_FORM_EMPTY);
 					} catch (Exception e) {
-						logger.error(messageUtil.getErrorMessage(EMK013) + clockOutMethod, e);
-						e.printStackTrace();
-						return false;
+						String errorMessage = e.toString();
+						loggerUtil.LogOutput(LogLevel.ERROR, messageUtil.getErrorMessage(EMK013) + clockOutMethod, errorMessage);
 					}
 				}
 				if (recordBreakStart != null) {
@@ -223,9 +217,8 @@ public class BulkEditService {
 						Method mTime = BulkForm.class.getMethod(breakStartMethod, String.class);
 						mTime.invoke(bulkform, recordBreakStart);
 					} catch (Exception e) {
-						logger.error(messageUtil.getErrorMessage(EMK014) + breakStartMethod, e);
-						e.printStackTrace();
-						return false;
+						String errorMessage = e.toString();
+						loggerUtil.LogOutput(LogLevel.ERROR, messageUtil.getErrorMessage(EMK014) + breakStartMethod, errorMessage);
 					}
 				} else {
 					// 休憩時間がnullの場合空文字をFormに格納
@@ -233,9 +226,8 @@ public class BulkEditService {
 						Method mTime = BulkForm.class.getMethod(breakStartMethod, String.class);
 						mTime.invoke(bulkform, SET_FORM_EMPTY);
 					} catch (Exception e) {
-						logger.error(messageUtil.getErrorMessage(EMK014) + breakStartMethod, e);
-						e.printStackTrace();
-						return false;
+						String errorMessage = e.toString();
+						loggerUtil.LogOutput(LogLevel.ERROR, messageUtil.getErrorMessage(EMK014) + breakStartMethod, errorMessage);
 					}
 				}
 				if (recordBreakEnd != null) {
@@ -245,9 +237,8 @@ public class BulkEditService {
 						Method mTime = BulkForm.class.getMethod(breakEndMethod, String.class);
 						mTime.invoke(bulkform, recordBreakEnd);
 					} catch (Exception e) {
-						logger.error(messageUtil.getErrorMessage(EMK015) + breakEndMethod, e);
-						e.printStackTrace();
-						return false;
+						String errorMessage = e.toString();
+						loggerUtil.LogOutput(LogLevel.ERROR, messageUtil.getErrorMessage(EMK015) + breakEndMethod, errorMessage);
 					}
 				} else {
 					// 休憩終了時間がnullの場合空文字をFormに格納
@@ -255,9 +246,8 @@ public class BulkEditService {
 						Method mTime = BulkForm.class.getMethod(breakEndMethod, String.class);
 						mTime.invoke(bulkform, SET_FORM_EMPTY);
 					} catch (Exception e) {
-						logger.error(messageUtil.getErrorMessage(EMK015) + breakEndMethod, e);
-						e.printStackTrace();
-						return false;
+						String errorMessage = e.toString();
+						loggerUtil.LogOutput(LogLevel.ERROR, messageUtil.getErrorMessage(EMK015) + breakEndMethod, errorMessage);
 					}
 				}
 			} else {
@@ -266,32 +256,30 @@ public class BulkEditService {
 					Method mTime = BulkForm.class.getMethod(clockInMethod, String.class);
 					mTime.invoke(bulkform, SET_FORM_EMPTY);
 				} catch (Exception e) {
-					e.printStackTrace();
-					throw new RuntimeException(messageUtil.getErrorMessage(EMK015) + clockInMethod, e);
+					String errorMessage = e.toString();
+					loggerUtil.LogOutput(LogLevel.ERROR, messageUtil.getErrorMessage(EMK012) + clockInMethod, errorMessage);
 				}
 				try {
 					Method mTime = BulkForm.class.getMethod(clockOutMethod, String.class);
 					mTime.invoke(bulkform, SET_FORM_EMPTY);
 				} catch (Exception e) {
-					logger.error(messageUtil.getErrorMessage(EMK013) + clockOutMethod, e);
-					e.printStackTrace();
-					return false;
+					String errorMessage = e.toString();
+					loggerUtil.LogOutput(LogLevel.ERROR, messageUtil.getErrorMessage(EMK013) + clockOutMethod, errorMessage);
+
 				}
 				try {
 					Method mTime = BulkForm.class.getMethod(breakStartMethod, String.class);
 					mTime.invoke(bulkform, SET_FORM_EMPTY);
 				} catch (Exception e) {
-					logger.error(messageUtil.getErrorMessage(EMK014) + breakStartMethod, e);
-					e.printStackTrace();
-					return false;
+					String errorMessage = e.toString();
+					loggerUtil.LogOutput(LogLevel.ERROR, messageUtil.getErrorMessage(EMK014) + breakStartMethod, errorMessage);
 				}
 				try {
 					Method mTime = BulkForm.class.getMethod(breakEndMethod, String.class);
 					mTime.invoke(bulkform, SET_FORM_EMPTY);
 				} catch (Exception e) {
-					logger.error(messageUtil.getErrorMessage(EMK015) + breakEndMethod, e);
-					e.printStackTrace();
-					return false;
+					String errorMessage = e.toString();
+					loggerUtil.LogOutput(LogLevel.ERROR, messageUtil.getErrorMessage(EMK015) + breakEndMethod, errorMessage);
 				}
 			}
 
@@ -301,9 +289,8 @@ public class BulkEditService {
 				Method mKinmu = BulkForm.class.getMethod(kinmuMethod, String.class);
 				mKinmu.invoke(bulkform, kinmuKubun);
 			} catch (Exception e) {
-				logger.error(messageUtil.getErrorMessage(EMK016) + kinmuMethod, e);
-				e.printStackTrace();
-				return false;
+				String errorMessage = e.toString();
+				loggerUtil.LogOutput(LogLevel.ERROR, messageUtil.getErrorMessage(EMK016) + kinmuMethod, errorMessage);
 			}
 		}
 		indexForm.setEmail(userId);
@@ -311,7 +298,6 @@ public class BulkEditService {
 		model.addAttribute(FormConstant.ATTRIBUTE_HOMEFORM, homeForm);
 		model.addAttribute(FormConstant.ATTRIBUTE_INDEXFORM, indexForm);
 		model.addAttribute(FormConstant.ATTRIBUTE_BULKFORM, bulkform);
-		return true;
 	}
 
 	/**

@@ -5,20 +5,20 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-
 import com.jp.Kintai.constant.DateFormatConstant;
 import com.jp.Kintai.constant.FormConstant;
 import com.jp.Kintai.constant.HomeConstant;
 import com.jp.Kintai.constant.MappingPathNameConstant;
 import com.jp.Kintai.constant.ViewNameConstant;
+import com.jp.Kintai.enumClass.LogLevel;
 import com.jp.Kintai.form.HomeForm;
 import com.jp.Kintai.form.IndexForm;
 import com.jp.Kintai.model.Attendance;
 import com.jp.Kintai.model.User;
 import com.jp.Kintai.repository.AttendanceRepository;
 import com.jp.Kintai.repository.UserRepository;
+import com.jp.Kintai.util.LoggerUtil;
 import com.jp.Kintai.util.MessageUtil;
-
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -43,6 +43,9 @@ public class AttendanceController {
 
 	@Autowired
 	private MessageUtil messageUtil;
+
+	@Autowired
+	private LoggerUtil loggerUtil;
 
 	/** メッセージID：EMK_017 */
 	private static final String EMK017 = "EMK_017";
@@ -73,6 +76,12 @@ public class AttendanceController {
 
 	/** メッセージID：EMK_026 */
 	private static final String EMK026 = "EMK_026";
+
+	/** メッセージID：EMK_035 */
+	private static final String EMK035 = "EMK_035";
+
+	/** メッセージID：EMK_036 */
+	private static final String EMK036 = "EMK_036";
 
 	/**
 	 * Home画面から押されたボタンを判定し、dbに時間を登録するメソッド
@@ -109,9 +118,8 @@ public class AttendanceController {
 		// userテーブルからuserIdを検索
 		Optional<User> userOpt = userRepository.findById(userId);
 		if (userOpt.isEmpty()) {
-			// TODO エラー画面に飛ばす？
-			model.addAttribute("error", "ユーザーが見つかりません");
-			return ViewNameConstant.HOME_VIEW;
+			loggerUtil.LogOutput(LogLevel.ERROR, messageUtil.getErrorMessage(EMK035), messageUtil.getErrorMessage(EMK036));
+			return ViewNameConstant.ERROR_PATH;
 		}
 
 		User user = userOpt.get();

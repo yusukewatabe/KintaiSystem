@@ -6,9 +6,9 @@
 		<Property name="LOG_PATH">logs</Property>
 		<!-- ベースファイル名 -->
 		<Property name="LOG_FILE">kintai.log</Property>
+		<Property name="LOG_CHARSET">UTF-8</Property>
 	</Properties>
 
-	<!-- ローリングファイルアペンダ -->
 	<Appenders>
 		<Console name="Console" target="SYSTEM_OUT">
 			<PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss} [%t] %-5level %logger{36} - %msg%n" />
@@ -17,7 +17,7 @@
 		<RollingFile name="RollingFile"
 					fileName="${LOG_PATH}/${LOG_FILE}"
 					filePattern="${LOG_PATH}/kintai-%d{yyyy-MM-dd}.log">
-			<PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level %logger{36} - %msg%n"/>
+			<PatternLayout charset="${LOG_CHARSET}" pattern="%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level %logger{36} - %msg%n"/>
 			<Policies>
 				<!-- 日付ごとにローテート -->
 				<TimeBasedTriggeringPolicy interval="1" modulate="true"/>
@@ -28,7 +28,7 @@
 
 	<!-- ルートロガー設定 -->
 	<Loggers>
-		<Root level="debug">
+		<Root level="info">
 			<AppenderRef ref="Console" />
 			<AppenderRef ref="RollingFile"/>
 		</Root>

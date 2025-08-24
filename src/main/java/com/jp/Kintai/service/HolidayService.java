@@ -5,8 +5,12 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.HashMap;
 import java.util.Map;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
+import com.jp.Kintai.enumClass.LogLevel;
+import com.jp.Kintai.util.LoggerUtil;
+import com.jp.Kintai.util.MessageUtil;
 import jakarta.annotation.PostConstruct;
 
 /**
@@ -17,6 +21,12 @@ import jakarta.annotation.PostConstruct;
  */
 @Service
 public class HolidayService {
+
+	@Autowired
+	private MessageUtil messageUtil;
+
+	@Autowired
+	private LoggerUtil loggerUtil;
 
 	/** CSV のパス（resources 以下） */
 	private static final String HOLIDAY_CSV = "static/syukujitsu.csv";
@@ -39,6 +49,9 @@ public class HolidayService {
 	/** 長さを2に固定する */
 	private static final int MULTIPLE_USE_TWO = 2;
 
+	/** メッセージID：EMK_033 */
+	private static final String EMK033 = "EMK_033";
+
 	private final Map<String, String> holidayMap = new HashMap<>();
 
 	/**
@@ -60,7 +73,8 @@ public class HolidayService {
 				holidayMap.put(date, holidayName);
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			String errorMessage = e.toString();
+			loggerUtil.LogOutput(LogLevel.FATAL, messageUtil.getErrorMessage(EMK033), errorMessage);
 		}
 	}
 

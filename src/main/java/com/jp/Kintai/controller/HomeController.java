@@ -5,16 +5,17 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
 import com.jp.Kintai.constant.DateFormatConstant;
 import com.jp.Kintai.constant.FormConstant;
+import com.jp.Kintai.constant.HomeConstant;
 import com.jp.Kintai.constant.MappingPathNameConstant;
+import com.jp.Kintai.constant.NewUidConstant;
 import com.jp.Kintai.constant.ViewNameConstant;
 import com.jp.Kintai.form.NewUidForm;
+import com.jp.Kintai.form.IndexForm;
 import com.jp.Kintai.service.UserService;
 import com.jp.Kintai.util.Base64Util;
 import com.jp.Kintai.util.MessageUtil;
-
 import java.time.format.DateTimeFormatter;
 import java.time.LocalDate;
 
@@ -44,6 +45,9 @@ public class HomeController {
 
 	/** メッセージID：EMK_028 */
 	private static final String EMK028 = "EMK_028";
+
+	/** メッセージID：EMK_029 */
+	private static final String EMK029 = "EMK_029";
 
 	/**
 	 * index以外からhomeへ遷移が行われた際に使用されるメソッド
@@ -78,6 +82,7 @@ public class HomeController {
 		String passEncode = null;
 		String idDecode = null;
 		NewUidForm newUidForm = new NewUidForm();
+		IndexForm indexForm = new IndexForm();
 
 		if(password.equals(repassword)){
 			if(password == null || password.isEmpty() || repassword == null || repassword.isEmpty()){
@@ -85,35 +90,42 @@ public class HomeController {
 				newUidForm.setEncodeEmail(id);
 				newUidForm.setForgetPassErrorMessage(messageUtil.getErrorMessage(EMK027));
 				model.addAttribute(FormConstant.ATTRIBUTE_NEWUIDFORM, newUidForm);
+				model.addAttribute(HomeConstant.MONTH_VIEW, true);
+				model.addAttribute(HomeConstant.LOGOUT_VIEW, true);
 				return ViewNameConstant.REPASS_VIEW;
 			} else {
 				// passwordをエンコード
 				passEncode = passwordEncoder.encode(password);
+
 				// idをデコード
-				try {
-					idDecode = base64Util.base64Decode(id);
-				} catch (Exception e) {
-					e.printStackTrace();
-					// TODO:エラーを表示
-					return "error";
-				}
+				idDecode = base64Util.base64Decode(id);
 
 				// トークン情報をDBへ保存
 				if(!userService.overridePassword(idDecode, passEncode)){
-					// TODO:エラーを表示
-					return "error";
+					// パスワードの上書きに失敗した場合
+					newUidForm.setForgetPassErrorFlg(true);
+					newUidForm.setEncodeEmail(id);
+					newUidForm.setForgetPassErrorMessage(messageUtil.getErrorMessage(EMK029));
+					model.addAttribute(FormConstant.ATTRIBUTE_NEWUIDFORM, newUidForm);
+					model.addAttribute(HomeConstant.MONTH_VIEW, true);
+					model.addAttribute(HomeConstant.LOGOUT_VIEW, true);
+					return ViewNameConstant.REPASS_VIEW;
 				}
 
-				// TODO formにuseridを入れる
-				model.addAttribute("userId", id);
-				// TODO homeではなく、登録成功の画面へ飛ばす(flgで文言変更)
-				return ViewNameConstant.MAIL_VERIFISATION_SUCCESS_VIEW;
+				indexForm.setEmail(id);
+				indexForm.setTransitionLink(NewUidConstant.TRANSITIONLINK_FORGET);
+				model.addAttribute(FormConstant.ATTRIBUTE_INDEXFORM, indexForm);
+				model.addAttribute(HomeConstant.MONTH_VIEW, true);
+				model.addAttribute(HomeConstant.LOGOUT_VIEW, true);
+				return ViewNameConstant.SUCCESS_PATH;
 			}
 		} else {
 			newUidForm.setForgetPassErrorFlg(true);
 			newUidForm.setEncodeEmail(id);
 			newUidForm.setForgetPassErrorMessage(messageUtil.getErrorMessage(EMK028));
 			model.addAttribute(FormConstant.ATTRIBUTE_NEWUIDFORM, newUidForm);
+			model.addAttribute(HomeConstant.MONTH_VIEW, true);
+			model.addAttribute(HomeConstant.LOGOUT_VIEW, true);
 			return ViewNameConstant.REPASS_VIEW;
 		}
 	}

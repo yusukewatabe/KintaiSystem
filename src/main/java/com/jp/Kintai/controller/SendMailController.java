@@ -6,8 +6,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-
 import com.jp.Kintai.constant.FormConstant;
+import com.jp.Kintai.constant.HomeConstant;
 import com.jp.Kintai.constant.MappingPathNameConstant;
 import com.jp.Kintai.constant.ViewNameConstant;
 import com.jp.Kintai.form.IndexForm;
@@ -50,17 +50,19 @@ public class SendMailController {
 			indexForm.setSendMailErrorFlg(true);
 			indexForm.setSendMailErrorMessage(messageUtil.getErrorMessage(EMK001));
 			model.addAttribute(FormConstant.ATTRIBUTE_INDEXFORM, indexForm);
+			model.addAttribute(HomeConstant.MONTH_VIEW, true);
+			model.addAttribute(HomeConstant.LOGOUT_VIEW, true);
 			return ViewNameConstant.MAIL_SENDMAIL_VIEW;
 		} else {
 			if (EmailValidator.getInstance().isValid(id)) {
-				if(!emailService.sendVerificationEmail(id)){
-					return "error";
-				}
+				emailService.sendVerificationEmail(id);
 				return ViewNameConstant.MAIL_SENDMAIL_RESULT_VIEW;
 			} else {
 				indexForm.setSendMailErrorFlg(true);
 				indexForm.setSendMailErrorMessage(messageUtil.getErrorMessage(EMK010));
 				model.addAttribute(FormConstant.ATTRIBUTE_INDEXFORM, indexForm);
+				model.addAttribute(HomeConstant.MONTH_VIEW, true);
+				model.addAttribute(HomeConstant.LOGOUT_VIEW, true);
 				return ViewNameConstant.MAIL_SENDMAIL_VIEW;
 			}
 		}
@@ -81,17 +83,19 @@ public class SendMailController {
 			indexForm.setSendMailErrorFlg(true);
 			indexForm.setSendMailErrorMessage(messageUtil.getErrorMessage(EMK001));
 			model.addAttribute(FormConstant.ATTRIBUTE_INDEXFORM, indexForm);
+			model.addAttribute(HomeConstant.MONTH_VIEW, true);
+			model.addAttribute(HomeConstant.LOGOUT_VIEW, true);
 			return ViewNameConstant.MAIL_SENDMAIL_VIEW;
 		} else {
 			if (EmailValidator.getInstance().isValid(id)) {
-				if(!emailService.forgetPassSendEmail(id)){
-					return "error";
-				}
+				emailService.forgetPassSendEmail(id);
 				return ViewNameConstant.MAIL_SENDMAIL_RESULT_VIEW;
 			} else {
 				indexForm.setSendMailErrorFlg(true);
 				indexForm.setSendMailErrorMessage(messageUtil.getErrorMessage(EMK010));
 				model.addAttribute(FormConstant.ATTRIBUTE_INDEXFORM, indexForm);
+				model.addAttribute(HomeConstant.MONTH_VIEW, true);
+				model.addAttribute(HomeConstant.LOGOUT_VIEW, true);
 				return ViewNameConstant.MAIL_SENDMAIL_VIEW;
 			}
 		}

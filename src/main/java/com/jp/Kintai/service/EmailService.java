@@ -4,9 +4,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
-
+import com.jp.Kintai.enumClass.LogLevel;
 import com.jp.Kintai.util.Base64Util;
-
+import com.jp.Kintai.util.LoggerUtil;
+import com.jp.Kintai.util.MessageUtil;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 
@@ -24,6 +25,12 @@ public class EmailService {
 
 	@Autowired
 	private Base64Util base64Util;
+
+	@Autowired
+	private MessageUtil messageUtil;
+
+	@Autowired
+	private LoggerUtil loggerUtil;
 
 	/** メールアドレスに添付するURL */
 	private static final String URL_NEWUID_LINK = "http://localhost:8081/api/auth/verify?token=";
@@ -48,21 +55,22 @@ public class EmailService {
 	/** メールコンテンツ内の最初のbody */
 	private static final String MAIL_CONTENT_BODY_SECOND = "'>認証リンク</a></p>";
 
+	/** メッセージID：EMK_031 */
+	private static final String EMK031 = "EMK_031";
+
+	/** メッセージID：EMK_032 */
+	private static final String EMK032 = "EMK_032";
+
 	/**
 	 * 新規ユーザーのメール認証送信するメソッド
 	 * 
 	 * @param toEmail メールアドレス
 	 * @return true or false
 	 */
-	public boolean sendVerificationEmail(String toEmail) {
-		String base64Encode = null;
-		try {
-			// エンコード
-			base64Encode = base64Util.base64Encode(toEmail);
-		} catch (Exception e) {
-			e.printStackTrace();
-			return false;
-		}
+	public void sendVerificationEmail(String toEmail) {
+
+		// エンコード
+		String base64Encode = base64Util.base64Encode(toEmail);
 
 		String link = URL_NEWUID_LINK + base64Encode;
 		String content = MAIL_CONTENT_TITILE_NEWUSER + MAIL_CONTENT_BODY_FIRST + 
@@ -76,10 +84,9 @@ public class EmailService {
 			helper.setText(content, true);
 			mailSender.send(message);
 		} catch (MessagingException e) {
-			e.printStackTrace();
-			return false;
+			String errorMessage = e.toString();
+			loggerUtil.LogOutput(LogLevel.ERROR, messageUtil.getErrorMessage(EMK031), errorMessage);
 		}
-		return true;
 	}
 
 	/**
@@ -88,15 +95,10 @@ public class EmailService {
 	 * @param toEmail メールアドレス
 	 * @return true or false
 	 */
-	public boolean forgetPassSendEmail(String toEmail) {
-		String base64Encode = null;
-		try {
-			// エンコード
-			base64Encode = base64Util.base64Encode(toEmail);
-		} catch (Exception e) {
-			e.printStackTrace();
-			return false;
-		}
+	public void forgetPassSendEmail(String toEmail) {
+
+		// エンコード
+		String base64Encode = base64Util.base64Encode(toEmail);
 
 		String link = URL_FORGET_LINK + base64Encode;
 		String content = MAIL_CONTENT_TITILE_FORGETPASSWORD + MAIL_CONTENT_BODY_FIRST + 
@@ -110,9 +112,8 @@ public class EmailService {
 			helper.setText(content, true);
 			mailSender.send(message);
 		} catch (MessagingException e) {
-			e.printStackTrace();
-			return false;
+			String errorMessage = e.toString();
+			loggerUtil.LogOutput(LogLevel.ERROR, messageUtil.getErrorMessage(EMK032), errorMessage);
 		}
-		return true;
 	}
 }
