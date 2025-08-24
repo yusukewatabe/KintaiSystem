@@ -22,7 +22,7 @@ public class User {
 	@Column(name = "id", length = 128, nullable = false, unique = true)
 	private String id; // 文字列型のID（主キー）
 
-	@Column(name = "pass", length = 32, nullable = false)
+	@Column(name = "pass", length = 100, nullable = false)
 	private String password; // カラム名 `pass` に対応
 
 	@Column(name = "firstname", nullable = false)
