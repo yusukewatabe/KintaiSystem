@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.HashMap;
 import java.util.Map;
+import java.nio.charset.Charset;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
@@ -52,6 +53,9 @@ public class HolidayService {
 	/** メッセージID：EMK_033 */
 	private static final String EMK033 = "EMK_033";
 
+	/** 文字コード */
+	private static final String SJIS = "MS932";
+
 	private final Map<String, String> holidayMap = new HashMap<>();
 
 	/**
@@ -61,7 +65,7 @@ public class HolidayService {
 	public void loadHolidays() throws IOException {
 		try (BufferedReader reader = new BufferedReader(
 				new InputStreamReader(
-						new ClassPathResource(HOLIDAY_CSV).getInputStream()))) {
+						new ClassPathResource(HOLIDAY_CSV).getInputStream(), Charset.forName(SJIS)))) {
 			reader.readLine();
 			String line;
 			while ((line = reader.readLine()) != null) {
