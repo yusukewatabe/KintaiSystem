@@ -167,13 +167,13 @@ public class AuthController {
 	 * newUid.htmlにて入力された内容を入力チェックし、
 	 * 正しい場合次の画面へ遷移、入力チェックに失敗した場合再度newUidへ遷移
 	 * 
-	 * @param id メールアドレス
-	 * @param pass パスワード
+	 * @param id        メールアドレス
+	 * @param pass      パスワード
 	 * @param firstName 名字
-	 * @param lastName 名前
-	 * @param repass 再入力パスワード
-	 * @param email リンク内のパラメーター
-	 * @param model Spring MVC のモデルオブジェクト
+	 * @param lastName  名前
+	 * @param repass    再入力パスワード
+	 * @param email     リンク内のパラメーター
+	 * @param model     Spring MVC のモデルオブジェクト
 	 * @return 表示するビュー名
 	 */
 	@PostMapping(MappingPathNameConstant.REGISTER_USER_PATH)
@@ -243,6 +243,9 @@ public class AuthController {
 			String lastNameEncode = null;
 			// BCryptPasswordEncoderにてパスワードをエンコード
 			passEncode = passwordEncoder.encode(pass);
+			idEncode = base64Util.base64Encode(id);
+			firstNameEncode = base64Util.base64Encode(firstName);
+			lastNameEncode = base64Util.base64Encode(lastName);
 
 			newUidViewForm.setInputEmail(id);
 			newUidViewForm.setInputPass(passEncode);
@@ -252,6 +255,7 @@ public class AuthController {
 			newUidForm.setEncodeFirstName(firstNameEncode);
 			newUidForm.setEncodeLastName(lastNameEncode);
 			model.addAttribute(FormConstant.ATTRIBUTE_NEWUIDVIEWFORM, newUidViewForm);
+			model.addAttribute(FormConstant.ATTRIBUTE_NEWUIDFORM, newUidForm);
 			model.addAttribute(HomeConstant.MONTH_VIEW, true);
 			model.addAttribute(HomeConstant.LOGOUT_VIEW, true);
 			return ViewNameConstant.NEWUID_RESULT_VIEW;
@@ -274,11 +278,11 @@ public class AuthController {
 	/**
 	 * newUidResult.htmlにて確定ボタンが押された際にDBに保存するメソッド
 	 * 
-	 * @param userId メールアドレス
-	 * @param passWord パスワード
+	 * @param userId    メールアドレス
+	 * @param passWord  パスワード
 	 * @param firstName 名字
-	 * @param lastName 名前
-	 * @param model Spring MVC のモデルオブジェクト
+	 * @param lastName  名前
+	 * @param model     Spring MVC のモデルオブジェクト
 	 * @return 表示するビュー名
 	 */
 	@GetMapping(MappingPathNameConstant.SUBMIT_USER_PATH)
@@ -314,10 +318,10 @@ public class AuthController {
 	/**
 	 * newUidResult.htmlで修正ボタンが押された場合newUid.htmlに必要な情報を渡すメソッド
 	 * 
-	 * @param id メールアドレス
+	 * @param id        メールアドレス
 	 * @param firstName 名字
-	 * @param lastName 名前
-	 * @param model Spring MVC のモデルオブジェクト
+	 * @param lastName  名前
+	 * @param model     Spring MVC のモデルオブジェクト
 	 * @return 表示するビュー名
 	 */
 	@GetMapping(MappingPathNameConstant.REGISTER_USER_FIXES_PATH)
