@@ -41,7 +41,7 @@ public class IndexController {
 	@Autowired
 	private MessageUtil messageUtil;
 
-	/**  メッセージID：EMK_009 */
+	/** メッセージID：EMK_009 */
 	private static final String EMK009 = "EMK_009";
 
 	/**
@@ -114,8 +114,8 @@ public class IndexController {
 	/**
 	 * id,passが正しいかdbへ参照し、正しいid,passか判定するメソッド
 	 * 
-	 * @param id メールアドレス
-	 * @param pass パスワード
+	 * @param id    メールアドレス
+	 * @param pass  パスワード
 	 * @param model Spring MVC のモデルオブジェクト
 	 * @return 表示するビュー名
 	 */
@@ -162,6 +162,7 @@ public class IndexController {
 		IndexForm indexForm = new IndexForm();
 		indexForm.setErrorFlg(false);
 		model.addAttribute(FormConstant.ATTRIBUTE_INDEXFORM, indexForm);
+		model.addAttribute(HomeConstant.LOGOUT_VIEW, true);
 		return ViewNameConstant.INDEX_VIEW;
 	}
 }
