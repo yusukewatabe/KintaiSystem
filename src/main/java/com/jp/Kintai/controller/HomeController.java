@@ -52,7 +52,7 @@ public class HomeController {
 	/**
 	 * index以外からhomeへ遷移が行われた際に使用されるメソッド
 	 * 
-	 * @param id メールアドレス
+	 * @param id    メールアドレス
 	 * @param model Spring MVC のモデルオブジェクト
 	 * @return 表示するビュー名
 	 */
@@ -61,19 +61,22 @@ public class HomeController {
 		DateTimeFormatter fmtWorkDate = DateTimeFormatter.ofPattern(DateFormatConstant.DATETIME_FORMAT_YYYY_MM_DD);
 		LocalDate workDate = LocalDate.now();
 		String today = workDate.format(fmtWorkDate);
+		IndexForm indexForm = new IndexForm();
+		indexForm.setEmail(userId);
 
 		// 勤怠ステータスを確認
 		userService.clockStatusCheck(userId, today, model);
+		model.addAttribute(FormConstant.ATTRIBUTE_INDEXFORM, indexForm);
 		return ViewNameConstant.HOME_VIEW;
 	}
 
 	/**
 	 * 新しいパスワードを再設定するメソッド
 	 * 
-	 * @param id メールアドレス
-	 * @param password パスワード
+	 * @param id         メールアドレス
+	 * @param password   パスワード
 	 * @param repassword 再入力パスワード
-	 * @param model Spring MVC のモデルオブジェクト
+	 * @param model      Spring MVC のモデルオブジェクト
 	 * @return 表示するビュー名
 	 */
 	@PostMapping(MappingPathNameConstant.SET_FORGET_PASSWORD_PATH)
@@ -84,8 +87,8 @@ public class HomeController {
 		NewUidForm newUidForm = new NewUidForm();
 		IndexForm indexForm = new IndexForm();
 
-		if(password.equals(repassword)){
-			if(password == null || password.isEmpty() || repassword == null || repassword.isEmpty()){
+		if (password.equals(repassword)) {
+			if (password == null || password.isEmpty() || repassword == null || repassword.isEmpty()) {
 				newUidForm.setForgetPassErrorFlg(true);
 				newUidForm.setEncodeEmail(id);
 				newUidForm.setForgetPassErrorMessage(messageUtil.getErrorMessage(EMK027));
@@ -101,7 +104,7 @@ public class HomeController {
 				idDecode = base64Util.base64Decode(id);
 
 				// トークン情報をDBへ保存
-				if(!userService.overridePassword(idDecode, passEncode)){
+				if (!userService.overridePassword(idDecode, passEncode)) {
 					// パスワードの上書きに失敗した場合
 					newUidForm.setForgetPassErrorFlg(true);
 					newUidForm.setEncodeEmail(id);
