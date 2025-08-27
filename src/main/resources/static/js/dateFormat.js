@@ -2,7 +2,7 @@ dayjs.extend(window.dayjs_plugin_customParseFormat);
 
 /**
  * 全角英数字・記号を半角に変換する関数
- * （全角「０～９」「：」も半角に変換されます）
+ * （全角「０～９」「：」も半角に変換される）
  */
 export function toHalfWidth(str) {
 	return String(str)
@@ -20,6 +20,7 @@ export function toHalfWidth(str) {
  */
 export function isAllowedChars(str) {
 	// 半角 0-9, 全角 ０-９, 半角 :, 全角 ： のみ
+	if (str === '') return true;
 	const re = /^[0-9\uFF10-\uFF19:\uFF1A]+$/;
 	return re.test(str);
 }
@@ -49,11 +50,13 @@ export function toHHMMWithMoment(input) {
 	const mmNum = parseInt(mmPart, 10);
 
 	// 範囲チェック
-	if (isNaN(hhNum) || hhNum < 0 || hhNum > 23) {
+	if (hhNum < 0 || hhNum > 23) {
 		alert('時間は 00～23 の間で入力してください');
 		return '';
+	} else if(isNaN(hhNum)){
+		return '';
 	}
-	if (isNaN(mmNum) || mmNum < 0 || mmNum > 59) {
+	if (mmNum < 0 || mmNum > 59) {
 		alert('分は 00～59 の間で入力してください');
 		return '';
 	}
@@ -67,13 +70,22 @@ export function toHHMMWithMoment(input) {
 
 export function initAllTimeInputs() {
 	document.querySelectorAll('input[data-format="HHmm"]').forEach(el => {
+		el.addEventListener('input', () => {
+		const normalized = toHalfWidth(el.value).replace(/\s+/g, '');
+			if (el.value !== normalized) {
+				const pos = el.selectionStart;
+				el.value = normalized;
+				// 可能ならキャレット位置を維持
+				try { el.setSelectionRange(pos, pos); } catch {}
+			}
+		});
 		el.addEventListener('blur', () => {
 			let raw = el.value;
 			
 			// 許可文字以外が含まれていないかチェック
 			if (!isAllowedChars(raw)) {
 				alert('数字とコロン(:)以外の文字は使えません');
-				el.value = '';
+				// el.value = '';
 				return;
 			}
 			
