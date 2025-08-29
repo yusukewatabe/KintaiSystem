@@ -10,7 +10,7 @@
 	</head>
 	<body>
 		<!--/* ヘッダー */-->
-		<div class="w-full" th:insert="./common/header :: header"></div><br/>
+		<div class="w-full" th:insert="~{./common/header :: header}"></div><br/>
 		<p class="mt-6 text-2xl sm:text-3xl text-center">新規ユーザー登録</p><br/><br/>
 		<form th:action="@{/api/auth/registerUser}" method="post" class="w-full max-w-md mx-auto px-4">
 			<!--/* 新規ユーザー登録画面初期表示 */-->
@@ -150,6 +150,6 @@
 			}
 		</script>
 		<!--/* フッター */-->
-		<div class="w-full" th:insert="./common/footer :: footer"></div>
+		<div class="w-full" th:insert="~{./common/footer :: footer}"></div>
 	</body>
 </html>
