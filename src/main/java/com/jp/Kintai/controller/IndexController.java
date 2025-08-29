@@ -157,7 +157,7 @@ public class IndexController {
 	 * @param model Spring MVC のモデルオブジェクト
 	 * @return 表示するビュー名
 	 */
-	@PostMapping(MappingPathNameConstant.BACK_INDEX_PATH)
+	@GetMapping(MappingPathNameConstant.BACK_INDEX_PATH)
 	public String backIndex(Model model) {
 		IndexForm indexForm = new IndexForm();
 		indexForm.setErrorFlg(false);
