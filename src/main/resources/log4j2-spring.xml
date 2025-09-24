@@ -2,10 +2,8 @@
 <Configuration status="WARN">
 	<!-- プロパティ定義 -->
 	<Properties>
-		<!-- 出力ディレクトリ prod -->
+		<!-- 出力ディレクトリ -->
 		<Property name="LOG_PATH">/var/log/kintai</Property>
-		<!-- 出力ディレクトリ dev -->
-		<!-- <Property name="LOG_PATH">C:/kintai/logs/</Property> -->
 		<!-- ベースファイル名 -->
 		<Property name="LOG_FILE">kintai.log</Property>
 		<Property name="LOG_CHARSET">UTF-8</Property>

@@ -32,10 +32,11 @@ public class EmailService {
 	@Autowired
 	private LoggerUtil loggerUtil;
 
-	/** メールアドレスに添付するURL */
-	private static final String URL_NEWUID_LINK = "http://localhost:8081/api/auth/verify?token=";
+	/** メールアドレスに添付するURL（新規ユーザー発行） */
+	private static final String URL_NEWUID_LINK = "http://160.251.170.253:443/api/auth/verify?token=";
 
-	private static final String URL_FORGET_LINK = "http://localhost:8081/api/auth/verify/password?token=";
+	/** メールアドレスに添付するURL（パスワード忘れ） */
+	private static final String URL_FORGET_LINK = "http://160.251.170.253:443/api/auth/verify/password?token=";
 
 	/** メールアドレスのタイトル(新規ユーザー登録) */
 	private static final String MAIL_TITLE_NEWUSER = "勤怠管理システムからメール認証のお願い";
@@ -73,8 +74,8 @@ public class EmailService {
 		String base64Encode = base64Util.base64Encode(toEmail);
 
 		String link = URL_NEWUID_LINK + base64Encode;
-		String content = MAIL_CONTENT_TITILE_NEWUSER + MAIL_CONTENT_BODY_FIRST + 
-						link + MAIL_CONTENT_BODY_SECOND;
+		String content = MAIL_CONTENT_TITILE_NEWUSER + MAIL_CONTENT_BODY_FIRST +
+				link + MAIL_CONTENT_BODY_SECOND;
 
 		try {
 			MimeMessage message = mailSender.createMimeMessage();
@@ -101,8 +102,8 @@ public class EmailService {
 		String base64Encode = base64Util.base64Encode(toEmail);
 
 		String link = URL_FORGET_LINK + base64Encode;
-		String content = MAIL_CONTENT_TITILE_FORGETPASSWORD + MAIL_CONTENT_BODY_FIRST + 
-						link + MAIL_CONTENT_BODY_SECOND;
+		String content = MAIL_CONTENT_TITILE_FORGETPASSWORD + MAIL_CONTENT_BODY_FIRST +
+				link + MAIL_CONTENT_BODY_SECOND;
 
 		try {
 			MimeMessage message = mailSender.createMimeMessage();
