@@ -68,7 +68,7 @@ public class IndexController {
 	 * @param model Spring MVC のモデルオブジェクト
 	 * @return 表示するビュー名
 	 */
-	@GetMapping(MappingPathNameConstant.CREDIT_PATH)
+	@PostMapping(MappingPathNameConstant.CREDIT_PATH)
 	public String credit(Model model) {
 		model.addAttribute(HomeConstant.CREDIT_VIEW, true);
 		model.addAttribute(HomeConstant.LOGIN_VIEW, true);
@@ -157,7 +157,7 @@ public class IndexController {
 	 * @param model Spring MVC のモデルオブジェクト
 	 * @return 表示するビュー名
 	 */
-	@GetMapping(MappingPathNameConstant.BACK_INDEX_PATH)
+	@PostMapping(MappingPathNameConstant.BACK_INDEX_PATH)
 	public String backIndex(Model model) {
 		IndexForm indexForm = new IndexForm();
 		indexForm.setErrorFlg(false);
