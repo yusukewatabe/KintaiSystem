@@ -56,6 +56,7 @@ public class SendMailController {
 		} else {
 			if (EmailValidator.getInstance().isValid(id)) {
 				emailService.sendVerificationEmail(id);
+				model.addAttribute(HomeConstant.MONTH_VIEW, true);
 				return ViewNameConstant.MAIL_SENDMAIL_RESULT_VIEW;
 			} else {
 				indexForm.setSendMailErrorFlg(true);
@@ -89,6 +90,7 @@ public class SendMailController {
 		} else {
 			if (EmailValidator.getInstance().isValid(id)) {
 				emailService.forgetPassSendEmail(id);
+				model.addAttribute(HomeConstant.MONTH_VIEW, true);
 				return ViewNameConstant.MAIL_SENDMAIL_RESULT_VIEW;
 			} else {
 				indexForm.setSendMailErrorFlg(true);

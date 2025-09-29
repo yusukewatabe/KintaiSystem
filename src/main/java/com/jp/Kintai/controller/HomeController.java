@@ -115,7 +115,7 @@ public class HomeController {
 					return ViewNameConstant.REPASS_VIEW;
 				}
 
-				indexForm.setEmail(id);
+				indexForm.setEmail(idDecode);
 				indexForm.setTransitionLink(NewUidConstant.TRANSITIONLINK_FORGET);
 				model.addAttribute(FormConstant.ATTRIBUTE_INDEXFORM, indexForm);
 				model.addAttribute(HomeConstant.MONTH_VIEW, true);
