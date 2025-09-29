@@ -62,6 +62,7 @@ public class BulkEditController {
 	@PostMapping(MappingPathNameConstant.BULKEDIT_PATH)
 	public String editPreview(String userId, Model model) {
 		bulkEditService.bulkEditAndPreview(userId, attendanceRepository, model);
+		model.addAttribute(HomeConstant.MONTH_VIEW, true);
 		return ViewNameConstant.BULKEDIT_HTML_PATH;
 	}
 
@@ -139,7 +140,6 @@ public class BulkEditController {
 
 		// dbからテーブルの値を取得
 		bulkEditService.bulkEditAndPreview(userId, attendanceRepository, model);
-		model.addAttribute(HomeConstant.MONTH_VIEW, true);
 		model.addAttribute(HomeConstant.MONTH_VIEW, true);
 		return ViewNameConstant.BULKEDITPREVIEW_HTML_PATH;
 	}
