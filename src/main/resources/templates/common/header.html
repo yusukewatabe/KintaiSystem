@@ -23,7 +23,7 @@
 					</div>
 					<!--/* Mobile Menu open: "block", Menu closed: "hidden" */-->
 					<div class="hidden -mx-4 lg:flex lg:items-center">
-						<form id="formChange" th:action="@{/default}" class="flex">
+						<form id="formChange" th:action="@{/default}" class="flex" method="post">
 							<div th:if="${loginView}">
 								<button type="submit" th:formaction="@{/backIndex}"
 									class="block mx-4 mt-2 text-base text-gray-700 capitalize lg:mt-0 dark:text-white hover:text-blue-600 dark:hover:text-gray-400">
@@ -31,6 +31,7 @@
 								</button>
 							</div>
 							<div th:unless="${monthView}">
+								<input type="hidden" name="userId" th:value="${indexForm.email}" />
 								<button type="submit" th:formaction="@{/bulkEditPreview}"
 									class="block mx-4 mt-2 text-base text-gray-700 capitalize lg:mt-0 dark:text-white hover:text-blue-600 dark:hover:text-gray-400">
 									月の一覧表示
@@ -63,6 +64,7 @@
 							</li>
 							<li class="p-3 flex justify-center">
 								<div th:unless="${monthView}">
+									<input type="hidden" name="userId" th:value="${indexForm.email}" />
 									<button type="submit" th:formaction="@{/bulkEditPreview}"
 										class="block mx-4 mt-2 text-base text-gray-700 capitalize lg:mt-0 dark:text-white hover:text-blue-600 dark:hover:text-gray-400">
 										月の一覧表示
