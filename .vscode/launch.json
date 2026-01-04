@@ -9,6 +9,16 @@
             "projectName": "Kintai",
             "args": "",
             "envFile": "${workspaceFolder}/.env"
+        },
+        {
+            "type": "java",
+            "name": "Spring Boot-KintaiApplication<Kintai>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.jp.Kintai.KintaiApplication",
+            "projectName": "Kintai",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
         }
     ]
 }

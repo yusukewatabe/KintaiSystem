@@ -10,7 +10,7 @@
 	</head>
 	<body>
 		<!--/* ヘッダー */-->
-		<div class="w-full" th:insert="./common/header :: header"></div><br/>
+		<div class="w-full" th:insert="~{./common/header :: header}"></div><br/>
 		<div class="flex flex-col items-center mt-6 space-y-4">
 			<p class="mt-6 text-5xl sm:text-5xl text-center">クレジット</p><br/>
 			<p class="mt-6 text-2xl sm:text-3xl text-center">作成者</p><br/>
@@ -21,6 +21,6 @@
 			<p class="mt-6 text-1xl sm:text-2xl text-center">同期 M</p>
 		</div>
 		<!--/* フッター */-->
-		<div class="w-full max-w-full mt-8" th:insert="./common/footer :: footer"></div>
+		<div class="w-full max-w-full mt-8" th:insert="~{./common/footer :: footer}"></div>
 	</body>
 </html>

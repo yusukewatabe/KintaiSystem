@@ -3,7 +3,7 @@
 	<!-- プロパティ定義 -->
 	<Properties>
 		<!-- 出力ディレクトリ -->
-		<Property name="LOG_PATH">logs</Property>
+		<Property name="LOG_PATH">/var/log/kintai</Property>
 		<!-- ベースファイル名 -->
 		<Property name="LOG_FILE">kintai.log</Property>
 		<Property name="LOG_CHARSET">UTF-8</Property>

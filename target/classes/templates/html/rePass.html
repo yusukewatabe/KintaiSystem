@@ -10,7 +10,7 @@
 	</head>
 	<body>
 		<!--/* ヘッダー */-->
-		<div class="w-full" th:insert="./common/header :: header"></div><br/>
+		<div class="w-full" th:insert="~{./common/header :: header}"></div><br/>
 		<p class="mt-6 text-2xl sm:text-3xl text-center">パスワード再設定</p><br/><br/>
 		<form th:action="@{/setForgetPassWord}" method="post" class="w-full max-w-md mx-auto px-4">
 			<input type="hidden" name="id" th:value="${newUidForm.encodeEmail}">
@@ -70,6 +70,6 @@
 			}
 		</script>
 		<!--/* フッター */-->
-		<div class="w-full max-w-full mt-8" th:insert="./common/footer :: footer"></div>
+		<div class="w-full max-w-full mt-8" th:insert="~{./common/footer :: footer}"></div>
 	</body>
 </html>

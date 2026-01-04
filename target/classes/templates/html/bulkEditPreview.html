@@ -10,7 +10,7 @@
 	</head>
 	<body>
 		<!--/* ヘッダー */-->
-		<div class="w-full" th:insert="./common/header :: header"></div><br/>
+		<div class="w-full" th:insert="~{./common/header :: header}"></div><br/>
 		<form th:action="@{/default}" method="post">
 			<div class="flex justify-center py-3">
 				<div class="w-full max-w-screen-lg px-4">
@@ -25,6 +25,10 @@
 									class="w-32 mb-2 text-white bg-cyan-700 hover:bg-cyan-800 focus:outline-none focus:ring-4 focus:ring-cyan-300 font-medium rounded-full text-sm px-8 py-3">
 									一括編集
 							</button>
+							<button type="submit" th:formaction="@{/testPdf}"
+									class="w-32 mb-2 text-white bg-cyan-700 hover:bg-cyan-800 focus:outline-none focus:ring-4 focus:ring-cyan-300 font-medium rounded-full text-sm px-8 py-3">
+									PDF出力
+							</button>
 						</div>
 						<h2 class="text-lg font-semibold text-gray-700">
 							<span th:text="${bulkForm.firstDay}"></span>～<span th:text="${bulkForm.lastDay}"></span>
@@ -37,20 +41,26 @@
 								<tr>
 									<th class="px-8 py-2 text-center text-sm font-medium text-gray-700 border border-gray-400">日付</th>
 									<th class="px-8 py-2 text-center text-sm font-medium text-gray-700 border border-gray-400">勤務区分</th>
+									<th class="px-8 py-2 text-center text-sm font-medium text-gray-700 border border-gray-400">勤怠種別</th>
 									<th class="px-8 py-2 text-center text-sm font-medium text-gray-700 border border-gray-400">出勤</th>
 									<th class="px-8 py-2 text-center text-sm font-medium text-gray-700 border border-gray-400">退勤</th>
 									<th class="px-8 py-2 text-center text-sm font-medium text-gray-700 border border-gray-400">休憩開始</th>
 									<th class="px-8 py-2 text-center text-sm font-medium text-gray-700 border border-gray-400">休憩終了</th>
+									<th class="px-8 py-2 text-center text-sm font-medium text-gray-700 border border-gray-400">備考</th>
 								</tr>
 							</thead>
 							<tbody class="divide-y divide-gray-200">
 								<tr class="odd:bg-white even:bg-gray-50 hover:bg-gray-100">
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.bulkday1}"></td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.kinmuKubun1}"></td>
+									<!--/* TODO Formに適用する値の適用 */-->
+									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400"></td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.clockInTime1}"></td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.clockOutTime1}"></td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.breakStart1}"></td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.breakEnd1}"></td>
+									<!--/* TODO Formに適用する値の適用 */-->
+									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400"></td>
 								</tr>
 								<tr class="odd:bg-white even:bg-gray-50 hover:bg-gray-100">
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.bulkday2}"></td>
@@ -309,6 +319,6 @@
 		</form>
 
 		<!--/* フッター */-->
-		<div class="w-full max-w-full mt-8" th:insert="./common/footer :: footer"></div>
+		<div class="w-full max-w-full mt-8" th:insert="~{./common/footer :: footer}"></div>
 	</body>
 </html>
