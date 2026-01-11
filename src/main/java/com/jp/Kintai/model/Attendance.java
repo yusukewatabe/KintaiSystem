@@ -27,6 +27,9 @@ public class Attendance {
 	@Column(name = "work_date")
 	private String workDate;
 
+	@Column(name = "attendance_type")
+	private String atType;
+
 	@Column(name = "clock_in_time")
 	private String clockInTime;
 
@@ -38,4 +41,7 @@ public class Attendance {
 
 	@Column(name = "break_end")
 	private String breakEnd;
+
+	@Column(name = "remarks")
+	private String remarks;
 }

@@ -14,22 +14,22 @@
 	<body>
 		<!--/* ヘッダー */-->
 		<div class="w-full" th:insert="~{./common/header :: header}"></div><br/>
-		<form th:action="@{/default}" method="post">
+		<form th:action="@{/default}">
 			<div class="flex justify-center py-3">
 				<div class="w-full max-w-screen-lg px-4">
 					<input type="hidden" name="userId" th:value="${indexForm.email}" />
 					<div class="flex justify-between items-center w-full mb-2">
 						<div class="flex gap-4">
 							<button type="submit" th:formaction="@{/home}" onclick="if(!confirm('編集はまだ確定していません。\nホーム画面へ戻ってもよろしいですか？')) { event.preventDefault(); }"
-									class="w-32 mb-2 text-white bg-cyan-700 hover:bg-cyan-800 focus:outline-none focus:ring-4 focus:ring-cyan-300 font-medium rounded-full text-sm px-8 py-3">
+									th:formmethod="post" class="w-32 mb-2 text-white bg-cyan-700 hover:bg-cyan-800 focus:outline-none focus:ring-4 focus:ring-cyan-300 font-medium rounded-full text-sm px-8 py-3">
 									ホーム
 							</button>
 							<button type="submit" th:formaction="@{/bulkEditPreview}" onclick="if(!confirm('編集はまだ確定していません。\n勤怠一覧画面へ戻ってもよろしいですか？')) { event.preventDefault(); }"
-									class="mb-2 text-white bg-cyan-700 hover:bg-cyan-800 focus:outline-none focus:ring-4 focus:ring-cyan-300 font-medium rounded-full text-sm px-8 py-3">
+									th:formmethod="get" class="mb-2 text-white bg-cyan-700 hover:bg-cyan-800 focus:outline-none focus:ring-4 focus:ring-cyan-300 font-medium rounded-full text-sm px-8 py-3">
 									勤怠一覧
 							</button>
 							<button type="submit" th:formaction="@{/bulkEditDecision}"
-									class="mb-2 text-white bg-cyan-700 hover:bg-cyan-800 focus:outline-none focus:ring-4 focus:ring-cyan-300 font-medium rounded-full text-sm px-8 py-3">
+									th:formmethod="post" class="mb-2 text-white bg-cyan-700 hover:bg-cyan-800 focus:outline-none focus:ring-4 focus:ring-cyan-300 font-medium rounded-full text-sm px-8 py-3">
 									編集を確定
 							</button>
 						</div>
@@ -38,8 +38,8 @@
 						</h2>
 					</div>
 
-					<div class="overflow-x-auto">
-						<table class="w-full">
+					<div>
+						<table class="w-full mx-auto">
 							<thead class="bg-gray-50 sticky top-0">
 								<tr>
 									<th class="px-8 py-2 text-center text-sm font-medium text-gray-700 border border-gray-400">日付</th>
@@ -57,8 +57,15 @@
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.bulkday1}"></td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.kinmuKubun1}"></td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
-										<!--/* TODO プルダウンにして有給、早退等を入れて、値をjava側に渡せるようにする。 */-->
-										<!--/* <input type="text" name="clockInTimeList" th:value="${bulkForm.clockInTime1}" class="rounded-md border border-gray-400 w-24 text-center" data-format="HHmm" /> */-->
+										<select name="atTypeList">
+											<option value="" th:selected="${#strings.isEmpty(bulkForm.atType1)}">--</option>
+											<option value="有給" th:selected="${bulkForm.atType1 == '有給'}">有給</option>
+											<option value="現場休" th:selected="${bulkForm.atType1 == '現場休'}">現場休</option>
+											<option value="遅刻" th:selected="${bulkForm.atType1 == '遅刻'}">遅刻</option>
+											<option value="早退" th:selected="${bulkForm.atType1 == '早退'}">早退</option>
+											<option value="欠勤" th:selected="${bulkForm.atType1 == '欠勤'}">欠勤</option>
+											<option value="代休" th:selected="${bulkForm.atType1 == '代休'}">代休</option>
+										</select>
 									</td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
 										<input type="text" name="clockInTimeList" th:value="${bulkForm.clockInTime1}" class="rounded-md border border-gray-400 w-24 text-center" data-format="HHmm" />
@@ -72,10 +79,24 @@
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
 										<input type="text" name="breakEndList" th:value="${bulkForm.breakEnd1}" class="rounded-md border border-gray-400 w-24 text-center" data-format="HHmm" />
 									</td>
+									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
+										<input type="text" name="remarksList" th:value="${bulkForm.remarks1}" class="rounded-md border border-gray-400 w-24 text-center" />
+									</td>
 								</tr>
-									<tr class="odd:bg-white even:bg-gray-50 hover:bg-gray-100">
+								<tr class="odd:bg-white even:bg-gray-50 hover:bg-gray-100">
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.bulkday2}"></td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.kinmuKubun2}"></td>
+									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
+										<select name="atTypeList">
+											<option value="" th:selected="${#strings.isEmpty(bulkForm.atType2)}">--</option>
+											<option value="有給" th:selected="${bulkForm.atType2 == '有給'}">有給</option>
+											<option value="現場休" th:selected="${bulkForm.atType2 == '現場休'}">現場休</option>
+											<option value="遅刻" th:selected="${bulkForm.atType2 == '遅刻'}">遅刻</option>
+											<option value="早退" th:selected="${bulkForm.atType2 == '早退'}">早退</option>
+											<option value="欠勤" th:selected="${bulkForm.atType2 == '欠勤'}">欠勤</option>
+											<option value="代休" th:selected="${bulkForm.atType2 == '代休'}">代休</option>
+										</select>
+									</td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
 										<input type="text" name="clockInTimeList" th:value="${bulkForm.clockInTime2}"class="rounded-md border border-gray-400 w-24 text-center" data-format="HHmm" />
 									</td>
@@ -88,10 +109,24 @@
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
 										<input type="text" name="breakEndList" th:value="${bulkForm.breakEnd2}"class="rounded-md border border-gray-400 w-24 text-center" data-format="HHmm" />
 									</td>
+									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
+										<input type="text" name="remarksList" th:value="${bulkForm.remarks2}" class="rounded-md border border-gray-400 w-24 text-center" />
+									</td>
 								</tr>
 								<tr class="odd:bg-white even:bg-gray-50 hover:bg-gray-100">
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.bulkday3}"></td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.kinmuKubun3}"></td>
+									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
+										<select name="atTypeList">
+											<option value="" th:selected="${#strings.isEmpty(bulkForm.atType3)}">--</option>
+											<option value="有給" th:selected="${bulkForm.atType3 == '有給'}">有給</option>
+											<option value="現場休" th:selected="${bulkForm.atType3 == '現場休'}">現場休</option>
+											<option value="遅刻" th:selected="${bulkForm.atType3 == '遅刻'}">遅刻</option>
+											<option value="早退" th:selected="${bulkForm.atType3 == '早退'}">早退</option>
+											<option value="欠勤" th:selected="${bulkForm.atType3 == '欠勤'}">欠勤</option>
+											<option value="代休" th:selected="${bulkForm.atType3 == '代休'}">代休</option>
+										</select>
+									</td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
 										<input type="text" name="clockInTimeList" th:value="${bulkForm.clockInTime3}"class="rounded-md border border-gray-400 w-24 text-center" data-format="HHmm" />
 									</td>
@@ -104,10 +139,24 @@
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
 										<input type="text" name="breakEndList" th:value="${bulkForm.breakEnd3}"class="rounded-md border border-gray-400 w-24 text-center" data-format="HHmm" />
 									</td>
+									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
+										<input type="text" name="remarksList" th:value="${bulkForm.remarks3}" class="rounded-md border border-gray-400 w-24 text-center" />
+									</td>
 								</tr>
 								<tr class="odd:bg-white even:bg-gray-50 hover:bg-gray-100">
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.bulkday4}"></td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.kinmuKubun4}"></td>
+									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
+										<select name="atTypeList">
+											<option value="" th:selected="${#strings.isEmpty(bulkForm.atType4)}">--</option>
+											<option value="有給" th:selected="${bulkForm.atType4 == '有給'}">有給</option>
+											<option value="現場休" th:selected="${bulkForm.atType4 == '現場休'}">現場休</option>
+											<option value="遅刻" th:selected="${bulkForm.atType4 == '遅刻'}">遅刻</option>
+											<option value="早退" th:selected="${bulkForm.atType4 == '早退'}">早退</option>
+											<option value="欠勤" th:selected="${bulkForm.atType4 == '欠勤'}">欠勤</option>
+											<option value="代休" th:selected="${bulkForm.atType4 == '代休'}">代休</option>
+										</select>
+									</td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
 										<input type="text" name="clockInTimeList" th:value="${bulkForm.clockInTime4}"class="rounded-md border border-gray-400 w-24 text-center" data-format="HHmm" />
 									</td>
@@ -120,10 +169,24 @@
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
 										<input type="text" name="breakEndList" th:value="${bulkForm.breakEnd4}"class="rounded-md border border-gray-400 w-24 text-center" data-format="HHmm" />
 									</td>
+									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
+										<input type="text" name="remarksList" th:value="${bulkForm.remarks4}" class="rounded-md border border-gray-400 w-24 text-center" />
+									</td>
 								</tr>
 								<tr class="odd:bg-white even:bg-gray-50 hover:bg-gray-100">
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.bulkday5}"></td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.kinmuKubun5}"></td>
+									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
+										<select name="atTypeList">
+											<option value="" th:selected="${#strings.isEmpty(bulkForm.atType5)}">--</option>
+											<option value="有給" th:selected="${bulkForm.atType5 == '有給'}">有給</option>
+											<option value="現場休" th:selected="${bulkForm.atType5 == '現場休'}">現場休</option>
+											<option value="遅刻" th:selected="${bulkForm.atType5 == '遅刻'}">遅刻</option>
+											<option value="早退" th:selected="${bulkForm.atType5 == '早退'}">早退</option>
+											<option value="欠勤" th:selected="${bulkForm.atType5 == '欠勤'}">欠勤</option>
+											<option value="代休" th:selected="${bulkForm.atType5 == '代休'}">代休</option>
+										</select>
+									</td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
 										<input type="text" name="clockInTimeList" th:value="${bulkForm.clockInTime5}"class="rounded-md border border-gray-400 w-24 text-center" data-format="HHmm" />
 									</td>
@@ -136,10 +199,24 @@
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
 										<input type="text" name="breakEndList" th:value="${bulkForm.breakEnd5}"class="rounded-md border border-gray-400 w-24 text-center" data-format="HHmm" />
 									</td>
+									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
+										<input type="text" name="remarksList" th:value="${bulkForm.remarks5}" class="rounded-md border border-gray-400 w-24 text-center" />
+									</td>
 								</tr>
 								<tr class="odd:bg-white even:bg-gray-50 hover:bg-gray-100">
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.bulkday6}"></td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.kinmuKubun6}"></td>
+									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
+										<select name="atTypeList">
+											<option value="" th:selected="${#strings.isEmpty(bulkForm.atType6)}">--</option>
+											<option value="有給" th:selected="${bulkForm.atType6 == '有給'}">有給</option>
+											<option value="現場休" th:selected="${bulkForm.atType6 == '現場休'}">現場休</option>
+											<option value="遅刻" th:selected="${bulkForm.atType6 == '遅刻'}">遅刻</option>
+											<option value="早退" th:selected="${bulkForm.atType6 == '早退'}">早退</option>
+											<option value="欠勤" th:selected="${bulkForm.atType6 == '欠勤'}">欠勤</option>
+											<option value="代休" th:selected="${bulkForm.atType6 == '代休'}">代休</option>
+										</select>
+									</td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
 										<input type="text" name="clockInTimeList" th:value="${bulkForm.clockInTime6}"class="rounded-md border border-gray-400 w-24 text-center" data-format="HHmm" />
 									</td>
@@ -152,10 +229,24 @@
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
 										<input type="text" name="breakEndList" th:value="${bulkForm.breakEnd6}"class="rounded-md border border-gray-400 w-24 text-center" data-format="HHmm" />
 									</td>
+									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
+										<input type="text" name="remarksList" th:value="${bulkForm.remarks6}" class="rounded-md border border-gray-400 w-24 text-center" />
+									</td>
 								</tr>
 								<tr class="odd:bg-white even:bg-gray-50 hover:bg-gray-100">
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.bulkday7}"></td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.kinmuKubun7}"></td>
+									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
+										<select name="atTypeList">
+											<option value="" th:selected="${#strings.isEmpty(bulkForm.atType7)}">--</option>
+											<option value="有給" th:selected="${bulkForm.atType7 == '有給'}">有給</option>
+											<option value="現場休" th:selected="${bulkForm.atType7 == '現場休'}">現場休</option>
+											<option value="遅刻" th:selected="${bulkForm.atType7 == '遅刻'}">遅刻</option>
+											<option value="早退" th:selected="${bulkForm.atType7 == '早退'}">早退</option>
+											<option value="欠勤" th:selected="${bulkForm.atType7 == '欠勤'}">欠勤</option>
+											<option value="代休" th:selected="${bulkForm.atType7 == '代休'}">代休</option>
+										</select>
+									</td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
 										<input type="text" name="clockInTimeList" th:value="${bulkForm.clockInTime7}"class="rounded-md border border-gray-400 w-24 text-center" data-format="HHmm" />
 									</td>
@@ -168,10 +259,24 @@
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
 										<input type="text" name="breakEndList" th:value="${bulkForm.breakEnd7}"class="rounded-md border border-gray-400 w-24 text-center" data-format="HHmm" />
 									</td>
+									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
+										<input type="text" name="remarksList" th:value="${bulkForm.remarks7}" class="rounded-md border border-gray-400 w-24 text-center" />
+									</td>
 								</tr>
 								<tr class="odd:bg-white even:bg-gray-50 hover:bg-gray-100">
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.bulkday8}"></td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.kinmuKubun8}"></td>
+									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
+										<select name="atTypeList">
+											<option value="" th:selected="${#strings.isEmpty(bulkForm.atType8)}">--</option>
+											<option value="有給" th:selected="${bulkForm.atType8 == '有給'}">有給</option>
+											<option value="現場休" th:selected="${bulkForm.atType8 == '現場休'}">現場休</option>
+											<option value="遅刻" th:selected="${bulkForm.atType8 == '遅刻'}">遅刻</option>
+											<option value="早退" th:selected="${bulkForm.atType8 == '早退'}">早退</option>
+											<option value="欠勤" th:selected="${bulkForm.atType8 == '欠勤'}">欠勤</option>
+											<option value="代休" th:selected="${bulkForm.atType8 == '代休'}">代休</option>
+										</select>
+									</td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
 										<input type="text" name="clockInTimeList" th:value="${bulkForm.clockInTime8}"class="rounded-md border border-gray-400 w-24 text-center" data-format="HHmm" />
 									</td>
@@ -184,10 +289,24 @@
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
 										<input type="text" name="breakEndList" th:value="${bulkForm.breakEnd8}"class="rounded-md border border-gray-400 w-24 text-center" data-format="HHmm" />
 									</td>
+									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
+										<input type="text" name="remarksList" th:value="${bulkForm.remarks8}" class="rounded-md border border-gray-400 w-24 text-center" />
+									</td>
 								</tr>
 								<tr class="odd:bg-white even:bg-gray-50 hover:bg-gray-100">
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.bulkday9}"></td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.kinmuKubun9}"></td>
+									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
+										<select name="atTypeList">
+											<option value="" th:selected="${#strings.isEmpty(bulkForm.atType9)}">--</option>
+											<option value="有給" th:selected="${bulkForm.atType9 == '有給'}">有給</option>
+											<option value="現場休" th:selected="${bulkForm.atType9 == '現場休'}">現場休</option>
+											<option value="遅刻" th:selected="${bulkForm.atType9 == '遅刻'}">遅刻</option>
+											<option value="早退" th:selected="${bulkForm.atType9 == '早退'}">早退</option>
+											<option value="欠勤" th:selected="${bulkForm.atType9 == '欠勤'}">欠勤</option>
+											<option value="代休" th:selected="${bulkForm.atType9 == '代休'}">代休</option>
+										</select>
+									</td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
 										<input type="text" name="clockInTimeList" th:value="${bulkForm.clockInTime9}"class="rounded-md border border-gray-400 w-24 text-center" data-format="HHmm" />
 									</td>
@@ -200,10 +319,24 @@
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
 										<input type="text" name="breakEndList" th:value="${bulkForm.breakEnd9}"class="rounded-md border border-gray-400 w-24 text-center" data-format="HHmm" />
 									</td>
+									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
+										<input type="text" name="remarksList" th:value="${bulkForm.remarks9}" class="rounded-md border border-gray-400 w-24 text-center" />
+									</td>
 								</tr>
 								<tr class="odd:bg-white even:bg-gray-50 hover:bg-gray-100">
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.bulkday10}"></td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.kinmuKubun10}"></td>
+									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
+										<select name="atTypeList">
+											<option value="" th:selected="${#strings.isEmpty(bulkForm.atType10)}">--</option>
+											<option value="有給" th:selected="${bulkForm.atType10 == '有給'}">有給</option>
+											<option value="現場休" th:selected="${bulkForm.atType10 == '現場休'}">現場休</option>
+											<option value="遅刻" th:selected="${bulkForm.atType10 == '遅刻'}">遅刻</option>
+											<option value="早退" th:selected="${bulkForm.atType10 == '早退'}">早退</option>
+											<option value="欠勤" th:selected="${bulkForm.atType10 == '欠勤'}">欠勤</option>
+											<option value="代休" th:selected="${bulkForm.atType10 == '代休'}">代休</option>
+										</select>
+									</td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
 										<input type="text" name="clockInTimeList" th:value="${bulkForm.clockInTime1}"class="rounded-md border border-gray-400 w-24 text-center" data-format="HHmm" />
 									</td>
@@ -216,10 +349,24 @@
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
 										<input type="text" name="breakEndList" th:value="${bulkForm.breakEnd10}"class="rounded-md border border-gray-400 w-24 text-center" data-format="HHmm" />
 									</td>
+									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
+										<input type="text" name="remarksList" th:value="${bulkForm.remarks10}" class="rounded-md border border-gray-400 w-24 text-center" />
+									</td>
 								</tr>
 								<tr class="odd:bg-white even:bg-gray-50 hover:bg-gray-100">
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.bulkday11}"></td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.kinmuKubun11}"></td>
+									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
+										<select name="atTypeList">
+											<option value="" th:selected="${#strings.isEmpty(bulkForm.atType11)}">--</option>
+											<option value="有給" th:selected="${bulkForm.atType11 == '有給'}">有給</option>
+											<option value="現場休" th:selected="${bulkForm.atType11 == '現場休'}">現場休</option>
+											<option value="遅刻" th:selected="${bulkForm.atType11 == '遅刻'}">遅刻</option>
+											<option value="早退" th:selected="${bulkForm.atType11 == '早退'}">早退</option>
+											<option value="欠勤" th:selected="${bulkForm.atType11 == '欠勤'}">欠勤</option>
+											<option value="代休" th:selected="${bulkForm.atType11 == '代休'}">代休</option>
+										</select>
+									</td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
 										<input type="text" name="clockInTimeList" th:value="${bulkForm.clockInTime11}"class="rounded-md border border-gray-400 w-24 text-center" data-format="HHmm" />
 									</td>
@@ -232,10 +379,24 @@
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
 										<input type="text" name="breakEndList" th:value="${bulkForm.breakEnd11}"class="rounded-md border border-gray-400 w-24 text-center" data-format="HHmm" />
 									</td>
+									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
+										<input type="text" name="remarksList" th:value="${bulkForm.remarks11}" class="rounded-md border border-gray-400 w-24 text-center" />
+									</td>
 								</tr>
 								<tr class="odd:bg-white even:bg-gray-50 hover:bg-gray-100">
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.bulkday12}"></td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.kinmuKubun12}"></td>
+									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
+										<select name="atTypeList">
+											<option value="" th:selected="${#strings.isEmpty(bulkForm.atType12)}">--</option>
+											<option value="有給" th:selected="${bulkForm.atType12 == '有給'}">有給</option>
+											<option value="現場休" th:selected="${bulkForm.atType12 == '現場休'}">現場休</option>
+											<option value="遅刻" th:selected="${bulkForm.atType12 == '遅刻'}">遅刻</option>
+											<option value="早退" th:selected="${bulkForm.atType12 == '早退'}">早退</option>
+											<option value="欠勤" th:selected="${bulkForm.atType12 == '欠勤'}">欠勤</option>
+											<option value="代休" th:selected="${bulkForm.atType12 == '代休'}">代休</option>
+										</select>
+									</td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
 										<input type="text" name="clockInTimeList" th:value="${bulkForm.clockInTime12}"class="rounded-md border border-gray-400 w-24 text-center" data-format="HHmm" />
 									</td>
@@ -248,10 +409,24 @@
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
 										<input type="text" name="breakEndList" th:value="${bulkForm.breakEnd12}"class="rounded-md border border-gray-400 w-24 text-center" data-format="HHmm" />
 									</td>
+									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
+										<input type="text" name="remarksList" th:value="${bulkForm.remarks12}" class="rounded-md border border-gray-400 w-24 text-center" />
+									</td>
 								</tr>
 								<tr class="odd:bg-white even:bg-gray-50 hover:bg-gray-100">
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.bulkday13}"></td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.kinmuKubun13}"></td>
+									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
+										<select name="atTypeList">
+											<option value="" th:selected="${#strings.isEmpty(bulkForm.atType13)}">--</option>
+											<option value="有給" th:selected="${bulkForm.atType13 == '有給'}">有給</option>
+											<option value="現場休" th:selected="${bulkForm.atType13 == '現場休'}">現場休</option>
+											<option value="遅刻" th:selected="${bulkForm.atType13 == '遅刻'}">遅刻</option>
+											<option value="早退" th:selected="${bulkForm.atType13 == '早退'}">早退</option>
+											<option value="欠勤" th:selected="${bulkForm.atType13 == '欠勤'}">欠勤</option>
+											<option value="代休" th:selected="${bulkForm.atType13 == '代休'}">代休</option>
+										</select>
+									</td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
 										<input type="text" name="clockInTimeList" th:value="${bulkForm.clockInTime13}"class="rounded-md border border-gray-400 w-24 text-center" data-format="HHmm" />
 									</td>
@@ -264,10 +439,24 @@
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
 										<input type="text" name="breakEndList" th:value="${bulkForm.breakEnd13}"class="rounded-md border border-gray-400 w-24 text-center" data-format="HHmm" />
 									</td>
+									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
+										<input type="text" name="remarksList" th:value="${bulkForm.remarks13}" class="rounded-md border border-gray-400 w-24 text-center" />
+									</td>
 								</tr>
 								<tr class="odd:bg-white even:bg-gray-50 hover:bg-gray-100">
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.bulkday14}"></td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.kinmuKubun14}"></td>
+									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
+										<select name="atTypeList">
+											<option value="" th:selected="${#strings.isEmpty(bulkForm.atType14)}">--</option>
+											<option value="有給" th:selected="${bulkForm.atType14 == '有給'}">有給</option>
+											<option value="現場休" th:selected="${bulkForm.atType14 == '現場休'}">現場休</option>
+											<option value="遅刻" th:selected="${bulkForm.atType14 == '遅刻'}">遅刻</option>
+											<option value="早退" th:selected="${bulkForm.atType14 == '早退'}">早退</option>
+											<option value="欠勤" th:selected="${bulkForm.atType14 == '欠勤'}">欠勤</option>
+											<option value="代休" th:selected="${bulkForm.atType14 == '代休'}">代休</option>
+										</select>
+									</td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
 										<input type="text" name="clockInTimeList" th:value="${bulkForm.clockInTime14}"class="rounded-md border border-gray-400 w-24 text-center" data-format="HHmm" />
 									</td>
@@ -280,10 +469,24 @@
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
 										<input type="text" name="breakEndList" th:value="${bulkForm.breakEnd14}"class="rounded-md border border-gray-400 w-24 text-center" data-format="HHmm" />
 									</td>
+									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
+										<input type="text" name="remarksList" th:value="${bulkForm.remarks14}" class="rounded-md border border-gray-400 w-24 text-center" />
+									</td>
 								</tr>
 								<tr class="odd:bg-white even:bg-gray-50 hover:bg-gray-100">
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.bulkday15}"></td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.kinmuKubun15}"></td>
+									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
+										<select name="atTypeList">
+											<option value="" th:selected="${#strings.isEmpty(bulkForm.atType15)}">--</option>
+											<option value="有給" th:selected="${bulkForm.atType15 == '有給'}">有給</option>
+											<option value="現場休" th:selected="${bulkForm.atType15 == '現場休'}">現場休</option>
+											<option value="遅刻" th:selected="${bulkForm.atType15 == '遅刻'}">遅刻</option>
+											<option value="早退" th:selected="${bulkForm.atType15 == '早退'}">早退</option>
+											<option value="欠勤" th:selected="${bulkForm.atType15 == '欠勤'}">欠勤</option>
+											<option value="代休" th:selected="${bulkForm.atType15 == '代休'}">代休</option>
+										</select>
+									</td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
 										<input type="text" name="clockInTimeList" th:value="${bulkForm.clockInTime15}"class="rounded-md border border-gray-400 w-24 text-center" data-format="HHmm" />
 									</td>
@@ -296,10 +499,24 @@
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
 										<input type="text" name="breakEndList" th:value="${bulkForm.breakEnd15}"class="rounded-md border border-gray-400 w-24 text-center" data-format="HHmm" />
 									</td>
+									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
+										<input type="text" name="remarksList" th:value="${bulkForm.remarks15}" class="rounded-md border border-gray-400 w-24 text-center" />
+									</td>
 								</tr>
 								<tr class="odd:bg-white even:bg-gray-50 hover:bg-gray-100">
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.bulkday16}"></td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.kinmuKubun16}"></td>
+									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
+										<select name="atTypeList">
+											<option value="" th:selected="${#strings.isEmpty(bulkForm.atType16)}">--</option>
+											<option value="有給" th:selected="${bulkForm.atType16 == '有給'}">有給</option>
+											<option value="現場休" th:selected="${bulkForm.atType16 == '現場休'}">現場休</option>
+											<option value="遅刻" th:selected="${bulkForm.atType16 == '遅刻'}">遅刻</option>
+											<option value="早退" th:selected="${bulkForm.atType16 == '早退'}">早退</option>
+											<option value="欠勤" th:selected="${bulkForm.atType16 == '欠勤'}">欠勤</option>
+											<option value="代休" th:selected="${bulkForm.atType16 == '代休'}">代休</option>
+										</select>
+									</td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
 										<input type="text" name="clockInTimeList" th:value="${bulkForm.clockInTime16}"class="rounded-md border border-gray-400 w-24 text-center" data-format="HHmm" />
 									</td>
@@ -312,10 +529,24 @@
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
 										<input type="text" name="breakEndList" th:value="${bulkForm.breakEnd16}"class="rounded-md border border-gray-400 w-24 text-center" data-format="HHmm" />
 									</td>
+									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
+										<input type="text" name="remarksList" th:value="${bulkForm.remarks16}" class="rounded-md border border-gray-400 w-24 text-center" />
+									</td>
 								</tr>
 								<tr class="odd:bg-white even:bg-gray-50 hover:bg-gray-100">
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.bulkday17}"></td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.kinmuKubun17}"></td>
+									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
+										<select name="atTypeList">
+											<option value="" th:selected="${#strings.isEmpty(bulkForm.atType17)}">--</option>
+											<option value="有給" th:selected="${bulkForm.atType17 == '有給'}">有給</option>
+											<option value="現場休" th:selected="${bulkForm.atType17 == '現場休'}">現場休</option>
+											<option value="遅刻" th:selected="${bulkForm.atType17 == '遅刻'}">遅刻</option>
+											<option value="早退" th:selected="${bulkForm.atType17 == '早退'}">早退</option>
+											<option value="欠勤" th:selected="${bulkForm.atType17 == '欠勤'}">欠勤</option>
+											<option value="代休" th:selected="${bulkForm.atType17 == '代休'}">代休</option>
+										</select>
+									</td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
 										<input type="text" name="clockInTimeList" th:value="${bulkForm.clockInTime17}"class="rounded-md border border-gray-400 w-24 text-center" data-format="HHmm" />
 									</td>
@@ -328,10 +559,24 @@
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
 										<input type="text" name="breakEndList" th:value="${bulkForm.breakEnd17}"class="rounded-md border border-gray-400 w-24 text-center" data-format="HHmm" />
 									</td>
+									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
+										<input type="text" name="remarksList" th:value="${bulkForm.remarks17}" class="rounded-md border border-gray-400 w-24 text-center" />
+									</td>
 								</tr>
 								<tr class="odd:bg-white even:bg-gray-50 hover:bg-gray-100">
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.bulkday18}"></td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.kinmuKubun18}"></td>
+									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
+										<select name="atTypeList">
+											<option value="" th:selected="${#strings.isEmpty(bulkForm.atType18)}">--</option>
+											<option value="有給" th:selected="${bulkForm.atType18 == '有給'}">有給</option>
+											<option value="現場休" th:selected="${bulkForm.atType18 == '現場休'}">現場休</option>
+											<option value="遅刻" th:selected="${bulkForm.atType18 == '遅刻'}">遅刻</option>
+											<option value="早退" th:selected="${bulkForm.atType18 == '早退'}">早退</option>
+											<option value="欠勤" th:selected="${bulkForm.atType18 == '欠勤'}">欠勤</option>
+											<option value="代休" th:selected="${bulkForm.atType18 == '代休'}">代休</option>
+										</select>
+									</td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
 										<input type="text" name="clockInTimeList" th:value="${bulkForm.clockInTime18}"class="rounded-md border border-gray-400 w-24 text-center" data-format="HHmm" />
 									</td>
@@ -344,10 +589,24 @@
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
 										<input type="text" name="breakEndList" th:value="${bulkForm.breakEnd18}"class="rounded-md border border-gray-400 w-24 text-center" data-format="HHmm" />
 									</td>
+									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
+										<input type="text" name="remarksList" th:value="${bulkForm.remarks18}" class="rounded-md border border-gray-400 w-24 text-center" />
+									</td>
 								</tr>
 								<tr class="odd:bg-white even:bg-gray-50 hover:bg-gray-100">
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.bulkday19}"></td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.kinmuKubun19}"></td>
+									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
+										<select name="atTypeList">
+											<option value="" th:selected="${#strings.isEmpty(bulkForm.atType19)}">--</option>
+											<option value="有給" th:selected="${bulkForm.atType19 == '有給'}">有給</option>
+											<option value="現場休" th:selected="${bulkForm.atType19 == '現場休'}">現場休</option>
+											<option value="遅刻" th:selected="${bulkForm.atType19 == '遅刻'}">遅刻</option>
+											<option value="早退" th:selected="${bulkForm.atType19 == '早退'}">早退</option>
+											<option value="欠勤" th:selected="${bulkForm.atType19 == '欠勤'}">欠勤</option>
+											<option value="代休" th:selected="${bulkForm.atType19 == '代休'}">代休</option>
+										</select>
+									</td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
 										<input type="text" name="clockInTimeList" th:value="${bulkForm.clockInTime19}"class="rounded-md border border-gray-400 w-24 text-center" data-format="HHmm" />
 									</td>
@@ -360,10 +619,24 @@
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
 										<input type="text" name="breakEndList" th:value="${bulkForm.breakEnd19}"class="rounded-md border border-gray-400 w-24 text-center" data-format="HHmm" />
 									</td>
+									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
+										<input type="text" name="remarksList" th:value="${bulkForm.remarks19}" class="rounded-md border border-gray-400 w-24 text-center" />
+									</td>
 								</tr>
 								<tr class="odd:bg-white even:bg-gray-50 hover:bg-gray-100">
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.bulkday20}"></td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.kinmuKubun20}"></td>
+									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
+										<select name="atTypeList">
+											<option value="" th:selected="${#strings.isEmpty(bulkForm.atType20)}">--</option>
+											<option value="有給" th:selected="${bulkForm.atType20 == '有給'}">有給</option>
+											<option value="現場休" th:selected="${bulkForm.atType20 == '現場休'}">現場休</option>
+											<option value="遅刻" th:selected="${bulkForm.atType20 == '遅刻'}">遅刻</option>
+											<option value="早退" th:selected="${bulkForm.atType20 == '早退'}">早退</option>
+											<option value="欠勤" th:selected="${bulkForm.atType20 == '欠勤'}">欠勤</option>
+											<option value="代休" th:selected="${bulkForm.atType20 == '代休'}">代休</option>
+										</select>
+									</td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
 										<input type="text" name="clockInTimeList" th:value="${bulkForm.clockInTime20}"class="rounded-md border border-gray-400 w-24 text-center" data-format="HHmm" />
 									</td>
@@ -376,10 +649,24 @@
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
 										<input type="text" name="breakEndList" th:value="${bulkForm.breakEnd20}"class="rounded-md border border-gray-400 w-24 text-center" data-format="HHmm" />
 									</td>
+									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
+										<input type="text" name="remarksList" th:value="${bulkForm.remarks20}" class="rounded-md border border-gray-400 w-24 text-center" />
+									</td>
 								</tr>
 								<tr class="odd:bg-white even:bg-gray-50 hover:bg-gray-100">
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.bulkday21}"></td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.kinmuKubun21}"></td>
+									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
+										<select name="atTypeList">
+											<option value="" th:selected="${#strings.isEmpty(bulkForm.atType21)}">--</option>
+											<option value="有給" th:selected="${bulkForm.atType21 == '有給'}">有給</option>
+											<option value="現場休" th:selected="${bulkForm.atType21 == '現場休'}">現場休</option>
+											<option value="遅刻" th:selected="${bulkForm.atType21 == '遅刻'}">遅刻</option>
+											<option value="早退" th:selected="${bulkForm.atType21 == '早退'}">早退</option>
+											<option value="欠勤" th:selected="${bulkForm.atType21 == '欠勤'}">欠勤</option>
+											<option value="代休" th:selected="${bulkForm.atType21 == '代休'}">代休</option>
+										</select>
+									</td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
 										<input type="text" name="clockInTimeList" th:value="${bulkForm.clockInTime21}"class="rounded-md border border-gray-400 w-24 text-center" data-format="HHmm" />
 									</td>
@@ -392,10 +679,24 @@
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
 										<input type="text" name="breakEndList" th:value="${bulkForm.breakEnd21}"class="rounded-md border border-gray-400 w-24 text-center" data-format="HHmm" />
 									</td>
+									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
+										<input type="text" name="remarksList" th:value="${bulkForm.remarks21}" class="rounded-md border border-gray-400 w-24 text-center" />
+									</td>
 								</tr>
 								<tr class="odd:bg-white even:bg-gray-50 hover:bg-gray-100">
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.bulkday22}"></td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.kinmuKubun22}"></td>
+									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
+										<select name="atTypeList">
+											<option value="" th:selected="${#strings.isEmpty(bulkForm.atType22)}">--</option>
+											<option value="有給" th:selected="${bulkForm.atType22 == '有給'}">有給</option>
+											<option value="現場休" th:selected="${bulkForm.atType22 == '現場休'}">現場休</option>
+											<option value="遅刻" th:selected="${bulkForm.atType22 == '遅刻'}">遅刻</option>
+											<option value="早退" th:selected="${bulkForm.atType22 == '早退'}">早退</option>
+											<option value="欠勤" th:selected="${bulkForm.atType22 == '欠勤'}">欠勤</option>
+											<option value="代休" th:selected="${bulkForm.atType22 == '代休'}">代休</option>
+										</select>
+									</td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
 										<input type="text" name="clockInTimeList" th:value="${bulkForm.clockInTime22}"class="rounded-md border border-gray-400 w-24 text-center" data-format="HHmm" />
 									</td>
@@ -408,10 +709,24 @@
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
 										<input type="text" name="breakEndList" th:value="${bulkForm.breakEnd22}"class="rounded-md border border-gray-400 w-24 text-center" data-format="HHmm" />
 									</td>
+									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
+										<input type="text" name="remarksList" th:value="${bulkForm.remarks22}" class="rounded-md border border-gray-400 w-24 text-center" />
+									</td>
 								</tr>
 								<tr class="odd:bg-white even:bg-gray-50 hover:bg-gray-100">
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.bulkday23}"></td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.kinmuKubun23}"></td>
+									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
+										<select name="atTypeList">
+											<option value="" th:selected="${#strings.isEmpty(bulkForm.atType23)}">--</option>
+											<option value="有給" th:selected="${bulkForm.atType23 == '有給'}">有給</option>
+											<option value="現場休" th:selected="${bulkForm.atType23 == '現場休'}">現場休</option>
+											<option value="遅刻" th:selected="${bulkForm.atType23 == '遅刻'}">遅刻</option>
+											<option value="早退" th:selected="${bulkForm.atType23 == '早退'}">早退</option>
+											<option value="欠勤" th:selected="${bulkForm.atType23 == '欠勤'}">欠勤</option>
+											<option value="代休" th:selected="${bulkForm.atType23 == '代休'}">代休</option>
+										</select>
+									</td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
 										<input type="text" name="clockInTimeList" th:value="${bulkForm.clockInTime23}"class="rounded-md border border-gray-400 w-24 text-center" data-format="HHmm" />
 									</td>
@@ -424,10 +739,24 @@
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
 										<input type="text" name="breakEndList" th:value="${bulkForm.breakEnd23}"class="rounded-md border border-gray-400 w-24 text-center" data-format="HHmm" />
 									</td>
+									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
+										<input type="text" name="remarksList" th:value="${bulkForm.remarks23}" class="rounded-md border border-gray-400 w-24 text-center" />
+									</td>
 								</tr>
 								<tr class="odd:bg-white even:bg-gray-50 hover:bg-gray-100">
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.bulkday24}"></td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.kinmuKubun24}"></td>
+									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
+										<select name="atTypeList">
+											<option value="" th:selected="${#strings.isEmpty(bulkForm.atType24)}">--</option>
+											<option value="有給" th:selected="${bulkForm.atType24 == '有給'}">有給</option>
+											<option value="現場休" th:selected="${bulkForm.atType24 == '現場休'}">現場休</option>
+											<option value="遅刻" th:selected="${bulkForm.atType24 == '遅刻'}">遅刻</option>
+											<option value="早退" th:selected="${bulkForm.atType24 == '早退'}">早退</option>
+											<option value="欠勤" th:selected="${bulkForm.atType24 == '欠勤'}">欠勤</option>
+											<option value="代休" th:selected="${bulkForm.atType24 == '代休'}">代休</option>
+										</select>
+									</td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
 										<input type="text" name="clockInTimeList" th:value="${bulkForm.clockInTime24}"class="rounded-md border border-gray-400 w-24 text-center" data-format="HHmm" />
 									</td>
@@ -440,10 +769,24 @@
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
 										<input type="text" name="breakEndList" th:value="${bulkForm.breakEnd24}"class="rounded-md border border-gray-400 w-24 text-center" data-format="HHmm" />
 									</td>
+									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
+										<input type="text" name="remarksList" th:value="${bulkForm.remarks24}" class="rounded-md border border-gray-400 w-24 text-center" />
+									</td>
 								</tr>
 								<tr class="odd:bg-white even:bg-gray-50 hover:bg-gray-100">
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.bulkday25}"></td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.kinmuKubun25}"></td>
+									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
+										<select name="atTypeList">
+											<option value="" th:selected="${#strings.isEmpty(bulkForm.atType25)}">--</option>
+											<option value="有給" th:selected="${bulkForm.atType25 == '有給'}">有給</option>
+											<option value="現場休" th:selected="${bulkForm.atType25 == '現場休'}">現場休</option>
+											<option value="遅刻" th:selected="${bulkForm.atType25 == '遅刻'}">遅刻</option>
+											<option value="早退" th:selected="${bulkForm.atType25 == '早退'}">早退</option>
+											<option value="欠勤" th:selected="${bulkForm.atType25 == '欠勤'}">欠勤</option>
+											<option value="代休" th:selected="${bulkForm.atType25 == '代休'}">代休</option>
+										</select>
+									</td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
 										<input type="text" name="clockInTimeList" th:value="${bulkForm.clockInTime25}"class="rounded-md border border-gray-400 w-24 text-center" data-format="HHmm" />
 									</td>
@@ -456,10 +799,24 @@
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
 										<input type="text" name="breakEndList" th:value="${bulkForm.breakEnd25}"class="rounded-md border border-gray-400 w-24 text-center" data-format="HHmm" />
 									</td>
+									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
+										<input type="text" name="remarksList" th:value="${bulkForm.remarks25}" class="rounded-md border border-gray-400 w-24 text-center" />
+									</td>
 								</tr>
 								<tr class="odd:bg-white even:bg-gray-50 hover:bg-gray-100">
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.bulkday26}"></td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.kinmuKubun26}"></td>
+									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
+										<select name="atTypeList">
+											<option value="" th:selected="${#strings.isEmpty(bulkForm.atType26)}">--</option>
+											<option value="有給" th:selected="${bulkForm.atType26 == '有給'}">有給</option>
+											<option value="現場休" th:selected="${bulkForm.atType26 == '現場休'}">現場休</option>
+											<option value="遅刻" th:selected="${bulkForm.atType26 == '遅刻'}">遅刻</option>
+											<option value="早退" th:selected="${bulkForm.atType26 == '早退'}">早退</option>
+											<option value="欠勤" th:selected="${bulkForm.atType26 == '欠勤'}">欠勤</option>
+											<option value="代休" th:selected="${bulkForm.atType26 == '代休'}">代休</option>
+										</select>
+									</td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
 										<input type="text" name="clockInTimeList" th:value="${bulkForm.clockInTime26}"class="rounded-md border border-gray-400 w-24 text-center" data-format="HHmm" />
 									</td>
@@ -472,10 +829,24 @@
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
 										<input type="text" name="breakEndList" th:value="${bulkForm.breakEnd26}"class="rounded-md border border-gray-400 w-24 text-center" data-format="HHmm" />
 									</td>
+									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
+										<input type="text" name="remarksList" th:value="${bulkForm.remarks26}" class="rounded-md border border-gray-400 w-24 text-center" />
+									</td>
 								</tr>
 								<tr class="odd:bg-white even:bg-gray-50 hover:bg-gray-100">
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.bulkday27}"></td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.kinmuKubun27}"></td>
+									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
+										<select name="atTypeList">
+											<option value="" th:selected="${#strings.isEmpty(bulkForm.atType27)}">--</option>
+											<option value="有給" th:selected="${bulkForm.atType27 == '有給'}">有給</option>
+											<option value="現場休" th:selected="${bulkForm.atType27 == '現場休'}">現場休</option>
+											<option value="遅刻" th:selected="${bulkForm.atType27 == '遅刻'}">遅刻</option>
+											<option value="早退" th:selected="${bulkForm.atType27 == '早退'}">早退</option>
+											<option value="欠勤" th:selected="${bulkForm.atType27 == '欠勤'}">欠勤</option>
+											<option value="代休" th:selected="${bulkForm.atType27 == '代休'}">代休</option>
+										</select>
+									</td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
 										<input type="text" name="clockInTimeList" th:value="${bulkForm.clockInTime27}"class="rounded-md border border-gray-400 w-24 text-center" data-format="HHmm" />
 									</td>
@@ -488,10 +859,24 @@
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
 										<input type="text" name="breakEndList" th:value="${bulkForm.breakEnd27}"class="rounded-md border border-gray-400 w-24 text-center" data-format="HHmm" />
 									</td>
+									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
+										<input type="text" name="remarksList" th:value="${bulkForm.remarks27}" class="rounded-md border border-gray-400 w-24 text-center" />
+									</td>
 								</tr>
 								<tr class="odd:bg-white even:bg-gray-50 hover:bg-gray-100">
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.bulkday28}"></td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.kinmuKubun28}"></td>
+									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
+										<select name="atTypeList">
+											<option value="" th:selected="${#strings.isEmpty(bulkForm.atType28)}">--</option>
+											<option value="有給" th:selected="${bulkForm.atType28 == '有給'}">有給</option>
+											<option value="現場休" th:selected="${bulkForm.atType28 == '現場休'}">現場休</option>
+											<option value="遅刻" th:selected="${bulkForm.atType28 == '遅刻'}">遅刻</option>
+											<option value="早退" th:selected="${bulkForm.atType28 == '早退'}">早退</option>
+											<option value="欠勤" th:selected="${bulkForm.atType28 == '欠勤'}">欠勤</option>
+											<option value="代休" th:selected="${bulkForm.atType28 == '代休'}">代休</option>
+										</select>
+									</td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
 										<input type="text" name="clockInTimeList" th:value="${bulkForm.clockInTime28}"class="rounded-md border border-gray-400 w-24 text-center" data-format="HHmm" />
 									</td>
@@ -504,12 +889,26 @@
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
 										<input type="text" name="breakEndList" th:value="${bulkForm.breakEnd28}"class="rounded-md border border-gray-400 w-24 text-center" data-format="HHmm" />
 									</td>
+									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
+										<input type="text" name="remarksList" th:value="${bulkForm.remarks28}" class="rounded-md border border-gray-400 w-24 text-center" />
+									</td>
 								</tr>
 								<!--/* 29日がない場合は非表示 */-->
 								<div th:unless="${#strings.isEmpty(bulkForm.bulkday29)}">
 									<tr class="odd:bg-white even:bg-gray-50 hover:bg-gray-100">
 										<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.bulkday29}"></td>
 										<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.kinmuKubun29}"></td>
+										<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
+											<select name="atTypeList">
+												<option value="" th:selected="${#strings.isEmpty(bulkForm.atType29)}">--</option>
+												<option value="有給" th:selected="${bulkForm.atType29 == '有給'}">有給</option>
+												<option value="現場休" th:selected="${bulkForm.atType29 == '現場休'}">現場休</option>
+												<option value="遅刻" th:selected="${bulkForm.atType29 == '遅刻'}">遅刻</option>
+												<option value="早退" th:selected="${bulkForm.atType29 == '早退'}">早退</option>
+												<option value="欠勤" th:selected="${bulkForm.atType29 == '欠勤'}">欠勤</option>
+												<option value="代休" th:selected="${bulkForm.atType29 == '代休'}">代休</option>
+											</select>
+										</td>
 										<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
 											<input type="text" name="clockInTimeList" th:value="${bulkForm.clockInTime29}"class="rounded-md border border-gray-400 w-24 text-center" data-format="HHmm" />
 										</td>
@@ -522,6 +921,9 @@
 										<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
 											<input type="text" name="breakEndList" th:value="${bulkForm.breakEnd29}"class="rounded-md border border-gray-400 w-24 text-center" data-format="HHmm" />
 										</td>
+										<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
+											<input type="text" name="remarksList" th:value="${bulkForm.remarks29}" class="rounded-md border border-gray-400 w-24 text-center" />
+										</td>
 									</tr>
 								</div>
 								<!--/* 30日がない場合は非表示 */-->
@@ -529,6 +931,17 @@
 									<tr class="odd:bg-white even:bg-gray-50 hover:bg-gray-100">
 										<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.bulkday30}"></td>
 										<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.kinmuKubun30}"></td>
+										<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
+											<select name="atTypeList">
+												<option value="" th:selected="${#strings.isEmpty(bulkForm.atType30)}">--</option>
+												<option value="有給" th:selected="${bulkForm.atType30 == '有給'}">有給</option>
+												<option value="現場休" th:selected="${bulkForm.atType30 == '現場休'}">現場休</option>
+												<option value="遅刻" th:selected="${bulkForm.atType30 == '遅刻'}">遅刻</option>
+												<option value="早退" th:selected="${bulkForm.atType30 == '早退'}">早退</option>
+												<option value="欠勤" th:selected="${bulkForm.atType30 == '欠勤'}">欠勤</option>
+												<option value="代休" th:selected="${bulkForm.atType30 == '代休'}">代休</option>
+											</select>
+										</td>
 										<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
 											<input type="text" name="clockInTimeList" th:value="${bulkForm.clockInTime30}"class="rounded-md border border-gray-400 w-24 text-center" data-format="HHmm" />
 										</td>
@@ -541,6 +954,9 @@
 										<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
 											<input type="text" name="breakEndList" th:value="${bulkForm.breakEnd30}"class="rounded-md border border-gray-400 w-24 text-center" data-format="HHmm" />
 										</td>
+										<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
+											<input type="text" name="remarksList" th:value="${bulkForm.remarks30}" class="rounded-md border border-gray-400 w-24 text-center" />
+										</td>
 									</tr>
 								</div>
 								<!--/* 31日がない場合は非表示 */-->
@@ -548,6 +964,17 @@
 									<tr class="odd:bg-white even:bg-gray-50 hover:bg-gray-100">
 										<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.bulkday31}"></td>
 										<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.kinmuKubun31}"></td>
+										<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
+											<select name="atTypeList">
+												<option value="" th:selected="${#strings.isEmpty(bulkForm.atType31)}">--</option>
+												<option value="有給" th:selected="${bulkForm.atType31 == '有給'}">有給</option>
+												<option value="現場休" th:selected="${bulkForm.atType31 == '現場休'}">現場休</option>
+												<option value="遅刻" th:selected="${bulkForm.atType31 == '遅刻'}">遅刻</option>
+												<option value="早退" th:selected="${bulkForm.atType31 == '早退'}">早退</option>
+												<option value="欠勤" th:selected="${bulkForm.atType31 == '欠勤'}">欠勤</option>
+												<option value="代休" th:selected="${bulkForm.atType31 == '代休'}">代休</option>
+											</select>
+										</td>
 										<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
 											<input type="text" name="clockInTimeList" th:value="${bulkForm.clockInTime31}"class="rounded-md border border-gray-400 w-24 text-center" data-format="HHmm" />
 										</td>
@@ -559,6 +986,9 @@
 										</td>
 										<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
 											<input type="text" name="breakEndList" th:value="${bulkForm.breakEnd31}"class="rounded-md border border-gray-400 w-24 text-center" data-format="HHmm" />
+										</td>
+										<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400">
+											<input type="text" name="remarksList" th:value="${bulkForm.remarks31}" class="rounded-md border border-gray-400 w-24 text-center" />
 										</td>
 									</tr>
 								</div>

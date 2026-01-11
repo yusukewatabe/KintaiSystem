@@ -13,6 +13,39 @@ import lombok.Setter;
 @Setter
 public class BulkForm {
 
+	// 勤怠種別
+	private String atType1;
+	private String atType2;
+	private String atType3;
+	private String atType4;
+	private String atType5;
+	private String atType6;
+	private String atType7;
+	private String atType8;
+	private String atType9;
+	private String atType10;
+	private String atType11;
+	private String atType12;
+	private String atType13;
+	private String atType14;
+	private String atType15;
+	private String atType16;
+	private String atType17;
+	private String atType18;
+	private String atType19;
+	private String atType20;
+	private String atType21;
+	private String atType22;
+	private String atType23;
+	private String atType24;
+	private String atType25;
+	private String atType26;
+	private String atType27;
+	private String atType28;
+	private String atType29;
+	private String atType30;
+	private String atType31;
+
 	// 日付
 	private String bulkday1;
 	private String bulkday2;
@@ -215,4 +248,37 @@ public class BulkForm {
 	private String breakEnd29;
 	private String breakEnd30;
 	private String breakEnd31;
+
+	// 備考
+	private String remarks1;
+	private String remarks2;
+	private String remarks3;
+	private String remarks4;
+	private String remarks5;
+	private String remarks6;
+	private String remarks7;
+	private String remarks8;
+	private String remarks9;
+	private String remarks10;
+	private String remarks11;
+	private String remarks12;
+	private String remarks13;
+	private String remarks14;
+	private String remarks15;
+	private String remarks16;
+	private String remarks17;
+	private String remarks18;
+	private String remarks19;
+	private String remarks20;
+	private String remarks21;
+	private String remarks22;
+	private String remarks23;
+	private String remarks24;
+	private String remarks25;
+	private String remarks26;
+	private String remarks27;
+	private String remarks28;
+	private String remarks29;
+	private String remarks30;
+	private String remarks31;
 }

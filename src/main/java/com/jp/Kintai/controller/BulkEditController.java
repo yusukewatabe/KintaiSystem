@@ -56,7 +56,7 @@ public class BulkEditController {
 	 * 一括編集画面へ遷移するメソッド
 	 * 
 	 * @param userId メールアドレス
-	 * @param model Spring MVC のモデルオブジェクト
+	 * @param model  Spring MVC のモデルオブジェクト
 	 * @return 表示するビュー名
 	 */
 	@PostMapping(MappingPathNameConstant.BULKEDIT_PATH)
@@ -68,18 +68,22 @@ public class BulkEditController {
 	/**
 	 * bulkEdit.htmlに入力された値をDBに保存するメソッド
 	 * 
-	 * @param userId ユーザーID
-	 * @param model Spring MVC のモデルオブジェクト
-	 * @param clockInTimeList 出勤時間のリスト(1~31)
+	 * @param userId           ユーザーID
+	 * @param model            Spring MVC のモデルオブジェクト
+	 * @param atTypeList       勤怠種別のリスト(1~31)
+	 * @param clockInTimeList  出勤時間のリスト(1~31)
 	 * @param clockOutTimeList 退勤時間のリスト(1~31)
-	 * @param breakStartList 休憩開始時間のリスト(1~31)
-	 * @param breakEndList 休憩終了時間のリスト(1~31)
+	 * @param breakStartList   休憩開始時間のリスト(1~31)
+	 * @param breakEndList     休憩終了時間のリスト(1~31)
+	 * @param remarksList      備考のリスト(1~31)
 	 * @return 表示するビュー名
 	 */
+	// TODO 備考と勤務種別を追加（Javaソース））
 	@PostMapping(MappingPathNameConstant.BULKEDITPREVIEW_DATABASESET_PATH)
-	public String clockListDbSubmit(String userId, Model model, @RequestParam List<String> clockInTimeList,
+	public String clockListDbSubmit(String userId, Model model, @RequestParam List<String> atTypeList,
+			@RequestParam List<String> clockInTimeList,
 			@RequestParam List<String> clockOutTimeList, @RequestParam List<String> breakStartList,
-			@RequestParam List<String> breakEndList) {
+			@RequestParam List<String> breakEndList, @RequestParam List<String> remarksList) {
 
 		YearMonth ym = YearMonth.now(ZoneId.of(DateFormatConstant.TIMEZONE_ASIA_TOKYO));
 
@@ -87,7 +91,8 @@ public class BulkEditController {
 
 		Optional<User> userOpt = userRepository.findById(userId);
 		if (userOpt.isEmpty()) {
-			loggerUtil.LogOutput(LogLevel.ERROR, messageUtil.getErrorMessage(EMK035), messageUtil.getErrorMessage(EMK036));
+			loggerUtil.LogOutput(LogLevel.ERROR, messageUtil.getErrorMessage(EMK035),
+					messageUtil.getErrorMessage(EMK036));
 			return ViewNameConstant.ERROR_PATH;
 		}
 
@@ -96,10 +101,13 @@ public class BulkEditController {
 		String workDate = null;
 		for (int i = 0; i < workDateList.size(); i++) {
 
+			System.out.println(atTypeList);
+			String atType = atTypeList.get(i);
 			String clockIn = clockInTimeList.get(i);
 			String clockOut = clockOutTimeList.get(i);
 			String breakStart = breakStartList.get(i);
 			String breakEnd = breakEndList.get(i);
+			String remarks = remarksList.get(i);
 
 			workDate = workDateList.get(i);
 
@@ -114,9 +122,14 @@ public class BulkEditController {
 			}
 			// AttendanceテーブルへbulkEditから取得した時刻をdbへ格納
 			// 時刻がなにもない場合は次のループへ
-			if (emptyAndNullCheck(clockIn) && emptyAndNullCheck(clockOut) && emptyAndNullCheck(breakStart)
-					&& emptyAndNullCheck(breakEnd)) {
+			if (emptyAndNullCheck(atType) && emptyAndNullCheck(clockIn) && emptyAndNullCheck(clockOut)
+					&& emptyAndNullCheck(breakStart)
+					&& emptyAndNullCheck(breakEnd) && emptyAndNullCheck(remarks)) {
 				continue;
+			}
+			if (emptyAndNullCheck(attendance.getAtType())
+					|| !attendance.getAtType().equals(atTypeList.get(i))) {
+				attendance.setAtType(atTypeList.get(i));
 			}
 			if (emptyAndNullCheck(attendance.getClockInTime())
 					|| !attendance.getClockInTime().equals(clockInTimeList.get(i))) {
@@ -132,6 +145,10 @@ public class BulkEditController {
 			}
 			if (emptyAndNullCheck(attendance.getBreakEnd()) || !attendance.getBreakEnd().equals(breakEndList.get(i))) {
 				attendance.setBreakEnd(breakEndList.get(i));
+			}
+			if (emptyAndNullCheck(attendance.getRemarks())
+					|| !attendance.getRemarks().equals(remarksList.get(i))) {
+				attendance.setRemarks(remarksList.get(i));
 			}
 
 			attendanceRepository.save(attendance);

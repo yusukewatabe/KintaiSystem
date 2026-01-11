@@ -1,6 +1,6 @@
 package com.jp.Kintai.controller;
 
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import com.jp.Kintai.constant.HomeConstant;
 import com.jp.Kintai.constant.MappingPathNameConstant;
 import com.jp.Kintai.constant.ViewNameConstant;
@@ -29,10 +29,10 @@ public class BulkEditPreviewController {
 	 * 月の勤怠一覧を表示するメソッド
 	 * 
 	 * @param userId メールアドレス
-	 * @param model Spring MVC のモデルオブジェクト
+	 * @param model  Spring MVC のモデルオブジェクト
 	 * @return 表示するビュー名
 	 */
-	@PostMapping(MappingPathNameConstant.BULKEDITPREVIEW_PATH)
+	@GetMapping(MappingPathNameConstant.BULKEDITPREVIEW_PATH)
 	public String attendancePreview(String userId, Model model) {
 
 		// dbからテーブルの値を取得
