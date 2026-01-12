@@ -10,7 +10,7 @@
 	</head>
 	<body>
 		<!--/* ヘッダー */-->
-		<div class="w-full" th:insert="./common/header :: header"></div><br/>
+		<div class="w-full" th:insert="~{./common/header :: header}"></div><br/>
 		<form th:action="@{/default}" method="post">
 			<div class="flex justify-center py-3">
 				<div class="w-full max-w-screen-lg px-4">
@@ -25,10 +25,31 @@
 									class="w-32 mb-2 text-white bg-cyan-700 hover:bg-cyan-800 focus:outline-none focus:ring-4 focus:ring-cyan-300 font-medium rounded-full text-sm px-8 py-3">
 									一括編集
 							</button>
+							<button type="submit" th:formaction="@{/testPdf}"
+									class="w-32 mb-2 text-white bg-cyan-700 hover:bg-cyan-800 focus:outline-none focus:ring-4 focus:ring-cyan-300 font-medium rounded-full text-sm px-8 py-3">
+									PDF出力
+							</button>
 						</div>
 						<h2 class="text-lg font-semibold text-gray-700">
 							<span th:text="${bulkForm.firstDay}"></span>～<span th:text="${bulkForm.lastDay}"></span>
 						</h2>
+					</div>
+
+					<div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-4 p-4 bg-cyan-50 rounded-lg border border-cyan-200">
+						<div class="text-center">
+							<p class="text-sm text-gray-600">総労働時間</p>
+							<p class="text-2xl font-bold text-cyan-700" th:text="${bulkForm.totalWorkingHours}">0:00</p>
+						</div>
+						<div class="text-center">
+							<p class="text-sm text-gray-600">出勤日数</p>
+							<p class="text-2xl font-bold text-cyan-700">
+								<span th:text="${bulkForm.totalWorkingDays}">0</span>日
+							</p>
+						</div>
+						<div class="text-center">
+							<p class="text-sm text-gray-600">平均労働時間</p>
+							<p class="text-2xl font-bold text-cyan-700" th:text="${bulkForm.averageWorkingHours}">0:00</p>
+						</div>
 					</div>
 
 					<div class="overflow-x-auto">
@@ -37,246 +58,306 @@
 								<tr>
 									<th class="px-8 py-2 text-center text-sm font-medium text-gray-700 border border-gray-400">日付</th>
 									<th class="px-8 py-2 text-center text-sm font-medium text-gray-700 border border-gray-400">勤務区分</th>
+									<th class="px-8 py-2 text-center text-sm font-medium text-gray-700 border border-gray-400">勤怠種別</th>
 									<th class="px-8 py-2 text-center text-sm font-medium text-gray-700 border border-gray-400">出勤</th>
 									<th class="px-8 py-2 text-center text-sm font-medium text-gray-700 border border-gray-400">退勤</th>
 									<th class="px-8 py-2 text-center text-sm font-medium text-gray-700 border border-gray-400">休憩開始</th>
 									<th class="px-8 py-2 text-center text-sm font-medium text-gray-700 border border-gray-400">休憩終了</th>
+									<th class="px-8 py-2 text-center text-sm font-medium text-gray-700 border border-gray-400">備考</th>
 								</tr>
 							</thead>
 							<tbody class="divide-y divide-gray-200">
 								<tr class="odd:bg-white even:bg-gray-50 hover:bg-gray-100">
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.bulkday1}"></td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.kinmuKubun1}"></td>
+									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.atType1}"></td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.clockInTime1}"></td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.clockOutTime1}"></td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.breakStart1}"></td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.breakEnd1}"></td>
+									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.remarks1}"></td>
 								</tr>
 								<tr class="odd:bg-white even:bg-gray-50 hover:bg-gray-100">
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.bulkday2}"></td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.kinmuKubun2}"></td>
+									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.atType2}"></td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.clockInTime2}"></td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.clockOutTime2}"></td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.breakStart2}"></td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.breakEnd2}"></td>
+									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.remarks2}"></td>
 								</tr>
 								<tr class="odd:bg-white even:bg-gray-50 hover:bg-gray-100">
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.bulkday3}"></td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.kinmuKubun3}"></td>
+									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.atType3}"></td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.clockInTime3}"></td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.clockOutTime3}"></td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.breakStart3}"></td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.breakEnd3}"></td>
+									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.remarks3}"></td>
 								</tr>
 								<tr class="odd:bg-white even:bg-gray-50 hover:bg-gray-100">
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.bulkday4}"></td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.kinmuKubun4}"></td>
+									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.atType4}"></td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.clockInTime4}"></td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.clockOutTime4}"></td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.breakStart4}"></td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.breakEnd4}"></td>
+									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.remarks4}"></td>
 								</tr>
 								<tr class="odd:bg-white even:bg-gray-50 hover:bg-gray-100">
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.bulkday5}"></td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.kinmuKubun5}"></td>
+									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.atType5}"></td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.clockInTime5}"></td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.clockOutTime5}"></td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.breakStart5}"></td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.breakEnd5}"></td>
+									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.remarks5}"></td>
 								</tr>
 								<tr class="odd:bg-white even:bg-gray-50 hover:bg-gray-100">
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.bulkday6}"></td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.kinmuKubun6}"></td>
+									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.atType6}"></td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.clockInTime6}"></td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.clockOutTime6}"></td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.breakStart6}"></td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.breakEnd6}"></td>
+									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.remarks6}"></td>
 								</tr>
 								<tr class="odd:bg-white even:bg-gray-50 hover:bg-gray-100">
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.bulkday7}"></td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.kinmuKubun7}"></td>
+									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.atType7}"></td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.clockInTime7}"></td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.clockOutTime7}"></td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.breakStart7}"></td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.breakEnd7}"></td>
+									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.remarks7}"></td>
 								</tr>
 								<tr class="odd:bg-white even:bg-gray-50 hover:bg-gray-100">
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.bulkday8}"></td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.kinmuKubun8}"></td>
+									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.atType8}"></td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.clockInTime8}"></td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.clockOutTime8}"></td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.breakStart8}"></td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.breakEnd8}"></td>
+									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.remarks8}"></td>
 								</tr>
 								<tr class="odd:bg-white even:bg-gray-50 hover:bg-gray-100">
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.bulkday9}"></td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.kinmuKubun9}"></td>
+									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.atType9}"></td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.clockInTime9}"></td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.clockOutTime9}"></td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.breakStart9}"></td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.breakEnd9}"></td>
+									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.remarks9}"></td>
 								</tr>
 								<tr class="odd:bg-white even:bg-gray-50 hover:bg-gray-100">
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.bulkday10}"></td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.kinmuKubun10}"></td>
+									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.atType10}"></td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.clockInTime10}"></td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.clockOutTime10}"></td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.breakStart10}"></td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.breakEnd10}"></td>
+									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.remarks10}"></td>
 								</tr>
 								<tr class="odd:bg-white even:bg-gray-50 hover:bg-gray-100">
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.bulkday11}"></td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.kinmuKubun11}"></td>
+									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.atType11}"></td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.clockInTime11}"></td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.clockOutTime11}"></td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.breakStart11}"></td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.breakEnd11}"></td>
+									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.remarks11}"></td>
 								</tr>
 								<tr class="odd:bg-white even:bg-gray-50 hover:bg-gray-100">
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.bulkday12}"></td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.kinmuKubun12}"></td>
+									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.atType12}"></td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.clockInTime12}"></td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.clockOutTime12}"></td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.breakStart12}"></td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.breakEnd12}"></td>
+									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.remarks12}"></td>
 								</tr>
 								<tr class="odd:bg-white even:bg-gray-50 hover:bg-gray-100">
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.bulkday13}"></td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.kinmuKubun13}"></td>
+									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.atType13}"></td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.clockInTime13}"></td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.clockOutTime13}"></td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.breakStart13}"></td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.breakEnd13}"></td>
+									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.remarks13}"></td>
 								</tr>
 								<tr class="odd:bg-white even:bg-gray-50 hover:bg-gray-100">
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.bulkday14}"></td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.kinmuKubun14}"></td>
+									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.atType14}"></td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.clockInTime14}"></td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.clockOutTime14}"></td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.breakStart14}"></td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.breakEnd14}"></td>
+									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.remarks14}"></td>
 								</tr>
 								<tr class="odd:bg-white even:bg-gray-50 hover:bg-gray-100">
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.bulkday15}"></td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.kinmuKubun15}"></td>
+									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.atType15}"></td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.clockInTime15}"></td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.clockOutTime15}"></td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.breakStart15}"></td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.breakEnd15}"></td>
+									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.remarks15}"></td>
 								</tr>
 								<tr class="odd:bg-white even:bg-gray-50 hover:bg-gray-100">
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.bulkday16}"></td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.kinmuKubun16}"></td>
+									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.atType16}"></td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.clockInTime16}"></td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.clockOutTime16}"></td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.breakStart16}"></td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.breakEnd16}"></td>
+									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.remarks16}"></td>
 								</tr>
 								<tr class="odd:bg-white even:bg-gray-50 hover:bg-gray-100">
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.bulkday17}"></td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.kinmuKubun17}"></td>
+									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.atType17}"></td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.clockInTime17}"></td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.clockOutTime17}"></td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.breakStart17}"></td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.breakEnd17}"></td>
+									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.remarks17}"></td>
 								</tr>
 								<tr class="odd:bg-white even:bg-gray-50 hover:bg-gray-100">
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.bulkday18}"></td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.kinmuKubun18}"></td>
+									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.atType18}"></td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.clockInTime18}"></td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.clockOutTime18}"></td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.breakStart18}"></td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.breakEnd18}"></td>
+									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.remarks18}"></td>
 								</tr>
 								<tr class="odd:bg-white even:bg-gray-50 hover:bg-gray-100">
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.bulkday19}"></td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.kinmuKubun19}"></td>
+									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.atType19}"></td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.clockInTime19}"></td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.clockOutTime19}"></td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.breakStart19}"></td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.breakEnd19}"></td>
+									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.remarks19}"></td>
 								</tr>
 								<tr class="odd:bg-white even:bg-gray-50 hover:bg-gray-100">
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.bulkday20}"></td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.kinmuKubun20}"></td>
+									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.atType20}"></td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.clockInTime20}"></td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.clockOutTime20}"></td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.breakStart20}"></td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.breakEnd20}"></td>
+									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.remarks20}"></td>
 								</tr>
 								<tr class="odd:bg-white even:bg-gray-50 hover:bg-gray-100">
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.bulkday21}"></td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.kinmuKubun21}"></td>
+									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.atType21}"></td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.clockInTime21}"></td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.clockOutTime21}"></td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.breakStart21}"></td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.breakEnd21}"></td>
+									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.remarks21}"></td>
 								</tr>
 								<tr class="odd:bg-white even:bg-gray-50 hover:bg-gray-100">
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.bulkday22}"></td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.kinmuKubun22}"></td>
+									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.atType22}"></td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.clockInTime22}"></td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.clockOutTime22}"></td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.breakStart22}"></td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.breakEnd22}"></td>
+									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.remarks22}"></td>
 								</tr>
 								<tr class="odd:bg-white even:bg-gray-50 hover:bg-gray-100">
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.bulkday23}"></td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.kinmuKubun23}"></td>
+									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.atType23}"></td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.clockInTime23}"></td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.clockOutTime23}"></td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.breakStart23}"></td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.breakEnd23}"></td>
+									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.remarks23}"></td>
 								</tr>
 								<tr class="odd:bg-white even:bg-gray-50 hover:bg-gray-100">
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.bulkday24}"></td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.kinmuKubun24}"></td>
+									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.atType24}"></td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.clockInTime24}"></td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.clockOutTime24}"></td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.breakStart24}"></td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.breakEnd24}"></td>
+									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.remarks24}"></td>
 								</tr>
 								<tr class="odd:bg-white even:bg-gray-50 hover:bg-gray-100">
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.bulkday25}"></td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.kinmuKubun25}"></td>
+									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.atType25}"></td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.clockInTime25}"></td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.clockOutTime25}"></td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.breakStart25}"></td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.breakEnd25}"></td>
+									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.remarks25}"></td>
 								</tr>
 								<tr class="odd:bg-white even:bg-gray-50 hover:bg-gray-100">
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.bulkday26}"></td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.kinmuKubun26}"></td>
+									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.atType26}"></td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.clockInTime26}"></td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.clockOutTime26}"></td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.breakStart26}"></td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.breakEnd26}"></td>
+									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.remarks2}"></td>
 								</tr>
 								<tr class="odd:bg-white even:bg-gray-50 hover:bg-gray-100">
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.bulkday27}"></td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.kinmuKubun27}"></td>
+									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.atType27}"></td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.clockInTime27}"></td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.clockOutTime27}"></td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.breakStart27}"></td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.breakEnd27}"></td>
+									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.remarks27}"></td>
 								</tr>
 								<tr class="odd:bg-white even:bg-gray-50 hover:bg-gray-100">
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.bulkday28}"></td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.kinmuKubun28}"></td>
+									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.atType28}"></td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.clockInTime28}"></td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.clockOutTime28}"></td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.breakStart28}"></td>
 									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.breakEnd28}"></td>
+									<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.remarks28}"></td>
 								</tr>
 								<!--/* 29日がない場合は非表示 */-->
 								<div th:unless="${#strings.isEmpty(bulkForm.bulkday29)}">
 									<tr class="odd:bg-white even:bg-gray-50 hover:bg-gray-100">
 										<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.bulkday29}"></td>
 										<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.kinmuKubun29}"></td>
+										<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.atType29}"></td>
 										<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.clockInTime29}"></td>
 										<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.clockOutTime29}"></td>
 										<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.breakStart29}"></td>
 										<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.breakEnd29}"></td>
+										<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.remarks29}"></td>
 									</tr>
 								</div>
 								<!--/* 30日がない場合は非表示 */-->
@@ -284,10 +365,12 @@
 									<tr class="odd:bg-white even:bg-gray-50 hover:bg-gray-100">
 										<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.bulkday30}"></td>
 										<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.kinmuKubun30}"></td>
+										<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.atType30}"></td>
 										<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.clockInTime30}"></td>
 										<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.clockOutTime30}"></td>
 										<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.breakStart30}"></td>
 										<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.breakEnd30}"></td>
+										<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.remarks30}"></td>
 									</tr>
 								</div>
 								<!--/* 31日がない場合は非表示 */-->
@@ -295,10 +378,12 @@
 									<tr class="odd:bg-white even:bg-gray-50 hover:bg-gray-100">
 										<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.bulkday31}"></td>
 										<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.kinmuKubun31}"></td>
+										<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.atType31}"></td>
 										<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.clockInTime31}"></td>
 										<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.clockOutTime31}"></td>
 										<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.breakStart31}"></td>
 										<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.breakEnd31}"></td>
+										<td class="px-8 py-2 text-center text-sm text-gray-800 border border-gray-400" th:text="${bulkForm.remarks31}"></td>
 									</tr>
 								</div>
 							</tbody>
@@ -309,6 +394,6 @@
 		</form>
 
 		<!--/* フッター */-->
-		<div class="w-full max-w-full mt-8" th:insert="./common/footer :: footer"></div>
+		<div class="w-full max-w-full mt-8" th:insert="~{./common/footer :: footer}"></div>
 	</body>
 </html>

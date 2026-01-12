@@ -10,7 +10,7 @@
 	</head>
 	<body>
 		<!--/* ヘッダー */-->
-		<div class="w-full" th:insert="./common/header :: header"></div><br/>
+		<div class="w-full" th:insert="~{./common/header :: header}"></div><br/>
 		<p class="mt-6 text-2xl sm:text-3xl text-center">新規ユーザー登録</p><br/><br/>
 		<form th:action="@{/api/auth/registerUser}" method="post" class="w-full max-w-md mx-auto px-4">
 			<!--/* 新規ユーザー登録画面初期表示 */-->
@@ -23,15 +23,15 @@
 				<p class="text-lg sm:text-xl mb-2 m-2">パスワード <br/><span class="text-sm">※英大文字、小文字、数字を合わせた6文字以上で入力してください。(記号入力可)</span></p>
 				<input type="password" id="pass" name="pass" minlength="6" maxlength="32"
 					class="w-full bg-cyan-50 border border-cyan-500 text-cyan-900 placeholder-cyan-700 text-sm rounded-lg focus:ring-cyan-500 focus:border-cyan-500 p-2.5" placeholder="パスワードを入力">
-				<br/><label for="passDisplay" class="hover:bg-cyan-100 select-none">
-				<input id="passDisplay" type="checkbox" onclick="toggleVisibility('pass')" class="mt-2 m-1">パスワードを表示</label>
+				<br/>
+				<input id="passDisplay" type="checkbox" onclick="toggleVisibility('pass')" class="mt-2 m-1 accent-cyan-600"><label for="passDisplay" class="hover:bg-cyan-100 select-none">パスワードを表示</label>
 				<br/>
 
 				<br/><p class="text-lg sm:text-xl mb-2 m-2">パスワード(確認)</p>
 				<input type="password" id="repass" name="repass" minlength="6" maxlength="32"
 					class="w-full bg-cyan-50 border border-cyan-500 text-cyan-900 placeholder-cyan-700 text-sm rounded-lg focus:ring-cyan-500 focus:border-cyan-500 p-2.5" placeholder="パスワードを入力(確認)">
-				<br/><label for="repassDisplay" class="hover:bg-cyan-100 select-none">
-				<input id="repassDisplay" type="checkbox" onclick="toggleVisibility('repass')" class="mt-2 m-1">パスワード(確認)を表示</label>
+				<br/>
+				<input id="repassDisplay" type="checkbox" onclick="toggleVisibility('repass')" class="mt-2 m-1 accent-cyan-600"><label for="repassDisplay" class="hover:bg-cyan-100 select-none">パスワード(確認)を表示</label>
 				<br/>
 
 				<p class="text-lg sm:text-xl mb-2 m-2">名字</p>
@@ -72,8 +72,8 @@
 					<p class="text-lg sm:text-xl mb-2 m-2">パスワード <br/><span class="text-sm">※英大文字、小文字、数字を合わせた6文字以上で入力してください。(記号入力可)</span></p>
 					<input type="password" id="pass" name="pass" minlength="6" maxlength="32"
 						class="w-full bg-cyan-50 border border-red-500 text-cyan-900 placeholder-red-700 text-sm rounded-lg focus:ring-red-500 focus:border-red-500 p-2.5" placeholder="パスワードを入力">
-					<br/><label for="passDisplay" class="hover:bg-cyan-100 select-none">
-					<input id="passDisplay" type="checkbox" onclick="toggleVisibility('pass')" class="mt-2 m-1">パスワードを表示</label>
+					<br/>
+					<input id="passDisplay" type="checkbox" onclick="toggleVisibility('pass')" class="mt-2 m-1 accent-cyan-600"><label for="passDisplay" class="hover:bg-cyan-100 select-none">パスワードを表示</label>
 					<br/>
 					<p class="mt-2 text-sm text-red-600 font-medium" th:text="${newUidForm.errorPassMessage}"></p>
 				</div>
@@ -81,8 +81,8 @@
 					<p class="text-lg sm:text-xl mb-2 m-2">パスワード <br/><span class="text-sm">※英大文字、小文字、数字を合わせた6文字以上で入力してください。(記号入力可)</span></p>
 					<input type="password" id="pass" name="pass" minlength="6" maxlength="32"
 						class="w-full bg-cyan-50 border border-cyan-500 text-cyan-900 placeholder-cyan-700 text-sm rounded-lg focus:ring-cyan-500 focus:border-cyan-500 p-2.5" placeholder="パスワードを入力">
-					<br/><label for="passDisplay" class="hover:bg-cyan-100 select-none">
-					<input id="passDisplay" type="checkbox" onclick="toggleVisibility('pass')" class="mt-2 m-1">パスワードを表示</label>
+					<br/>
+					<input id="passDisplay" type="checkbox" onclick="toggleVisibility('pass')" class="mt-2 m-1 accent-cyan-600"><label for="passDisplay" class="hover:bg-cyan-100 select-none">パスワードを表示</label>
 					<br/>
 				</div>
 
@@ -90,8 +90,8 @@
 					<p class="text-lg sm:text-xl mb-2 m-2">パスワード(確認)</p>
 					<input type="password" id="repass" name="repass" minlength="6" maxlength="32"
 					class="w-full bg-cyan-50 border border-red-500 text-cyan-900 placeholder-red-700 text-sm rounded-lg focus:ring-red-500 focus:border-red-500 p-2.5" placeholder="パスワードを入力(再)">
-					<br/><label for="repassDisplay" class="hover:bg-cyan-100 select-none">
-					<input id="repassDisplay" type="checkbox" onclick="toggleVisibility('repass')" class="mt-2 m-1">パスワード(確認)を表示</label>
+					<br/>
+					<input id="repassDisplay" type="checkbox" onclick="toggleVisibility('repass')" class="mt-2 m-1 accent-cyan-600"><label for="repassDisplay" class="hover:bg-cyan-100 select-none">パスワード(確認)を表示</label>
 					<br/>
 					<p class="mt-2 text-sm text-red-600 font-medium" th:text="${newUidForm.errorRePassMessage}"></p>
 				</div>
@@ -99,8 +99,8 @@
 					<p class="text-lg sm:text-xl mb-2 m-2">パスワード(確認)</p>
 					<input type="password" id="repass" name="repass" minlength="6" maxlength="32"
 						class="w-full bg-cyan-50 border border-cyan-500 text-cyan-900 placeholder-cyan-700 text-sm rounded-lg focus:ring-cyan-500 focus:border-cyan-500 p-2.5" placeholder="パスワードを入力(確認)">
-					<br/><label for="repassDisplay" class="hover:bg-cyan-100 select-none">
-					<input id="repassDisplay" type="checkbox" onclick="toggleVisibility('repass')" class="mt-2 m-1">パスワード(確認)を表示</label>
+					<br/>
+					<input id="repassDisplay" type="checkbox" onclick="toggleVisibility('repass')" class="mt-2 m-1 accent-cyan-600"><label for="repassDisplay" class="hover:bg-cyan-100 select-none">パスワード(確認)を表示</label>
 					<br/>
 				</div>
 
@@ -150,6 +150,6 @@
 			}
 		</script>
 		<!--/* フッター */-->
-		<div class="w-full" th:insert="./common/footer :: footer"></div>
+		<div class="w-full" th:insert="~{./common/footer :: footer}"></div>
 	</body>
 </html>

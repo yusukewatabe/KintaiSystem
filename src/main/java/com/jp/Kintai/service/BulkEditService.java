@@ -62,6 +62,9 @@ public class BulkEditService {
 	/** kinmuKubun1~31のセッター */
 	private static final String SETTER_KINMUKUBUN = "setKinmuKubun";
 
+	/** AtType1~31のセッター */
+	private static final String SETTER_ATTYPE = "setAtType";
+
 	/** clockInTime1~31のセッター */
 	private static final String SETTER_CLOCKINTIME = "setClockInTime";
 
@@ -74,6 +77,9 @@ public class BulkEditService {
 	/** kinmuKubun1~31のセッター */
 	private static final String SETTER_BREAKEND = "setBreakEnd";
 
+	/** remarksS1~31のセッター */
+	private static final String SETTER_REMARKS = "setRemarks";
+
 	/** 土曜日を判定 */
 	private static final String SATURDAY_JUDGEMENT = "(土)";
 
@@ -83,30 +89,36 @@ public class BulkEditService {
 	/** formに空文字をセット */
 	private static final String SET_FORM_EMPTY = "";
 
-	/**  メッセージID：EMK_011 */
+	/** メッセージID：EMK_011 */
 	private static final String EMK011 = "EMK_011";
 
-	/**  メッセージID：EMK_012 */
+	/** メッセージID：EMK_012 */
 	private static final String EMK012 = "EMK_012";
 
-	/**  メッセージID：EMK_013 */
+	/** メッセージID：EMK_013 */
 	private static final String EMK013 = "EMK_013";
 
-	/**  メッセージID：EMK_014 */
+	/** メッセージID：EMK_014 */
 	private static final String EMK014 = "EMK_014";
 
-	/**  メッセージID：EMK_015 */
+	/** メッセージID：EMK_015 */
 	private static final String EMK015 = "EMK_015";
 
-	/**  メッセージID：EMK_016 */
+	/** メッセージID：EMK_016 */
 	private static final String EMK016 = "EMK_016";
+
+	/** メッセージID：EMK_037 */
+	private static final String EMK037 = "EMK_037";
+
+	/** メッセージID：EMK_038 */
+	private static final String EMK038 = "EMK_038";
 
 	/**
 	 * 月の一覧をformに格納するメソッド
 	 * 
-	 * @param userId ユーザーID
+	 * @param userId               ユーザーID
 	 * @param attendanceRepository AttendanceRepository
-	 * @param model Spring MVC のモデルオブジェクト
+	 * @param model                Spring MVC のモデルオブジェクト
 	 * @return true or false
 	 */
 	public void bulkEditAndPreview(String userId, AttendanceRepository attendanceRepository, Model model) {
@@ -124,6 +136,10 @@ public class BulkEditService {
 		String lastDay = monthBounds.get(MULTIPLE_USE_ONE);
 		bulkform.setFirstDay(firstDay);
 		bulkform.setLastDay(lastDay);
+
+		// 月次集計用
+		int totalMinutes = 0;
+		int workingDays = 0;
 
 		// 1～monthFormatList.size() 分の setter をループで呼び出し
 		for (int i = 0; i < monthFormatList.size(); i++) {
@@ -154,22 +170,76 @@ public class BulkEditService {
 				}
 			}
 			Optional<Attendance> atts = attendanceRepository.findByUser_IdAndWorkDate(userId, workDate);
+			String atTypeMethod = SETTER_ATTYPE + (i + 1);
 			String clockInMethod = SETTER_CLOCKINTIME + (i + 1);
 			String clockOutMethod = SETTER_CLOCKOUTTIME + (i + 1);
 			String breakStartMethod = SETTER_BREAKSTART + (i + 1);
 			String breakEndMethod = SETTER_BREAKEND + (i + 1);
+			String remarksMethod = SETTER_REMARKS + (i + 1);
 
 			// レコードから取得
+			String recordAtType;
 			String recordClockInTime;
 			String recordClockOutTime;
 			String recordBreakStart;
 			String recordBreakEnd;
+			String recordremarks;
 			if (atts.isPresent()) {
 				Attendance attendance = atts.get();
+				recordAtType = attendance.getAtType();
 				recordClockInTime = attendance.getClockInTime();
 				recordClockOutTime = attendance.getClockOutTime();
 				recordBreakStart = attendance.getBreakStart();
 				recordBreakEnd = attendance.getBreakEnd();
+				recordremarks = attendance.getRemarks();
+
+				// 労働時間の計算
+				if (recordClockInTime != null && !recordClockInTime.isEmpty() &&
+						recordClockOutTime != null && !recordClockOutTime.isEmpty()) {
+
+					workingDays++;
+
+					// 時間を分に変換
+					int inMinutes = timeToMinutes(recordClockInTime);
+					int outMinutes = timeToMinutes(recordClockOutTime);
+					int workMinutes = outMinutes - inMinutes;
+
+					// 休憩時間を引く
+					if (recordBreakStart != null && !recordBreakStart.isEmpty() &&
+							recordBreakEnd != null && !recordBreakEnd.isEmpty()) {
+						int breakStartMinutes = timeToMinutes(recordBreakStart);
+						int breakEndMinutes = timeToMinutes(recordBreakEnd);
+						workMinutes -= (breakEndMinutes - breakStartMinutes);
+					}
+
+					totalMinutes += workMinutes;
+				}
+
+				if (recordAtType != null) {
+					// if (recordAtType.equals("有給")) {
+					// recordAtType = "yukyu";
+					// }
+					// atTypeX の setter を動的に呼び出し
+					// 出勤時間がnullでない場合
+					try {
+						Method mTime = BulkForm.class.getMethod(atTypeMethod, String.class);
+						mTime.invoke(bulkform, recordAtType);
+					} catch (Exception e) {
+						String errorMessage = e.toString();
+						loggerUtil.LogOutput(LogLevel.ERROR, messageUtil.getErrorMessage(EMK037) + atTypeMethod,
+								errorMessage);
+					}
+				} else {
+					// 勤怠種別がnullの場合
+					try {
+						Method mTime = BulkForm.class.getMethod(atTypeMethod, String.class);
+						mTime.invoke(bulkform, SET_FORM_EMPTY);
+					} catch (Exception e) {
+						String errorMessage = e.toString();
+						loggerUtil.LogOutput(LogLevel.ERROR, messageUtil.getErrorMessage(EMK037) + atTypeMethod,
+								errorMessage);
+					}
+				}
 				if (recordClockInTime != null) {
 					// clockInTimeX の setter を動的に呼び出し
 					// 出勤時間がnullでない場合
@@ -178,7 +248,8 @@ public class BulkEditService {
 						mTime.invoke(bulkform, recordClockInTime);
 					} catch (Exception e) {
 						String errorMessage = e.toString();
-						loggerUtil.LogOutput(LogLevel.ERROR, messageUtil.getErrorMessage(EMK012) + clockInMethod, errorMessage);
+						loggerUtil.LogOutput(LogLevel.ERROR, messageUtil.getErrorMessage(EMK012) + clockInMethod,
+								errorMessage);
 					}
 				} else {
 					// 出勤時間がnullの場合
@@ -187,7 +258,8 @@ public class BulkEditService {
 						mTime.invoke(bulkform, SET_FORM_EMPTY);
 					} catch (Exception e) {
 						String errorMessage = e.toString();
-						loggerUtil.LogOutput(LogLevel.ERROR, messageUtil.getErrorMessage(EMK012) + clockInMethod, errorMessage);
+						loggerUtil.LogOutput(LogLevel.ERROR, messageUtil.getErrorMessage(EMK012) + clockInMethod,
+								errorMessage);
 					}
 				}
 				if (recordClockOutTime != null) {
@@ -198,7 +270,8 @@ public class BulkEditService {
 						mTime.invoke(bulkform, recordClockOutTime);
 					} catch (Exception e) {
 						String errorMessage = e.toString();
-						loggerUtil.LogOutput(LogLevel.ERROR, messageUtil.getErrorMessage(EMK013) + clockOutMethod, errorMessage);
+						loggerUtil.LogOutput(LogLevel.ERROR, messageUtil.getErrorMessage(EMK013) + clockOutMethod,
+								errorMessage);
 					}
 				} else {
 					// 退勤時間がnullの場合空文字をFormに格納
@@ -207,7 +280,8 @@ public class BulkEditService {
 						mTime.invoke(bulkform, SET_FORM_EMPTY);
 					} catch (Exception e) {
 						String errorMessage = e.toString();
-						loggerUtil.LogOutput(LogLevel.ERROR, messageUtil.getErrorMessage(EMK013) + clockOutMethod, errorMessage);
+						loggerUtil.LogOutput(LogLevel.ERROR, messageUtil.getErrorMessage(EMK013) + clockOutMethod,
+								errorMessage);
 					}
 				}
 				if (recordBreakStart != null) {
@@ -218,7 +292,8 @@ public class BulkEditService {
 						mTime.invoke(bulkform, recordBreakStart);
 					} catch (Exception e) {
 						String errorMessage = e.toString();
-						loggerUtil.LogOutput(LogLevel.ERROR, messageUtil.getErrorMessage(EMK014) + breakStartMethod, errorMessage);
+						loggerUtil.LogOutput(LogLevel.ERROR, messageUtil.getErrorMessage(EMK014) + breakStartMethod,
+								errorMessage);
 					}
 				} else {
 					// 休憩時間がnullの場合空文字をFormに格納
@@ -227,7 +302,8 @@ public class BulkEditService {
 						mTime.invoke(bulkform, SET_FORM_EMPTY);
 					} catch (Exception e) {
 						String errorMessage = e.toString();
-						loggerUtil.LogOutput(LogLevel.ERROR, messageUtil.getErrorMessage(EMK014) + breakStartMethod, errorMessage);
+						loggerUtil.LogOutput(LogLevel.ERROR, messageUtil.getErrorMessage(EMK014) + breakStartMethod,
+								errorMessage);
 					}
 				}
 				if (recordBreakEnd != null) {
@@ -238,7 +314,8 @@ public class BulkEditService {
 						mTime.invoke(bulkform, recordBreakEnd);
 					} catch (Exception e) {
 						String errorMessage = e.toString();
-						loggerUtil.LogOutput(LogLevel.ERROR, messageUtil.getErrorMessage(EMK015) + breakEndMethod, errorMessage);
+						loggerUtil.LogOutput(LogLevel.ERROR, messageUtil.getErrorMessage(EMK015) + breakEndMethod,
+								errorMessage);
 					}
 				} else {
 					// 休憩終了時間がnullの場合空文字をFormに格納
@@ -247,7 +324,30 @@ public class BulkEditService {
 						mTime.invoke(bulkform, SET_FORM_EMPTY);
 					} catch (Exception e) {
 						String errorMessage = e.toString();
-						loggerUtil.LogOutput(LogLevel.ERROR, messageUtil.getErrorMessage(EMK015) + breakEndMethod, errorMessage);
+						loggerUtil.LogOutput(LogLevel.ERROR, messageUtil.getErrorMessage(EMK015) + breakEndMethod,
+								errorMessage);
+					}
+				}
+				if (recordremarks != null) {
+					// remarksX の setter を動的に呼び出し
+					// 出勤時間がnullでない場合
+					try {
+						Method mTime = BulkForm.class.getMethod(remarksMethod, String.class);
+						mTime.invoke(bulkform, recordremarks);
+					} catch (Exception e) {
+						String errorMessage = e.toString();
+						loggerUtil.LogOutput(LogLevel.ERROR, messageUtil.getErrorMessage(EMK038) + remarksMethod,
+								errorMessage);
+					}
+				} else {
+					// 出勤時間がnullの場合
+					try {
+						Method mTime = BulkForm.class.getMethod(remarksMethod, String.class);
+						mTime.invoke(bulkform, SET_FORM_EMPTY);
+					} catch (Exception e) {
+						String errorMessage = e.toString();
+						loggerUtil.LogOutput(LogLevel.ERROR, messageUtil.getErrorMessage(EMK038) + remarksMethod,
+								errorMessage);
 					}
 				}
 			} else {
@@ -257,14 +357,16 @@ public class BulkEditService {
 					mTime.invoke(bulkform, SET_FORM_EMPTY);
 				} catch (Exception e) {
 					String errorMessage = e.toString();
-					loggerUtil.LogOutput(LogLevel.ERROR, messageUtil.getErrorMessage(EMK012) + clockInMethod, errorMessage);
+					loggerUtil.LogOutput(LogLevel.ERROR, messageUtil.getErrorMessage(EMK012) + clockInMethod,
+							errorMessage);
 				}
 				try {
 					Method mTime = BulkForm.class.getMethod(clockOutMethod, String.class);
 					mTime.invoke(bulkform, SET_FORM_EMPTY);
 				} catch (Exception e) {
 					String errorMessage = e.toString();
-					loggerUtil.LogOutput(LogLevel.ERROR, messageUtil.getErrorMessage(EMK013) + clockOutMethod, errorMessage);
+					loggerUtil.LogOutput(LogLevel.ERROR, messageUtil.getErrorMessage(EMK013) + clockOutMethod,
+							errorMessage);
 
 				}
 				try {
@@ -272,14 +374,16 @@ public class BulkEditService {
 					mTime.invoke(bulkform, SET_FORM_EMPTY);
 				} catch (Exception e) {
 					String errorMessage = e.toString();
-					loggerUtil.LogOutput(LogLevel.ERROR, messageUtil.getErrorMessage(EMK014) + breakStartMethod, errorMessage);
+					loggerUtil.LogOutput(LogLevel.ERROR, messageUtil.getErrorMessage(EMK014) + breakStartMethod,
+							errorMessage);
 				}
 				try {
 					Method mTime = BulkForm.class.getMethod(breakEndMethod, String.class);
 					mTime.invoke(bulkform, SET_FORM_EMPTY);
 				} catch (Exception e) {
 					String errorMessage = e.toString();
-					loggerUtil.LogOutput(LogLevel.ERROR, messageUtil.getErrorMessage(EMK015) + breakEndMethod, errorMessage);
+					loggerUtil.LogOutput(LogLevel.ERROR, messageUtil.getErrorMessage(EMK015) + breakEndMethod,
+							errorMessage);
 				}
 			}
 
@@ -293,11 +397,54 @@ public class BulkEditService {
 				loggerUtil.LogOutput(LogLevel.ERROR, messageUtil.getErrorMessage(EMK016) + kinmuMethod, errorMessage);
 			}
 		}
+
+		// 月次集計の計算結果をformにセット
+		// 総労働時間を "XXX:XX" 形式に変換
+		int totalHours = totalMinutes / 60;
+		int totalMins = totalMinutes % 60;
+		bulkform.setTotalWorkingHours(String.format("%d:%02d", totalHours, totalMins));
+
+		// 出勤日数
+		bulkform.setTotalWorkingDays(workingDays);
+
+		// 平均労働時間
+		if (workingDays > 0) {
+			int avgMinutes = totalMinutes / workingDays;
+			int avgHours = avgMinutes / 60;
+			int avgMins = avgMinutes % 60;
+			bulkform.setAverageWorkingHours(String.format("%d:%02d", avgHours, avgMins));
+		} else {
+			bulkform.setAverageWorkingHours("0:00");
+		}
+
 		indexForm.setEmail(userId);
 
 		model.addAttribute(FormConstant.ATTRIBUTE_HOMEFORM, homeForm);
 		model.addAttribute(FormConstant.ATTRIBUTE_INDEXFORM, indexForm);
 		model.addAttribute(FormConstant.ATTRIBUTE_BULKFORM, bulkform);
+	}
+
+	/**
+	 * "HH:mm" 形式の時間を分に変換
+	 * 
+	 * @param time "HH:mm" 形式の文字列
+	 * @return 分単位の時間
+	 */
+	private int timeToMinutes(String time) {
+		if (time == null || time.isEmpty()) {
+			return 0;
+		}
+		String[] parts = time.split(":");
+		if (parts.length != 2) {
+			return 0;
+		}
+		try {
+			int hours = Integer.parseInt(parts[0]);
+			int minutes = Integer.parseInt(parts[1]);
+			return hours * 60 + minutes;
+		} catch (NumberFormatException e) {
+			return 0;
+		}
 	}
 
 	/**
@@ -309,7 +456,8 @@ public class BulkEditService {
 	 */
 	public List<String> listDates(int year, int month) {
 		YearMonth ym = YearMonth.of(year, month);
-		DateTimeFormatter fmt = DateTimeFormatter.ofPattern(DateFormatConstant.DATETIME_FORMAT_YYYY_MM_DD, Locale.JAPANESE);
+		DateTimeFormatter fmt = DateTimeFormatter.ofPattern(DateFormatConstant.DATETIME_FORMAT_YYYY_MM_DD,
+				Locale.JAPANESE);
 
 		List<String> result = new ArrayList<>(ym.lengthOfMonth());
 		for (int i = 1; i <= ym.lengthOfMonth(); i++) {
@@ -341,13 +489,14 @@ public class BulkEditService {
 	/**
 	 * 初日と末日を取得するメソッド
 	 * 
-	 * @param year 西暦年
+	 * @param year  西暦年
 	 * @param month 月
 	 * @return 月の初日、末日のリスト
 	 */
 	private static List<String> listMonth(int year, int month) {
 		YearMonth ym = YearMonth.of(year, month);
-		DateTimeFormatter fmt = DateTimeFormatter.ofPattern(DateFormatConstant.DATETIME_FORMAT_YYYY_MM_DD, Locale.JAPANESE);
+		DateTimeFormatter fmt = DateTimeFormatter.ofPattern(DateFormatConstant.DATETIME_FORMAT_YYYY_MM_DD,
+				Locale.JAPANESE);
 
 		List<String> result = new ArrayList<>(LISTSIZE_TWO);
 

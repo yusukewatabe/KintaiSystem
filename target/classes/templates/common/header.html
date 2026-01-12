@@ -25,19 +25,19 @@
 					<div class="hidden -mx-4 lg:flex lg:items-center">
 						<form id="formChange" th:action="@{/default}" class="flex">
 							<div th:if="${loginView}">
-								<button type="submit" th:formaction="@{/}"
+								<button type="submit" th:formaction="@{/backIndex}"
 									class="block mx-4 mt-2 text-base text-gray-700 capitalize lg:mt-0 dark:text-white hover:text-blue-600 dark:hover:text-gray-400">
 									ログイン
 								</button>
 							</div>
 							<div th:unless="${monthView}">
-								<button type="submit" th:formaction="@{/bulkEditPreview}"
+								<button type="submit" th:formaction="@{/bulkEditPreview}" method="get"
 									class="block mx-4 mt-2 text-base text-gray-700 capitalize lg:mt-0 dark:text-white hover:text-blue-600 dark:hover:text-gray-400">
 									月の一覧表示
 								</button>
 							</div>
 							<div th:unless="${logoutView}">
-								<button type="submit" th:formaction="@{/}" onclick="if(!confirm('ログアウトしてもよろしいですか？')) { event.preventDefault(); }"
+								<button type="submit" th:formaction="@{/backIndex}" onclick="if(!confirm('ログアウトしてもよろしいですか？')) { event.preventDefault(); }"
 									class="block mx-4 mt-2 text-base text-gray-700 capitalize lg:mt-0 dark:text-white hover:text-blue-600 dark:hover:text-gray-400">
 									ログアウト
 								</button>
@@ -55,7 +55,7 @@
 						<form th:action="@{/default}" method="post">
 							<li class="p-3 flex justify-center">
 								<div th:if="${loginView}">
-									<button type="submit" th:formaction="@{/}"
+									<button type="submit" th:formaction="@{/backIndex}"
 										class="block mx-4 mt-2 text-base text-gray-700 capitalize lg:mt-0 dark:text-white hover:text-blue-600 dark:hover:text-gray-400">
 										ログイン
 									</button>
@@ -63,7 +63,7 @@
 							</li>
 							<li class="p-3 flex justify-center">
 								<div th:unless="${monthView}">
-									<button type="submit" th:formaction="@{/bulkEditPreview}"
+									<button type="submit" th:formaction="@{/bulkEditPreview}" method="get"
 										class="block mx-4 mt-2 text-base text-gray-700 capitalize lg:mt-0 dark:text-white hover:text-blue-600 dark:hover:text-gray-400">
 										月の一覧表示
 									</button>
@@ -71,7 +71,7 @@
 							</li>
 							<li class="p-3 flex justify-center">
 								<div th:unless="${logoutView}">
-									<button type="submit" th:formaction="@{/}" onclick="if(!confirm('ログアウトしてもよろしいですか？')) { event.preventDefault(); }"
+									<button type="submit" th:formaction="@{/backIndex}" onclick="if(!confirm('ログアウトしてもよろしいですか？')) { event.preventDefault(); }"
 										class="block mx-4 mt-2 text-base text-gray-700 capitalize lg:mt-0 dark:text-white hover:text-blue-600 dark:hover:text-gray-400">
 										ログアウト
 									</button>

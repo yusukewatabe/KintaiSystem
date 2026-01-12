@@ -10,11 +10,11 @@
 	</head>
 	<body>
 		<!--/* ヘッダー */-->
-		<div class="w-full" th:insert="./common/header :: header"></div><br/>
+		<div class="w-full" th:insert="~{./common/header :: header}"></div><br/>
 		<p class="mt-6 text-2xl sm:text-3xl text-center">入力されたメールアドレスに認証メールを送信しました。</p><br/>
 		<p class="mt-2 text-sm text-red-600 font-medium text-center">※迷惑メールに割り振られる可能性が高いため、通常のメールボックスだけでなく、迷惑メールもご確認ください。</p>
 		<p class="mt-2 text-sm text-red-600 font-medium text-center">メールアドレス：kintairegisteruser@gmail.com</p>
 		<!--/* フッター */-->
-		<div class="w-full max-w-full mt-8" th:insert="./common/footer :: footer"></div>
+		<div class="w-full max-w-full mt-8" th:insert="~{./common/footer :: footer}"></div>
 	</body>
 </html>

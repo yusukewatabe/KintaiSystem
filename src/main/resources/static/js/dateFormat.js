@@ -101,7 +101,45 @@ export function initAllTimeInputs() {
 	});
 }
 
+const DISABLED_AT_TYPES = new Set(['現場休', '有給', '欠勤', '代休']);
+
+function updateTimeInputsForAtType(selectEl) {
+	const row = selectEl.closest('tr');
+	if (!row) return;
+
+	const shouldDisable = DISABLED_AT_TYPES.has(selectEl.value);
+	const inputs = row.querySelectorAll(
+		'input[name="clockInTimeList"], input[name="clockOutTimeList"], input[name="breakStartList"], input[name="breakEndList"]'
+	);
+
+	inputs.forEach(input => {
+		if (shouldDisable) {
+			input.value = '';
+			input.readOnly = true;
+			input.classList.add('bg-gray-100', 'text-gray-500');
+			input.setAttribute('aria-disabled', 'true');
+		} else {
+			input.readOnly = false;
+			input.classList.remove('bg-gray-100', 'text-gray-500');
+			input.removeAttribute('aria-disabled');
+		}
+	});
+}
+
+export function initAtTypeControls() {
+	const selects = document.querySelectorAll('select[name="atTypeList"]');
+	if (selects.length === 0) return;
+
+	selects.forEach(selectEl => {
+		updateTimeInputsForAtType(selectEl);
+		selectEl.addEventListener('change', () => {
+			updateTimeInputsForAtType(selectEl);
+		});
+	});
+}
+
 // ページ読み込み後に一括初期化
 document.addEventListener('DOMContentLoaded', () => {
 	initAllTimeInputs();
+	initAtTypeControls();
 });

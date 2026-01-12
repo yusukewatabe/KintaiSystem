@@ -10,7 +10,7 @@
 	</head>
 	<body>
 		<!--/* ヘッダー */-->
-		<div class="w-full" th:insert="./common/header :: header"></div><br/>
+		<div class="w-full" th:insert="~{./common/header :: header}"></div><br/>
 		<div th:if="${indexForm.transitionLink == 'newUid'}">
 			<p class="mt-6 text-2xl sm:text-3xl text-center">メールアドレス認証</p><br/><br/>
 			<form th:action="@{/sendMailNewUid}" method="post" class="w-full max-w-md mx-auto px-4">
@@ -79,6 +79,6 @@
 			</form>
 		</div>
 		<!--/* フッター */-->
-		<div class="w-full max-w-full mt-8" th:insert="./common/footer :: footer"></div>
+		<div class="w-full max-w-full mt-8" th:insert="~{./common/footer :: footer}"></div>
 	</body>
 </html>

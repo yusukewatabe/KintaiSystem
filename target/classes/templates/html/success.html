@@ -10,13 +10,13 @@
 	</head>
 	<body>
 		<!--/* ヘッダー */-->
-		<div class="w-full" th:insert="./common/header :: header"></div><br/>
-		<div class="flex flex-col items-center mt-6 space-y-4">
+		<div class="w-full" th:insert="~{./common/header :: header}"></div><br/>
+		<div class="flex flex-col items-center mt-6 space-y-4 text-center">
 			<form th:action="@{/}">
 				<div th:if="${indexForm.transitionLink == 'newUid'}">
 					<p class="mt-6 text-2xl sm:text-3xl text-center">以下メールアドレスの登録に成功しました。</p><br/><br/>
-					<p class="mt-6 text-2xl sm:text-3xl text-center">メールアドレス：<span th:text="${indexForm.email}"></span></p><br/>
-					<p class="mt-6 text-2xl sm:text-3xl text-center">ログインする場合は下記ボタンからログイン画面へ移動ください。</p><br/>
+					<p class="mt-6 text-2xl sm:text-2xl text-center">メールアドレス：<span th:text="${indexForm.email}"></span></p><br/>
+					<p class="mt-6 text-2xl sm:text-2xl text-center">ログインする場合は下記ボタンからログイン画面へ移動ください。</p><br/>
 					<button type="submit" class="w-full sm:w-auto text-white bg-cyan-700 hover:bg-cyan-800 focus:outline-none focus:ring-4 focus:ring-cyan-300 font-medium rounded-full text-sm px-8 py-3">
 						ログイン画面へ
 					</button>
@@ -32,6 +32,6 @@
 			</form>
 		</div>
 		<!--/* フッター */-->
-		<div class="w-full max-w-full mt-8" th:insert="./common/footer :: footer"></div>
+		<div class="w-full max-w-full mt-8" th:insert="~{./common/footer :: footer}"></div>
 	</body>
 </html>

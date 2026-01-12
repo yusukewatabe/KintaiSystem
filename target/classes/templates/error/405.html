@@ -14,13 +14,13 @@
 	</head>
 	<body>
 		<!--/* ヘッダー */-->
-		<div class="w-full max-w-full" th:insert="./common/errorHeader :: header"></div>
+		<div class="w-full max-w-full" th:insert="~{./common/errorHeader :: header}"></div>
 		<p class="mt-6 text-2xl sm:text-3xl text-center">システムエラーが発生しました。</p><br/>
 		<p class="mt-2 text-sm text-red-600 font-medium text-center">再度同様のエラーが発生する場合は管理者に発生時刻を連絡ください。</p>
 		<p class="mt-2 text-sm text-red-600 font-medium text-center">発生時刻：<span id="timeOfOccurrence"></span></p>
 		<p class="mt-2 text-sm text-red-600 font-medium text-center">エラーコード：<span th:text="${status}"></span></p>
 		<!--/* フッター */-->
-		<div class="w-full max-w-full mt-8" th:insert="./common/footer :: footer"></div>
+		<div class="w-full max-w-full mt-8" th:insert="~{./common/footer :: footer}"></div>
 		<script>
 			dayjs.extend(window.dayjs_plugin_utc);
 			dayjs.extend(window.dayjs_plugin_timezone);
