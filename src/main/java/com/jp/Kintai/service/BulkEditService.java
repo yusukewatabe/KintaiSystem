@@ -137,6 +137,10 @@ public class BulkEditService {
 		bulkform.setFirstDay(firstDay);
 		bulkform.setLastDay(lastDay);
 
+		// 月次集計用
+		int totalMinutes = 0;
+		int workingDays = 0;
+
 		// 1～monthFormatList.size() 分の setter をループで呼び出し
 		for (int i = 0; i < monthFormatList.size(); i++) {
 			// bulkday の setter 呼び出し
@@ -188,6 +192,29 @@ public class BulkEditService {
 				recordBreakStart = attendance.getBreakStart();
 				recordBreakEnd = attendance.getBreakEnd();
 				recordremarks = attendance.getRemarks();
+
+				// 労働時間の計算
+				if (recordClockInTime != null && !recordClockInTime.isEmpty() &&
+						recordClockOutTime != null && !recordClockOutTime.isEmpty()) {
+
+					workingDays++;
+
+					// 時間を分に変換
+					int inMinutes = timeToMinutes(recordClockInTime);
+					int outMinutes = timeToMinutes(recordClockOutTime);
+					int workMinutes = outMinutes - inMinutes;
+
+					// 休憩時間を引く
+					if (recordBreakStart != null && !recordBreakStart.isEmpty() &&
+							recordBreakEnd != null && !recordBreakEnd.isEmpty()) {
+						int breakStartMinutes = timeToMinutes(recordBreakStart);
+						int breakEndMinutes = timeToMinutes(recordBreakEnd);
+						workMinutes -= (breakEndMinutes - breakStartMinutes);
+					}
+
+					totalMinutes += workMinutes;
+				}
+
 				if (recordAtType != null) {
 					// if (recordAtType.equals("有給")) {
 					// recordAtType = "yukyu";
@@ -370,11 +397,54 @@ public class BulkEditService {
 				loggerUtil.LogOutput(LogLevel.ERROR, messageUtil.getErrorMessage(EMK016) + kinmuMethod, errorMessage);
 			}
 		}
+
+		// 月次集計の計算結果をformにセット
+		// 総労働時間を "XXX:XX" 形式に変換
+		int totalHours = totalMinutes / 60;
+		int totalMins = totalMinutes % 60;
+		bulkform.setTotalWorkingHours(String.format("%d:%02d", totalHours, totalMins));
+
+		// 出勤日数
+		bulkform.setTotalWorkingDays(workingDays);
+
+		// 平均労働時間
+		if (workingDays > 0) {
+			int avgMinutes = totalMinutes / workingDays;
+			int avgHours = avgMinutes / 60;
+			int avgMins = avgMinutes % 60;
+			bulkform.setAverageWorkingHours(String.format("%d:%02d", avgHours, avgMins));
+		} else {
+			bulkform.setAverageWorkingHours("0:00");
+		}
+
 		indexForm.setEmail(userId);
 
 		model.addAttribute(FormConstant.ATTRIBUTE_HOMEFORM, homeForm);
 		model.addAttribute(FormConstant.ATTRIBUTE_INDEXFORM, indexForm);
 		model.addAttribute(FormConstant.ATTRIBUTE_BULKFORM, bulkform);
+	}
+
+	/**
+	 * "HH:mm" 形式の時間を分に変換
+	 * 
+	 * @param time "HH:mm" 形式の文字列
+	 * @return 分単位の時間
+	 */
+	private int timeToMinutes(String time) {
+		if (time == null || time.isEmpty()) {
+			return 0;
+		}
+		String[] parts = time.split(":");
+		if (parts.length != 2) {
+			return 0;
+		}
+		try {
+			int hours = Integer.parseInt(parts[0]);
+			int minutes = Integer.parseInt(parts[1]);
+			return hours * 60 + minutes;
+		} catch (NumberFormatException e) {
+			return 0;
+		}
 	}
 
 	/**

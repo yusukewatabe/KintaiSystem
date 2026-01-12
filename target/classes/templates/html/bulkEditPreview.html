@@ -35,6 +35,23 @@
 						</h2>
 					</div>
 
+					<div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-4 p-4 bg-cyan-50 rounded-lg border border-cyan-200">
+						<div class="text-center">
+							<p class="text-sm text-gray-600">総労働時間</p>
+							<p class="text-2xl font-bold text-cyan-700" th:text="${bulkForm.totalWorkingHours}">0:00</p>
+						</div>
+						<div class="text-center">
+							<p class="text-sm text-gray-600">出勤日数</p>
+							<p class="text-2xl font-bold text-cyan-700">
+								<span th:text="${bulkForm.totalWorkingDays}">0</span>日
+							</p>
+						</div>
+						<div class="text-center">
+							<p class="text-sm text-gray-600">平均労働時間</p>
+							<p class="text-2xl font-bold text-cyan-700" th:text="${bulkForm.averageWorkingHours}">0:00</p>
+						</div>
+					</div>
+
 					<div class="overflow-x-auto">
 						<table class="w-full">
 							<thead class="bg-gray-50 sticky top-0">

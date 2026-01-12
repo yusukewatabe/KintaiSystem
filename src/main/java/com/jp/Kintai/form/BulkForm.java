@@ -12,6 +12,14 @@ import lombok.Setter;
 @Getter
 @Setter
 public class BulkForm {
+	// 総労働時間
+	private String totalWorkingHours;
+
+	// 出勤日数
+	private Integer totalWorkingDays;
+
+	// 平均労働時間
+	private String averageWorkingHours;
 
 	// 勤怠種別
 	private String atType1;
