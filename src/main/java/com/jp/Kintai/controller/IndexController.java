@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,6 +18,7 @@ import com.jp.Kintai.constant.HomeConstant;
 import com.jp.Kintai.constant.MappingPathNameConstant;
 import com.jp.Kintai.constant.NewUidConstant;
 import com.jp.Kintai.constant.ViewNameConstant;
+import com.jp.Kintai.form.BulkForm;
 import com.jp.Kintai.form.IndexForm;
 import com.jp.Kintai.model.User;
 import com.jp.Kintai.repository.UserRepository;
@@ -69,11 +71,13 @@ public class IndexController {
 	 * @return 表示するビュー名
 	 */
 	@GetMapping(MappingPathNameConstant.CREDIT_PATH)
-	public String credit(Model model) {
+	public String credit(Model model, HttpSession session) {
 		model.addAttribute(HomeConstant.CREDIT_VIEW, true);
-		model.addAttribute(HomeConstant.LOGIN_VIEW, true);
-		model.addAttribute(HomeConstant.MONTH_VIEW, true);
-		model.addAttribute(HomeConstant.LOGOUT_VIEW, true);
+		if (session.getAttribute(FormConstant.ATTRIBUTE_BULKFORM) == null) {
+			model.addAttribute(HomeConstant.LOGIN_VIEW, true);
+			model.addAttribute(HomeConstant.MONTH_VIEW, true);
+			model.addAttribute(HomeConstant.LOGOUT_VIEW, true);
+		}
 		return ViewNameConstant.CREDIT_VIEW;
 	}
 
@@ -120,7 +124,7 @@ public class IndexController {
 	 * @return 表示するビュー名
 	 */
 	@PostMapping(MappingPathNameConstant.LOGIN_PATH)
-	public String login(@RequestParam String id, @RequestParam String pass, Model model) {
+	public String login(@RequestParam String id, @RequestParam String pass, Model model, HttpSession session) {
 		// 日本時間を取得
 		ZonedDateTime tokyoTime = ZonedDateTime.now(ZoneId.of(DateFormatConstant.TIMEZONE_ASIA_TOKYO));
 		Timestamp timestamp = Timestamp.valueOf(tokyoTime.toLocalDateTime());
@@ -136,6 +140,10 @@ public class IndexController {
 			User user = userRepository.findById(id).orElseThrow();
 			user.setLastlogin(timestamp);
 			userRepository.save(user);
+			BulkForm bulkForm = new BulkForm();
+			bulkForm.setFirstname(user.getFirstname());
+			bulkForm.setLastname(user.getLastname());
+			session.setAttribute(FormConstant.ATTRIBUTE_BULKFORM, bulkForm);
 			// emailをhidden項目にセット
 			indexForm.setEmail(id);
 			// html側に値を渡す
@@ -158,9 +166,10 @@ public class IndexController {
 	 * @return 表示するビュー名
 	 */
 	@GetMapping(MappingPathNameConstant.BACK_INDEX_PATH)
-	public String backIndex(Model model) {
+	public String backIndex(Model model, HttpSession session) {
 		IndexForm indexForm = new IndexForm();
 		indexForm.setErrorFlg(false);
+		session.removeAttribute(FormConstant.ATTRIBUTE_BULKFORM);
 		model.addAttribute(FormConstant.ATTRIBUTE_INDEXFORM, indexForm);
 		model.addAttribute(HomeConstant.LOGOUT_VIEW, true);
 		return ViewNameConstant.INDEX_VIEW;

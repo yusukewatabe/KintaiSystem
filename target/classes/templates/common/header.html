@@ -36,6 +36,11 @@
 									月の一覧表示
 								</button>
 							</div>
+							<div th:unless="${logoutView}" th:if="${session.bulkForm != null}">
+								<span class="block mx-4 mt-2 text-base text-gray-700 capitalize lg:mt-0 dark:text-white">
+									ユーザー名:<span th:text="${session.bulkForm.firstname}"></span><span th:text="${session.bulkForm.lastname}"></span>
+								</span>
+							</div>
 							<div th:unless="${logoutView}">
 								<button type="submit" th:formaction="@{/backIndex}" onclick="if(!confirm('ログアウトしてもよろしいですか？')) { event.preventDefault(); }"
 									class="block mx-4 mt-2 text-base text-gray-700 capitalize lg:mt-0 dark:text-white hover:text-blue-600 dark:hover:text-gray-400">
@@ -67,6 +72,13 @@
 										class="block mx-4 mt-2 text-base text-gray-700 capitalize lg:mt-0 dark:text-white hover:text-blue-600 dark:hover:text-gray-400">
 										月の一覧表示
 									</button>
+								</div>
+							</li>
+							<li class="p-3 flex justify-center">
+								<div th:unless="${logoutView}" th:if="${session.bulkForm != null}">
+									<span class="block mx-4 mt-2 text-base text-gray-700 capitalize lg:mt-0 dark:text-white">
+										ユーザー名:<span th:text="${session.bulkForm.firstname}"></span><span th:text="${session.bulkForm.lastname}"></span>
+									</span>
 								</div>
 							</li>
 							<li class="p-3 flex justify-center">
