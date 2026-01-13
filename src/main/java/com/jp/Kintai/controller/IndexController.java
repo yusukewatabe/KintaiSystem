@@ -74,9 +74,9 @@ public class IndexController {
 	public String credit(Model model, HttpSession session) {
 		model.addAttribute(HomeConstant.CREDIT_VIEW, true);
 		if (session.getAttribute(FormConstant.ATTRIBUTE_BULKFORM) == null) {
-			model.addAttribute(HomeConstant.LOGIN_VIEW, true);
+			model.addAttribute(HomeConstant.LOGIN_VIEW, false);
 			model.addAttribute(HomeConstant.MONTH_VIEW, true);
-			model.addAttribute(HomeConstant.LOGOUT_VIEW, true);
+			model.addAttribute(HomeConstant.LOGOUT_VIEW, false);
 		}
 		return ViewNameConstant.CREDIT_VIEW;
 	}
