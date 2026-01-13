@@ -3,6 +3,7 @@ package com.jp.Kintai.controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import com.jp.Kintai.constant.DateFormatConstant;
 import com.jp.Kintai.constant.HomeConstant;
 import com.jp.Kintai.constant.MappingPathNameConstant;
 import com.jp.Kintai.constant.ViewNameConstant;
@@ -12,12 +13,16 @@ import com.openhtmltopdf.outputdevice.helper.BaseRendererBuilder.FSFontUseCase;
 import com.openhtmltopdf.outputdevice.helper.BaseRendererBuilder.FontStyle;
 import com.openhtmltopdf.pdfboxout.PdfRendererBuilder;
 import java.io.ByteArrayOutputStream;
+import java.nio.charset.StandardCharsets;
+import java.time.YearMonth;
+import java.time.ZoneId;
 import java.util.EnumSet;
 import java.util.Locale;
 import java.util.Objects;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
+import org.springframework.http.ContentDisposition;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ExtendedModelMap;
@@ -92,8 +97,13 @@ public class BulkEditPreviewController {
 		builder.run();
 
 		HttpHeaders headers = new HttpHeaders();
+		int month = YearMonth.now(ZoneId.of(DateFormatConstant.TIMEZONE_ASIA_TOKYO)).getMonthValue();
+		String filename = month + "月_勤務表.pdf";
+
 		headers.setContentType(MediaType.APPLICATION_PDF);
-		headers.setContentDispositionFormData("inline", "invoice.pdf");
+		headers.setContentDisposition(ContentDisposition.builder("inline")
+				.filename(filename, StandardCharsets.UTF_8)
+				.build());
 
 		return ResponseEntity.ok()
 				.headers(headers)
